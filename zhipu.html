@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智谱华章 专题洞察 | AI Native 人才情报</title>
+<style>
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #9EF0DC;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+    --green: #2FBF8F;
+    --pink: #E86B8E;
+    --gold: #E8C96A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ===== 顶部导航 ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav .logo, .sb-head .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .nav .logo .dot, .sb-head .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #2E6FE0);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav .right { display: flex; align-items: center; gap: 10px; }
+  .lang-pill { display: flex; border: 1px solid var(--card-border); border-radius: 999px; overflow: hidden; }
+  .lang-pill span, .lang-pill a { padding: 3px 12px; font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: none; }
+  .lang-pill span.on { background: var(--purple); color: #fff; }
+  .nav .cta {
+    background: var(--purple); color: #fff; border: none; border-radius: 999px;
+    padding: 6px 16px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #1E514A 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(23,184,148,0.18), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(158,240,220,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 46px; font-weight: 850; line-height: 1.28; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .teal {
+    color: var(--teal);
+    text-shadow: 0 0 32px rgba(158,240,220,0.45);
+  }
+  .hero h1 .blue {
+    color: #8FB8FF;
+    text-shadow: 0 0 32px rgba(143,184,255,0.45);
+  }
+  .hero .subline { color: var(--teal); font-size: 18px; font-weight: 600; margin: 8px 0 18px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 30px; } .hero .subline { font-size: 16px; } }
+  .hero .summary { color: #C9C6E0; font-size: 14px; max-width: 760px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px;
+    font-size: 12.5px; color: #9C98C0;
+  }
+  .hero .meta b { display: block; color: #C9C6E0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ===== 主内容 ===== */
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+
+  .sec-tag {
+    margin-top: 56px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; line-height: 1.4; }
+  h2 .no { color: var(--purple); margin-right: 10px; }
+  h2 .en { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 17px; font-weight: 800; margin: 26px 0 6px; }
+  h3 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .sec-desc { color: var(--muted); max-width: 860px; margin: 10px 0 22px; }
+
+  /* ===== 卡片通用 ===== */
+  .card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; margin: 14px 0;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .card.gold { border-left: 4px solid var(--gold); }
+  .card p { margin: 6px 0; }
+
+  /* ===== 数据卡 ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .stat-row.three { grid-template-columns: repeat(3, 1fr); }
+  .stat {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .stat .num { font-size: 25px; font-weight: 800; color: var(--purple); line-height: 1.2; }
+  .stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat .hl-gold { color: var(--gold); font-weight: 700; }
+
+  /* ===== 进度条 ===== */
+  .bar-row { display: flex; align-items: center; gap: 14px; margin: 13px 0; }
+  .bar-row .name { width: 150px; flex-shrink: 0; font-weight: 600; font-size: 13.5px; }
+  .bar-row .cnt { width: 64px; flex-shrink: 0; text-align: right; font-size: 12.5px; color: var(--muted); }
+  .bar-track { flex: 1; height: 14px; background: #F1EFFA; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.pink { background: var(--pink); }
+  .legend { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 5px 0 14px; }
+  .legend .dot.g { background: var(--green); }
+  .legend .dot.p { background: var(--pink); }
+
+  /* ===== 阶段条 ===== */
+  .stage-bar { display: flex; align-items: stretch; gap: 0; margin: 18px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--card-border);
+    padding: 16px 14px; text-align: center; position: relative;
+  }
+  .stage:first-child { border-radius: 14px 0 0 14px; }
+  .stage:last-child { border-radius: 0 14px 14px 0; }
+  .stage .s-name { font-weight: 700; font-size: 13.5px; }
+  .stage .s-desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .stage.here {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+    box-shadow: 0 8px 24px rgba(94,62,216,0.25); z-index: 2;
+  }
+  .stage.here .s-desc { color: #D8CFFB; }
+  .stage .marker {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: #14532D; font-size: 10.5px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ===== 链路卡片 ===== */
+  .loop-card { position: relative; overflow: hidden; }
+  .loop-card .ghost {
+    position: absolute; right: 18px; top: 6px; font-size: 64px; font-weight: 800;
+    color: #F3F0FB; line-height: 1; pointer-events: none;
+  }
+  .loop-card h4 { margin: 0; font-size: 18px; font-weight: 800; }
+  .loop-card h4 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card .metric { color: var(--purple); font-weight: 800; font-size: 15px; margin: 6px 0 4px; }
+  .loop-card .desc { color: #4A4765; margin: 0 0 14px; max-width: 720px; }
+  .loop-card .criteria { margin: 0 0 12px; font-size: 13.5px; line-height: 1.65; color: #6b5b1e; background: #fdf8e8; border-left: 3px solid #c9a227; padding: 8px 12px; border-radius: 6px; max-width: 760px; }
+  .loop-arrow { text-align: center; color: #B9B3DC; font-size: 18px; margin: 2px 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* ===== 对照表 ===== */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 13.5px; }
+  thead th {
+    background: var(--purple-soft); color: var(--purple); text-align: left;
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+  }
+  thead th:first-child { border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody td {
+    background: #fff; padding: 13px 16px; border-bottom: 1px solid var(--card-border); vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 700; width: 110px; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== 要点列表 ===== */
+  .point { display: flex; gap: 14px; margin: 12px 0; align-items: flex-start; }
+  .point .pn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple);
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .point p { margin: 0; }
+
+  /* ===== 结论 chips ===== */
+  .takeaway { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .takeaway .tk {
+    background: var(--purple-soft); color: var(--purple); border-radius: 999px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== 薪资卡 ===== */
+  .pay-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .pay {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px;
+  }
+  .pay .p-line { font-weight: 800; font-size: 15px; }
+  .pay .p-band { font-size: 22px; font-weight: 800; color: var(--purple); margin: 6px 0 2px; }
+  .pay .p-note { font-size: 12.5px; color: var(--muted); }
+  .pay-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 760px) {
+    .stat-row, .stat-row.three, .pay-row { grid-template-columns: repeat(2, 1fr); }
+    .stage { min-width: 46%; border-radius: 10px !important; margin: 3px; }
+  }
+
+  /* ===== 左侧导航 ===== */
+  html { scroll-behavior: smooth; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 268px;
+    background: #fff; border-right: 1px solid var(--card-border);
+    overflow-y: auto; padding: 18px 14px 32px; z-index: 80;
+  }
+  .sb-head { padding: 4px 8px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 4px; }
+  .sb-back {
+    display: inline-block; margin-top: 8px; color: var(--muted);
+    font-size: 12.5px; text-decoration: none;
+  }
+  .sb-back:hover { color: var(--purple); }
+  .sb-group {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--muted); text-transform: uppercase; margin: 18px 8px 8px;
+    padding-bottom: 8px; border-bottom: 1px solid #EFEBF9;
+  }
+  .sb-company a, .toc a {
+    position: relative; display: block; padding: 8px 12px 8px 26px;
+    border-left: 3px solid transparent; border-radius: 0 10px 10px 0;
+    color: var(--text); text-decoration: none; font-size: 13.5px; line-height: 1.45;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a::before {
+    content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 2px;
+    background: #C4B5FD; opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .sb-company a:hover, .toc a:hover { background: var(--chip-bg); border-left-color: #E9E4F6; }
+  .toc a:hover::before { opacity: 0.8; }
+  .sb-company a.cur { background: var(--purple); color: #fff; font-weight: 700; border-left-color: var(--purple); }
+  .toc a.sub { font-size: 12.5px; color: var(--muted); padding: 5px 12px 5px 34px; }
+  .toc a.sub::before { left: 21px; width: 4px; height: 4px; border-radius: 50%; }
+  .toc a.active { background: var(--purple-soft); color: var(--purple); font-weight: 700; border-left-color: var(--purple); }
+  .toc a.active::before { background: var(--purple); opacity: 1; }
+  .content { margin-left: 268px; }
+  .backdrop { display: none; }
+  .toc-btn {
+    display: none; background: var(--purple-soft); color: var(--purple);
+    border: none; border-radius: 999px; padding: 6px 14px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+    .sidebar.open { transform: none; }
+    .content { margin-left: 0; }
+    .toc-btn { display: inline-block; }
+    .backdrop.show {
+      display: block; position: fixed; inset: 0;
+      background: rgba(20,16,40,0.5); z-index: 70;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 左侧导航 ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="logo"><span class="dot">Z</span>智谱华章 专题洞察</div>
+    <a class="sb-back" href="index.html" onclick="if(window.parent!==window){window.parent.exitReport();return false;}">← 报告列表</a>
+  </div>
+  <div class="sb-group">本报告目录</div>
+  <nav class="toc" id="toc">
+    <a href="#sec-01">01 当前阶段判断</a>
+    <a href="#sec-02">02 公司战略</a>
+    <a href="#sec-02-1" class="sub">驱动因素：公开市场融资</a>
+    <a href="#sec-02-2" class="sub">业务结构：ToB 交付 vs MaaS</a>
+    <a href="#sec-02-3" class="sub">出海：轻资产模式</a>
+    <a href="#sec-02-4" class="sub">关键张力：市值定价 &gt; 基本面</a>
+    <a href="#sec-03">03 AI Native 组织</a>
+    <a href="#sec-03-1" class="sub">a) 人才密度驱动</a>
+    <a href="#sec-03-2" class="sub">b) 评估坐标切换对照表</a>
+    <a href="#sec-03-3" class="sub">c) 招聘方法论</a>
+    <a href="#sec-04">04 人才策略</a>
+    <a href="#sec-04-1" class="sub">4.1 HR 先扩</a>
+    <a href="#sec-04-2" class="sub">4.2 五线画像</a>
+    <a href="#sec-04-3" class="sub">4.3 选拔标准</a>
+    <a href="#sec-04-4" class="sub">4.4 薪资与激励</a>
+    <a href="#sec-04-5" class="sub">4.5 进出闭环</a>
+    <a href="#sec-05">05 一句话结论</a>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="content">
+
+<!-- ===== 顶部导航 ===== -->
+<nav class="nav">
+  <div class="logo"><span class="dot">Z</span>智谱华章 专题洞察</div>
+  <div class="right">
+    <button class="toc-btn" id="tocBtn">目录</button>
+    <div class="lang-pill"><span class="on">中</span><a href="智谱华章_专题洞察_2026-08_EN.html" onclick="if(window.parent!==window){window.parent.openReport('zhipu_en');return false;}">EN</a></div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">智谱华章 专题洞察 · AI NATIVE 人才情报</div>
+    <h1>智谱上市七个月，<br>市值 <span class="blue">2000 亿</span>，在招岗位却开满 <span class="blue">200 个</span></h1>
+    <div class="subline">已上市 ≠ 稳态——它的下一步，押在 Agent 与商业化的深水区</div>
+    <p class="summary">2026 年 1 月港交所上市（02513.HK）后，智谱成为"全球大模型第一股"：募资 43 亿港元，当前市值超 2000 亿港元，科创板 150 亿辅导验收在途。Boss 200 岗在招，Agent 方向岗位数与薪资总量双占比第一。46 人 HR 扛着商业化纵深扩编。本简报沿四个框架拆解：它在什么阶段、下什么棋、组织怎么转、要什么人。</p>
+    <div class="meta">
+      <div><b>Focus</b>智谱人才配置与组织阶段</div>
+      <div><b>Supply depth</b>200 在招岗全量 · 10 条标杆 JD 正文 · 四渠道交叉验证</div>
+      <div><b>As of</b>2026-08-17</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 01 当前阶段判断 ============ -->
+  <div class="sec-tag">Stage readout</div>
+  <h2 id="sec-01"><span class="no">01</span>当前阶段判断<span class="en">where Zhipu stands</span></h2>
+  <p class="sec-desc">我们把大模型公司的组织演进分为四段：技术验证期 → 产品化起步期 → 规模化/商业化扩张期 → 上市成熟运营期。这个框架不是行业标准，而是基于本次 HR 与 JD 数据做的分析观察。</p>
+
+  <div class="stage-bar">
+    <div class="stage">
+      <div class="s-name">技术验证期</div>
+      <div class="s-desc">小核心团队，研究岗为主</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">产品化起步期</div>
+      <div class="s-desc">开始招工程、产品、Infra</div>
+    </div>
+    <div class="stage here">
+      <div class="marker">智谱在此</div>
+      <div class="s-name">规模化/商业化扩张期</div>
+      <div class="s-desc">组织承接放量，职能补齐</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">上市成熟运营期</div>
+      <div class="s-desc">增长、国际化、合规叙事</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>智谱的判断：规模化/商业化扩张期（深段），且是头部大模型公司中唯一由 IPO 资本驱动扩张的公司。</strong></p>
+    <p>2026 年 1 月港交所上市（募资 43 亿港元）后，智谱没有收敛招聘，反而把公开市场募资直接投入扩编：Boss 在招 200 岗（页头 210），Agent 方向 44 岗（占比 22%），岗位数与薪资总量双占比第一。组织正在做本阶段典型的"高管层换血 + 生态化对冲"（COO / 融资 VP 离开），而核心研究层保持稳定。三个独立证据一致：岗位类型已完成从研究主导向"应用 + 商业化 + 职能"的转型（商业化 26 岗（Boss 全量口径）、上市职能岗 21 岗成体系出现）；应用化拐点不仅已现且进入深耕；组织调整方向与扩张期特征完全吻合。</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">200</div>
+      <div class="lbl">Boss 在招岗（页头 210 · 8/15 全量）</div>
+    </div>
+    <div class="stat">
+      <div class="num">56</div>
+      <div class="lbl">脉脉在招岗（8/17 重抓 · 14 位 HR 发岗）</div>
+    </div>
+    <div class="stat">
+      <div class="num">214</div>
+      <div class="lbl">跨渠道去重独立岗位（三渠道并集 · 猎聘独有 +4）</div>
+    </div>
+    <div class="stat">
+      <div class="num">10.7%–21.4%</div>
+      <div class="lbl">招聘密度（214 岗 / 1000–2000 人规模）</div>
+    </div>
+  </div>
+
+  <!-- ============ 02 公司战略 ============ -->
+  <div class="sec-tag">Strategy</div>
+  <h2 id="sec-02"><span class="no">02</span>公司战略：双资本市场驱动的"商业化纵深"棋局<span class="en">the commercialization deep-water</span></h2>
+
+  <h3 id="sec-02-1">驱动因素：弹药来自公开市场，不是一级轮次<span class="en">public market, not private rounds</span></h3>
+  <p class="sec-desc">2026-01-08 港交所上市（02513.HK，"全球大模型第一股"），当前市值已从首日的约 528–570 亿港元涨到 2000 亿港元以上；科创板拟募资约 150 亿元，辅导状态已变更为"辅导验收"——若落地将触发下一轮扩编，当前 200 岗在招可能只是扩张中段。上市七个月后的招聘动作说明资金用途非常直接：继续扩编、顶配抢人。</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">43亿港元</div>
+      <div class="lbl">港股 IPO 募资（2026-01-08）</div>
+    </div>
+    <div class="stat">
+      <div class="num">2000亿+</div>
+      <div class="lbl">当前港股市值</div>
+    </div>
+    <div class="stat">
+      <div class="num">+131.9%</div>
+      <div class="lbl">2025 总收入 7.24 亿元</div>
+    </div>
+    <div class="stat">
+      <div class="num">47.18亿</div>
+      <div class="lbl">净亏损（同比扩大 59.5%）</div>
+    </div>
+  </div>
+
+  <h3 id="sec-02-2">业务结构：本地化交付守基本盘，MaaS 与 Agent 是增长引擎<span class="en">toB delivery vs MaaS</span></h3>
+  <p class="sec-desc">2025 年报给出了清晰的方向感：本地化大模型收入 3.66 亿（+70.5%），占收入 50.5%——ToB 交付仍是基本盘；云服务/API 收入 1.90 亿（+292.6%）与智能体收入 1.66 亿（+248.8%）合计占 49.2%，增速约为本地化的 4 倍——ToB 交付模式正在向 MaaS 迁移。招聘侧精确印证：解决方案/交付岗仍在招但薪资带（25–50K）低于 Agent 算法岗（50–90K）；COO 离职后公司声明"当前重点是下一代基座模型与 MaaS 生态"，对应基座岗精英化高薪、MaaS BD 岗批量。</p>
+
+  <h3 id="sec-02-3">出海：北京中枢管全球，海外只放业务尖兵<span class="en">lightweight overseas</span></h3>
+  <p class="sec-desc">猎聘 8/17 重抓确认 10 岗（页头=提取，与 8/6 持平，100% 薪资标注；五线：商业化 5 / Agent 3 / Infra 1 / 算法 1，含 2 个海外方向）：马来西亚/中东 Solutions Architect、国际 BD、海外销售-API（驻马来西亚/阿联酋 3–6 个月）等国际化岗；但 LinkedIn 摸盘显示真正落地海外仅约 4 人（新加坡 3 + 美国 1），全球业务中枢实际都 base 北京向外投射。判定："北京中枢管全球、海外只放业务尖兵、海外 HR 不设驻地"的轻资产出海模式——国际化在招岗与已落地之间存在时间差，不是矛盾。</p>
+
+  <h3 id="sec-02-4">关键张力：市值定价 &gt; 基本面<span class="en">market cap &gt; fundamentals</span></h3>
+  <div class="card gold">
+    <p style="margin:0;">2000 亿港元市值对应 7.24 亿营收、47 亿净亏损——招聘扩张由市值支撑，成本敏感期尚未到来。若科创板 IPO 节奏变化，扩编可持续性存疑；融资 VP 在 IPO 筹备期离职，是资本运作连续性的早期风险信号。<strong>对组织的含义：这是一家"用钱换时间"的公司，窗口期内动作会非常密集，但窗口本身依赖资本节奏。下一步的组织动作，必然是 Agent 产品线加厚 + 区域销售与交付继续铺 + 科创板落地后再扩一轮。</strong></p>
+  </div>
+
+  <!-- ============ 03 AI Native 组织 ============ -->
+  <div class="sec-tag">AI native organization</div>
+  <h2 id="sec-03"><span class="no">03</span>AI Native 组织：为什么"看起来不完整"其实是另一套范式<span class="en">a different paradigm</span></h2>
+
+  <h3 id="sec-03-1">a) 人才密度驱动 vs 规模化执行驱动<span class="en">talent density over scale</span></h3>
+  <p class="sec-desc">大厂 HR 体系的前提是"规模化执行"——业务可拆解为标准动作，人可批量招聘、批量管理。AI Native 公司的前提是人才密度驱动：每位研究员都是高价值个体，组织产出取决于少数关键人才的水平而非人数。HR 的任务从"批量招聘"变成"对少数关键人才的深度获取与保留"。</p>
+  <div class="card">
+    <div class="point">
+      <div class="pn">1</div>
+      <p><strong>46 人 HR 中 60% 是应届生</strong>——用应届堆执行量、用少数骨干管关键人才，有限的资深额度押在关键线上；</p>
+    </div>
+    <div class="point">
+      <div class="pn">2</div>
+      <p><strong>管理层极薄</strong>——仅 2 位高级经理，中间缺招聘总监/TA Head 层级，HR 一号位可能直通业务 VP 或 CEO 线；</p>
+    </div>
+    <div class="point">
+      <div class="pn">3</div>
+      <p><strong>HRBP 自己在 Boss 上发"HRBP【AI大模型-招聘+BP方向】"岗</strong>——"招聘 + BP"写进 JD 标题，是 HR = 招聘一体最直接的证据；</p>
+    </div>
+    <div class="point">
+      <div class="pn">4</div>
+      <p><strong>智谱 HRBP Sakina 的一手交流（2026-07）</strong>——BP 须兼具招聘交付能力，没有独立庞大的 TA 中心；HR 核心价值是"粘合剂"，须具备"技术审美"，领先业务 0.5–0.7 步。</p>
+    </div>
+  </div>
+
+  <h3 id="sec-03-2">b) 评估坐标的切换对照表<span class="en">coordinate switch</span></h3>
+  <table>
+    <thead>
+      <tr><th>维度</th><th>大厂坐标系（规模化执行）</th><th>AI Native 坐标系（人才密度）</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>组织完整性</td>
+        <td>层级齐全、三支柱配比达标</td>
+        <td>"体系不完整"不是减分项，改问"在人才密度逻辑下是否自洽"——智谱 60% 应届 + 管理层极薄，在其商业化扩张阶段自洽</td>
+      </tr>
+      <tr>
+        <td>HR 价值</td>
+        <td>交付量、漏斗转化率、到岗周期</td>
+        <td>"粘合剂" + 技术审美 + 领先业务 0.5–0.7 步（智谱 HRBP 一手表述）；承担关键人才获取与保留</td>
+      </tr>
+      <tr>
+        <td>TA 角色</td>
+        <td>交付型：接需求、填岗位</td>
+        <td>战略参谋型——行业信号：阶跃、月之暗面、MiniMax 的 TA+BP 正在联合发起"CEO 技术认知补课"机制（多家公司共有信号）；智谱未见于该机制，但其"领先业务 0.5 步"的表述指向同一方向：TA/BP 职能上行</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec-03-3">c) 招聘方法论：三渠道分工 × 业务 leader 精准下场<span class="en">channel division × leaders on the field</span></h3>
+  <div class="stat-row three">
+    <div class="stat">
+      <div class="num">41%</div>
+      <div class="lbl">业务 leader 直发（17/41 位发岗人）· 大模型事业部 VP 亲发 6 个高端岗</div>
+    </div>
+    <div class="stat">
+      <div class="num">熟人推荐 &gt; 顶会论文</div>
+      <div class="lbl">渠道优先级（HRBP 一手交流）</div>
+    </div>
+    <div class="stat">
+      <div class="num">200 · 56 · 10</div>
+      <div class="lbl">Boss 走量 · 脉脉走精 · 猎聘高端补充</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">渠道优先级清晰到近乎机械化：Boss 走量（全品类 + 实习主渠道），脉脉走实名精准（销售区域化 + 职能 + 新方向试验田），猎聘走高端补充（10 岗全明码标价，商业化占 50%，国际化岗仅此渠道完整可见）。业务 leader 深度下场：VP、研发负责人、产品经理都是招聘网络的关键节点，reach out 与 landing 不分离，以落地周期替代漏斗管理。三渠道发岗人几乎不重叠是身份口径差异，同一岗位常多渠道同发。</p>
+
+  <!-- ============ 04 人才策略 ============ -->
+  <div class="sec-tag">Talent strategy</div>
+  <h2 id="sec-04"><span class="no">04</span>人才策略：要什么人、怎么选、怎么定价<span class="en">who, how to select, at what price</span></h2>
+
+  <h3 id="sec-04-1">4.1 扩编规模与性质：HR 先扩，且补的是"体系"<span class="en">HR scales first</span></h3>
+  <p class="sec-desc">Boss 招聘方视角精确过滤后，当前在职 HR/招聘团队 46 人：资深经理/负责人级 4 + HRBP 18 + 招聘 5 + 专员/助理 14 + 实习 3 + OD/企业文化 2，其中 60% 是应届生，有经验 HR 约 18 人。组织上是典型的"HR=招聘一体 + HRBP 主导"模式——没有独立的庞大 TA 中心，HRBP 既做 BP 又做招聘。HR 扩编仍在进行：脉脉上可见 HRBP 团队在招自己的 HRIS 专员、HRSSC 专员、HRBP（算法团队/商业化团队/研发方向）。组建时间线清晰——2021 年小熊/Edith → 2022 年 Sam/Shelly/Sif → 2023–2024 年 Hannah/Sakina（国际背景）→ 2026 年应届——从"国内执行队"长成"国际化 + 高端化"结构。<strong>HR 在招 HR，说明业务扩张预期已经进入组织准备阶段</strong>，这是比新闻稿更早的领先指标。</p>
+
+  <h3 id="sec-04-2">4.2 要什么人：人才构成的五线画像<span class="en">the five-line talent map</span></h3>
+  <p class="sec-desc">五条人才线形成从左到右的链路：Infra 提供工程底座，算法维持模型代际优势，Agent 把模型能力产品化，商业化把产品变成收入，职能支撑上市后合规运营。分类基于 Boss 200 岗全量确定性分类器，占比为 Boss 口径；18 岗待归类已全部完成 JD 判线归入五线，逐岗判定见月度追踪补抓报告。</p>
+
+  <div class="card loop-card">
+    <div class="ghost">01</div>
+    <h4>Infra 规模线<span class="en">Infra at Scale</span></h4>
+    <div class="metric">38 岗 · 19.0% · 推理优化 50–80K·16薪</div>
+    <p class="desc">把模型稳定跑起来的工程产能：训练/推理框架、SRE 运维、后端基座、数据采集、安全。国产算力适配岗出现，是自主化信号。</p>
+    <div class="criteria"><strong>人才标准</strong>——训练/推理框架工程深度是硬门槛，推理优化 50–80K·16薪 顶格定价；特殊要求是国产算力适配能力——自主化背景下新增的专属标准。</div>
+    <div class="tags">
+      <span class="tag hot">训练框架</span><span class="tag">推理引擎</span><span class="tag">SRE</span><span class="tag">后端基座</span><span class="tag">数据采集</span><span class="tag">国产算力适配</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">02</div>
+    <h4>算法精英线<span class="en">Elite Algorithm</span></h4>
+    <div class="metric">55 岗 · 27.5% · 顶配 60–90K·16薪</div>
+    <p class="desc">五线中岗位最多：预训练/后训练/多模态/具身 + 清华联培博后。基座岗走"少而精"高薪路线，数据/实习岗大量存在用于管道沉淀。</p>
+    <div class="criteria"><strong>人才标准</strong>——线内双标准并存：基座岗"少而精"高薪路线（顶配 60–90K·16薪），看学术深度，清华联培博后是学术背景锚点；数据/实习岗大量存在用于管道沉淀，标准前置。</div>
+    <div class="tags">
+      <span class="tag hot">预训练</span><span class="tag">后训练</span><span class="tag">多模态</span><span class="tag">具身智能</span><span class="tag">清华联培博后</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">03</div>
+    <h4>Agent 产品线<span class="en">Agent Product</span></h4>
+    <div class="metric">44 岗 · 22.0% · Agent 工程师 50–80K·16薪</div>
+    <p class="desc">岗位与薪资双占比第一的战略主线：Agent/Code Agent 工程师、AI 产品经理、客户端/全栈/测试。ZCode PC 客户端信号显示 coding 产品线独立成势。</p>
+    <div class="criteria"><strong>人才标准</strong>——战略主线的产品化交付力：Agent/Code Agent 工程师 50–80K·16薪 为产品线最高价，AI 产品经理与工程并重；coding 场景深度（ZCode 信号）成为方向专属要求。</div>
+    <div class="tags">
+      <span class="tag hot">Agent 研发</span><span class="tag">Code Agent</span><span class="tag">AI 产品经理</span><span class="tag">客户端</span><span class="tag">ZCode</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">04</div>
+    <h4>商业化拓展线<span class="en">Commercial Expansion</span></h4>
+    <div class="metric">26 岗 · 13.0% · API 销售 15–30K · 解决方案架构师 30–60K·16薪</div>
+    <p class="desc">跨渠道最大的非技术类：全国多点 API 销售、MaaS BD、解决方案架构师、海外销售-API（驻马来西亚/阿联酋）、FDE 现场部署。18 岗待归类中 6 岗归入（含 3 位 To-B 项目经理 + 2 位 FDE + 1 位平台运营负责人），商业化线从 20 增至 26，是五线中增幅最大的线。</p>
+    <div class="criteria"><strong>人才标准</strong>——技术理解 × To-B 交付复合：解决方案架构师 30–60K·16薪 高于 API 销售一倍，定价向"能交付"倾斜；海外驻点（马来西亚/阿联酋）与 FDE 现场部署要求驻场意愿，是这条线的特殊门槛。</div>
+    <div class="tags">
+      <span class="tag hot">API 销售</span><span class="tag">MaaS BD</span><span class="tag">解决方案架构师</span><span class="tag">海外销售</span><span class="tag">FDE</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">05</div>
+    <h4>职能线<span class="en">Corporate Function</span></h4>
+    <div class="metric">37 岗 · 18.5% · HRBP 25–45K·16薪 · HRSSC 11–16K</div>
+    <p class="desc">上市后的合规配置补课——与 IPO 时点精确同步：HRBP/HRIS/HRSSC、财务 BP、内控、PMO、品牌叙事、算力采购、人才政策专家。18 岗待归类中 10 岗归入（含 PMO×3 + 采购×2 + 运营×3 + 实习×2），职能线从 27 增至 37，是五线中净增最多的线。</p>
+    <div class="criteria"><strong>人才标准</strong>——上市后合规专业化：HRBP 25–45K·16薪 与 HRSSC 11–16K 并存，完整 HR 序列分层搭建；内控/PMO/算力采购看专业资质与流程能力，招聘节奏与 IPO 时点精确同步。</div>
+    <div class="tags">
+      <span class="tag">HRBP</span><span class="tag">HRIS</span><span class="tag">HRSSC</span><span class="tag">财务BP</span><span class="tag">内控</span><span class="tag">品牌叙事</span>
+    </div>
+  </div>
+
+  <div class="criteria" style="max-width:none; margin:18px 0 0;"><strong>五线标准如何不同</strong>——算法精英线内部分层：基座岗"少而精"看学术深度（清华联培博后为锚），数据/实习岗做管道沉淀；Infra 线在系统工程深度之外叠加国产算力适配这一自主化专属要求；Agent 线作为战略主线，工程与 AI 产品经理并重，coding 场景深度成为方向专属；商业化线定价向"能交付"倾斜（解决方案架构师是 API 销售的一倍价），海外驻点与 FDE 现场部署要求驻场意愿；职能线完整 HR 序列分层搭建，节奏与 IPO 时点精确同步。横过来看，AI 时代的选拔标准是：学术深度与工程交付力两极定价，方向专属能力（国产算力/coding 场景/驻场交付）成为各线差异化门槛，人才管道以实习岗形式嵌入精英线内部。</div>
+
+  <h3 id="sec-04-3">4.3 AI 人才选拔标准：从渠道数据能读到什么<span class="en">selection signals</span></h3>
+  <p class="sec-desc">智谱未公开成文的人才标准，以下是从 JD 结构、招聘行为与一手交流反推的"行为版标准"——公司嘴上说的标准在 JD 文本里，真实执行的标准在它的钱和动作里。</p>
+
+  <div class="card">
+    <div class="bar-row">
+      <div class="name">模型</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:100%"></div></div>
+      <div class="cnt">29 条 · 56%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">大模型</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:82%"></div></div>
+      <div class="cnt">24 条 · 46%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">训练</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:62%"></div></div>
+      <div class="cnt">18 条 · 35%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Agent</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:45%"></div></div>
+      <div class="cnt">13 条 · 25%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">论文/顶会</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:18%"></div></div>
+      <div class="cnt">5 条 · 10%</div>
+    </div>
+    <div class="legend">52 条 JD 正文关键词命中分布 · Infra 10 / 算法 10 / Agent 7 / 商业化 7 / 职能 9 · 2026-08-17 jieba 分词</div>
+  </div>
+
+  <div class="takeaway">
+    <span class="tk">"训练"是技术双线共同第一高频词（Infra 90% / 算法 90%）——预训练密集期信号</span>
+    <span class="tk">论文硬门槛集中在算法线（顶会 50%，博士后"不少于 3 篇"）——学术口径四家最重</span>
+    <span class="tk">商业化线"大模型"100% 命中——To-B 岗必须懂产品，但深度止于 API/MaaS 层</span>
+  </div>
+
+  <div class="card">
+    <div class="point">
+      <div class="pn">①</div>
+      <p><strong>博士后（清华联培）：AI 相关顶会论文不少于 3 篇</strong>——纯研究岗的硬门槛，是特例而非通则；</p>
+    </div>
+    <div class="point">
+      <div class="pn">②</div>
+      <p><strong>推理模型算法工程师：CCF-A 类会议论文"优先"</strong>——精英层论文是加分项，配套多机多卡训练经验；</p>
+    </div>
+    <div class="point">
+      <div class="pn">③</div>
+      <p><strong>Agent/Code Agent 工程师：一年以上深度使用 AI 编程工具</strong>（Cursor/Copilot/Claude Code）——"用过"排在"学过"前面；</p>
+    </div>
+    <div class="point">
+      <div class="pn">④</div>
+      <p><strong>解决方案架构师：5 年以上经验 + 4 年 AI 相关领域</strong>——商业化线要行业老兵，与技术线是两套标准；</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑤</div>
+      <p><strong>经验维度的线间分层</strong>——算法线最年轻（1-3 年 31% + 在校 15% = 46%），商业化线最资深（3-5 年 50% + 5-10 年 27% = 77%，无 1-3 年岗）；学历线上算法线最高（硕士 53% + 博士 7%），商业化线本科 92% 重经验轻学历；</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑥</div>
+      <p><strong>招聘者本人的标准</strong>——HRBP 岗 JD 写明"招聘 + BP 方向"，HR 须有技术审美、领先业务 0.5–0.7 步，这套标准先用来筛招聘者。</p>
+    </div>
+  </div>
+
+  <p class="sec-desc" style="margin-top:12px;">52 岗 JD 扩样后的关键词统计：'训练'是 Infra 与算法双线第一高频词（90%），Agent 线全栈要求显著（TypeScript 43% + React 43% + Java 43%），商业化线 100% 要求理解大模型产品，算法线'顶会论文'覆盖率稳定在 50%。</p>
+
+  <h3 id="sec-04-4">4.4 薪资与激励：钱怎么摆，标准就怎么立<span class="en">how the money is placed</span></h3>
+  <p class="sec-desc">16 薪是绝对主流（全量 200 岗中 105 岗标注 16 薪，含 N 薪标注共 119 岗 = 59.5%）；全公司带宽从 11K 的 HRSSC 岗到 90K 的推理模型算法岗，约 8 倍极差。分线看，钱押在三个地方：研究基座、Agent、商业化。</p>
+
+  <div class="pay-row">
+    <div class="pay">
+      <div class="p-line">研究基座精英线</div>
+      <div class="p-band">60–90K · 16薪</div>
+      <div class="p-note">推理模型算法岗顶配；数据算法岗 45–75K 密集</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Agent 产品线</div>
+      <div class="p-band">50–80K · 16薪</div>
+      <div class="p-note">Agent/Code Agent 工程师标价</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">商业化拓展线</div>
+      <div class="p-band">15–30K ~ 30–60K</div>
+      <div class="p-note">API 销售走量，解决方案架构师顶格</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tags">
+      <span class="tag hot">16 薪标注 105 岗（52.5%）· 含 N 薪标注共 119 岗（59.5%）</span>
+      <span class="tag">实习日均约 248 元 · 顶级实习 500–1000 元/天</span>
+      <span class="tag">港股流通 · 股权有市场定价</span>
+      <span class="tag">带宽约 8 倍：11K HRSSC → 90K 推理模型算法</span>
+    </div>
+    <p class="pay-note">薪资为 Boss 200 岗全量 JD 标价口径（薪资显示率 100%），非实际 offer 数据。</p>
+  </div>
+
+  <h3 id="sec-04-5">4.5 进出闭环：高管换血、研究层稳、生态化对冲<span class="en">outflow × expansion</span></h3>
+  <div class="card gold">
+    <p><strong>出</strong>：高管层——COO 张帆 6 月底离职创业（AI Agent 方向，新项目纳入智谱 MaaS 生态并获智谱投资支持）、融资 VP 张阔 1 月底离职；HR 层——张明曦 → AgiBot 智元机器人、Yangyang Qian → Sand.ai。</p>
+    <p><strong>进</strong>：同期 200+ 在招岗全面开放、HR 持续自扩编、清华联培博后扩招、基座岗薪资坚挺。</p>
+    <p style="margin-bottom:0;"><strong>闭环解读：</strong>流失集中在商业化/资本运作高管层，核心研究层未见具名失血——研究层稳定信号多重（离职传闻被官方否认、联培博后扩招、基座薪资坚挺）。最有意思的是对冲方式：COO 离职被转化为生态投资标的——<strong>"离职不流失"，用投资绑定代替雇佣绑定</strong>，这在扩张期公司中罕见。一进一出合起来，这不是"失血"，是把资源重新押在 Agent 与商业化的下一轮扩张上。</p>
+  </div>
+
+  <!-- ===== 结论 ===== -->
+  <div class="sec-tag">Takeaway</div>
+  <h2 id="sec-05"><span class="no">05</span>一句话结论<span class="en">one-line takeaway</span></h2>
+  <div class="card">
+    <p style="margin:0; font-size:15px;"><strong>把公开市场的钱押向 Agent 与商业化深水区：</strong>200 个在招岗中算法 55 + Agent 44 + Infra 38 + 商业化 26 + 职能 37 构成五线全貌——用五线链路理解它的组织，用人才密度范式评估它的 HR，用"经验分层 + 管道前置"识别它要的人。</p>
+  </div>
+
+</main>
+
+<div class="footer">
+  智谱华章 专题洞察 · 2026-08-17 · 数据窗口 2026-08-01 ~ 08-17 全量口径更新<br>
+  数据来源：Boss直聘、脉脉、猎聘、LinkedIn、企业公开招聘信息及公开报道，多渠道交叉验证 · 对标范围：DeepSeek / 月之暗面 / 智谱华章 / MiniMax
+</div>
+
+</div><!-- /content -->
+
+<script>
+  // 目录滚动高亮
+  var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets = tocLinks.map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  var h2Map = {};
+  var curH2 = null;
+  targets.forEach(function (t) {
+    if (t.tagName === 'H2') { curH2 = t.id; h2Map[t.id] = null; }
+    else { h2Map[t.id] = curH2; }
+  });
+  function onScroll() {
+    var y = window.scrollY + 150;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    tocLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (!current) return;
+    var curLink = document.querySelector('.toc a[href="#' + current.id + '"]');
+    if (curLink) curLink.classList.add('active');
+    var parentId = h2Map[current.id];
+    if (parentId) {
+      var pLink = document.querySelector('.toc a[href="#' + parentId + '"]');
+      if (pLink) pLink.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 移动端侧边栏抽屉
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var tocBtn = document.getElementById('tocBtn');
+  function toggleSidebar(open) {
+    sidebar.classList.toggle('open', open);
+    backdrop.classList.toggle('show', open);
+  }
+  tocBtn.addEventListener('click', function () { toggleSidebar(true); });
+  backdrop.addEventListener('click', function () { toggleSidebar(false); });
+  sidebar.addEventListener('click', function (e) {
+    if (e.target.closest('a')) toggleSidebar(false);
+  });
+</script>
+
+</body>
+</html>
