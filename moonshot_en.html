@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moonshot AI (Kimi) Talent Insights | AI Native Talent Intelligence</title>
+<style>
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #9EF0DC;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+    --green: #2FBF8F;
+    --pink: #E86B8E;
+    --gold: #E8C96A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "Helvetica Neue", "Segoe UI", Arial, "PingFang SC", "Hiragino Sans GB", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ===== Top nav ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav .logo, .sb-head .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .nav .logo .dot, .sb-head .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #17B894);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav .right { display: flex; align-items: center; gap: 10px; }
+  .lang-pill { display: flex; border: 1px solid var(--card-border); border-radius: 999px; overflow: hidden; }
+  .lang-pill span, .lang-pill a { padding: 3px 12px; font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: none; }
+  .lang-pill span.on { background: var(--purple); color: #fff; }
+  .nav .cta {
+    background: var(--purple); color: #fff; border: none; border-radius: 999px;
+    padding: 6px 16px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #1E514A 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(23,184,148,0.18), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(158,240,220,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 46px; font-weight: 850; line-height: 1.28; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .teal {
+    color: var(--teal);
+    text-shadow: 0 0 32px rgba(158,240,220,0.45);
+  }
+  .hero .subline { color: var(--teal); font-size: 18px; font-weight: 600; margin: 8px 0 18px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 30px; } .hero .subline { font-size: 16px; } }
+  .hero .summary { color: #C9C6E0; font-size: 14px; max-width: 760px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px;
+    font-size: 12.5px; color: #9C98C0;
+  }
+  .hero .meta b { display: block; color: #C9C6E0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ===== Main content ===== */
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+
+  .sec-tag {
+    margin-top: 56px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; line-height: 1.4; }
+  h2 .no { color: var(--purple); margin-right: 10px; }
+  h2 .zh { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 17px; font-weight: 800; margin: 26px 0 6px; }
+  h3 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .sec-desc { color: var(--muted); max-width: 860px; margin: 10px 0 22px; }
+
+  /* ===== Cards ===== */
+  .card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; margin: 14px 0;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .card.gold { border-left: 4px solid var(--gold); }
+  .card p { margin: 6px 0; }
+
+  /* ===== Stat cards ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .stat-row.three { grid-template-columns: repeat(3, 1fr); }
+  .stat {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .stat .num { font-size: 25px; font-weight: 800; color: var(--purple); line-height: 1.2; }
+  .stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat .hl-gold { color: var(--gold); font-weight: 700; }
+
+  /* ===== Progress bars ===== */
+  .bar-row { display: flex; align-items: center; gap: 14px; margin: 13px 0; }
+  .bar-row .name { width: 150px; flex-shrink: 0; font-weight: 600; font-size: 13.5px; }
+  .bar-row .cnt { width: 64px; flex-shrink: 0; text-align: right; font-size: 12.5px; color: var(--muted); }
+  .bar-track { flex: 1; height: 14px; background: #F1EFFA; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.pink { background: var(--pink); }
+  .legend { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 5px 0 14px; }
+  .legend .dot.g { background: var(--green); }
+  .legend .dot.p { background: var(--pink); }
+
+  /* ===== Stage bar ===== */
+  .stage-bar { display: flex; align-items: stretch; gap: 0; margin: 18px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--card-border);
+    padding: 16px 14px; text-align: center; position: relative;
+  }
+  .stage:first-child { border-radius: 14px 0 0 14px; }
+  .stage:last-child { border-radius: 0 14px 14px 0; }
+  .stage .s-name { font-weight: 700; font-size: 13.5px; }
+  .stage .s-desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .stage.here {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+    box-shadow: 0 8px 24px rgba(94,62,216,0.25); z-index: 2;
+  }
+  .stage.here .s-desc { color: #D8CFFB; }
+  .stage .marker {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: #14532D; font-size: 10.5px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ===== Loop cards ===== */
+  .loop-card { position: relative; overflow: hidden; }
+  .loop-card .ghost {
+    position: absolute; right: 18px; top: 6px; font-size: 64px; font-weight: 800;
+    color: #F3F0FB; line-height: 1; pointer-events: none;
+  }
+  .loop-card h4 { margin: 0; font-size: 18px; font-weight: 800; }
+  .loop-card h4 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card .metric { color: var(--purple); font-weight: 800; font-size: 15px; margin: 6px 0 4px; }
+  .loop-card .desc { color: #4A4765; margin: 0 0 14px; max-width: 720px; }
+  .loop-card .criteria { margin: 0 0 12px; font-size: 13.5px; line-height: 1.65; color: #6b5b1e; background: #fdf8e8; border-left: 3px solid #c9a227; padding: 8px 12px; border-radius: 6px; max-width: 760px; }
+  .loop-arrow { text-align: center; color: #B9B3DC; font-size: 18px; margin: 2px 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* ===== Comparison table ===== */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 13.5px; }
+  thead th {
+    background: var(--purple-soft); color: var(--purple); text-align: left;
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+  }
+  thead th:first-child { border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody td {
+    background: #fff; padding: 13px 16px; border-bottom: 1px solid var(--card-border); vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 700; width: 110px; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== Numbered points ===== */
+  .point { display: flex; gap: 14px; margin: 12px 0; align-items: flex-start; }
+  .point .pn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple);
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .point p { margin: 0; }
+
+  /* ===== Takeaway chips ===== */
+  .takeaway { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .takeaway .tk {
+    background: var(--purple-soft); color: var(--purple); border-radius: 999px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== Pay cards ===== */
+  .pay-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .pay {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px;
+  }
+  .pay .p-line { font-weight: 800; font-size: 15px; }
+  .pay .p-band { font-size: 22px; font-weight: 800; color: var(--purple); margin: 6px 0 2px; }
+  .pay .p-note { font-size: 12.5px; color: var(--muted); }
+  .pay-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 760px) {
+    .stat-row, .stat-row.three, .pay-row { grid-template-columns: repeat(2, 1fr); }
+    .stage { min-width: 46%; border-radius: 10px !important; margin: 3px; }
+  }
+
+  /* ===== Left sidebar ===== */
+  html { scroll-behavior: smooth; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 268px;
+    background: #fff; border-right: 1px solid var(--card-border);
+    overflow-y: auto; padding: 18px 14px 32px; z-index: 80;
+  }
+  .sb-head { padding: 4px 8px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 4px; }
+  .sb-back {
+    display: inline-block; margin-top: 8px; color: var(--muted);
+    font-size: 12.5px; text-decoration: none;
+  }
+  .sb-back:hover { color: var(--purple); }
+  .sb-group {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--muted); text-transform: uppercase; margin: 18px 8px 8px;
+    padding-bottom: 8px; border-bottom: 1px solid #EFEBF9;
+  }
+  .sb-company a, .toc a {
+    position: relative; display: block; padding: 8px 12px 8px 26px;
+    border-left: 3px solid transparent; border-radius: 0 10px 10px 0;
+    color: var(--text); text-decoration: none; font-size: 13.5px; line-height: 1.45;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a::before {
+    content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 2px;
+    background: #C4B5FD; opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .sb-company a:hover, .toc a:hover { background: var(--chip-bg); border-left-color: #E9E4F6; }
+  .toc a:hover::before { opacity: 0.8; }
+  .sb-company a.cur { background: var(--purple); color: #fff; font-weight: 700; border-left-color: var(--purple); }
+  .toc a.sub { font-size: 12.5px; color: var(--muted); padding: 5px 12px 5px 34px; }
+  .toc a.sub::before { left: 21px; width: 4px; height: 4px; border-radius: 50%; }
+  .toc a.active { background: var(--purple-soft); color: var(--purple); font-weight: 700; border-left-color: var(--purple); }
+  .toc a.active::before { background: var(--purple); opacity: 1; }
+  .content { margin-left: 268px; }
+  .backdrop { display: none; }
+  .toc-btn {
+    display: none; background: var(--purple-soft); color: var(--purple);
+    border: none; border-radius: 999px; padding: 6px 14px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+    .sidebar.open { transform: none; }
+    .content { margin-left: 0; }
+    .toc-btn { display: inline-block; }
+    .backdrop.show {
+      display: block; position: fixed; inset: 0;
+      background: rgba(20,16,40,0.5); z-index: 70;
+    }
+  }
+
+  /* ===== Company theme color (logo dot & Hero highlight only) ===== */
+  .nav .logo .dot, .sb-head .logo .dot { background: linear-gradient(135deg, #5E3ED8, #E8A94E); }
+  .hero h1 .teal { color: #F8D08A; text-shadow: 0 0 32px rgba(248,208,138,0.45); }
+</style>
+</head>
+<body>
+
+<!-- ===== Left sidebar ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="logo"><span class="dot">K</span>Moonshot AI (Kimi) Talent Insights</div>
+    <a class="sb-back" href="index.html" onclick="if(window.parent!==window){window.parent.exitReport();return false;}">← Report List</a>
+  </div>
+  <div class="sb-group">In This Report</div>
+  <nav class="toc" id="toc">
+    <a href="#sec-01">01 Stage Readout</a>
+    <a href="#sec-02">02 Strategy</a>
+    <a href="#sec-02-1" class="sub">Driver: capital sprint ahead of org</a>
+    <a href="#sec-02-2" class="sub">Growth story: Beijing roles, overseas markets</a>
+    <a href="#sec-02-3" class="sub">Key tension: zero attrition ≠ steady state</a>
+    <a href="#sec-03">03 AI Native Organization</a>
+    <a href="#sec-03-1" class="sub">a) Talent density over scale</a>
+    <a href="#sec-03-2" class="sub">b) Evaluation coordinate switch</a>
+    <a href="#sec-03-3" class="sub">c) Recruitment methodology</a>
+    <a href="#sec-04">04 Talent Strategy</a>
+    <a href="#sec-04-1" class="sub">4.1 HR scales first</a>
+    <a href="#sec-04-2" class="sub">4.2 The five-line talent map</a>
+    <a href="#sec-04-3" class="sub">4.3 Selection signals</a>
+    <a href="#sec-04-4" class="sub">4.4 Pay &amp; incentives</a>
+    <a href="#sec-04-5" class="sub">4.5 Inflow × outflow</a>
+    <a href="#sec-05">05 One-line Takeaway</a>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="content">
+
+<!-- ===== Top nav ===== -->
+<nav class="nav">
+  <div class="logo"><span class="dot">K</span>Moonshot AI (Kimi) Talent Insights</div>
+  <div class="right">
+    <button class="toc-btn" id="tocBtn">TOC</button>
+    <div class="lang-pill"><a href="月之暗面_专题洞察_2026-08.html" onclick="if(window.parent!==window){window.parent.openReport('moonshot');return false;}">中</a><span class="on">EN</span></div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">MOONSHOT AI (KIMI) TALENT INSIGHTS · AI NATIVE TALENT INTELLIGENCE</div>
+    <h1>Moonshot AI races toward a Hong Kong IPO,<br>yet has <span class="teal">0 open roles</span> on Boss Zhipin</h1>
+    <div class="subline">Valuation surged 7x in a year, yet hiring is concentrated on a single channel, Maimai — its organizational logic can't be measured with a Big Tech yardstick</div>
+    <p class="summary">May 2026 Series D of ~US$2 billion (post-money valuation exceeding US$20 billion), share reform completed in late July, planning a Hong Kong IPO (CICC/Goldman Sachs as joint sponsors) — capital is sprinting ahead of the organization, yet the hiring approach deliberately avoids volume: 91 open roles across three deduplicated channels, growth/international roles at 25% exceeding any single technical direction, almost entirely concentrated on Maimai. Roughly 30–35 HR professionals carry a 26.3% hiring density. This brief unpacks it along four frameworks: what stage it is in, what game it is playing, how the organization is shifting, and what kind of people it needs.</p>
+    <div class="meta">
+      <div><b>Focus</b>Moonshot AI (Kimi) talent allocation &amp; organizational stage</div>
+      <div><b>Supply depth</b>91 open roles · 3-channel deduplicated · 22 benchmark role nominations</div>
+      <div><b>As of</b>2026-08-16</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 01 Stage readout ============ -->
+  <div class="sec-tag">Stage readout</div>
+  <h2 id="sec-01"><span class="no">01</span>Where Moonshot AI stands<span class="zh">当前阶段判断</span></h2>
+  <p class="sec-desc">We break the organizational evolution of AI model companies into four stages: tech validation → productization → scaling &amp; commercialization → listed maturity. This framework is not an industry standard — it is an analytical lens derived from the HR and JD data in this study.</p>
+
+  <div class="stage-bar">
+    <div class="stage">
+      <div class="s-name">Tech Validation</div>
+      <div class="s-desc">Small core team, research-heavy</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Productization</div>
+      <div class="s-desc">Hiring engineering, product, Infra</div>
+    </div>
+    <div class="stage here">
+      <div class="marker">Kimi is here</div>
+      <div class="s-name">Scaling &amp; Commercialization</div>
+      <div class="s-desc">Org absorbs volume, functions fill out</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Listed Maturity</div>
+      <div class="s-desc">Growth, globalization, compliance</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">26.3%</div>
+      <div class="lbl">Hiring density · 73 roles / 278 employees (Maimai basis)</div>
+    </div>
+    <div class="stat">
+      <div class="num">25%</div>
+      <div class="lbl">Growth/international share · exceeds any single technical direction</div>
+    </div>
+    <div class="stat">
+      <div class="num">50–80K</div>
+      <div class="lbl">Treasury Manager — highest-paid role company-wide · IPO signal flare</div>
+    </div>
+    <div class="stat">
+      <div class="num">0</div>
+      <div class="lbl">Boss Zhipin open roles · deliberately abandoned the largest hiring platform</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>Our read: deep into scaling &amp; commercialization, sprinting toward listed maturity.</strong></p>
+    <p>May 2026 Series D of ~US$2 billion, share reform completed July 29, planning a Hong Kong IPO (CICC/Goldman Sachs as joint sponsors) — conventional wisdom says pre-IPO hiring should focus on finance and compliance; yet its hiring density reaches 26.3% (one open role for every four employees), signaling that management is treating the pre-IPO window as a <strong>"growth-story sprint period"</strong>: growth/international roles at 25%, Treasury Manager at 50–80K the highest-paid role company-wide, Infra scaling up in response to compute pressure after K3's explosive user growth. Among peer companies, Moonshot AI's profile is the most distinctive: the fastest fundraising pace (cumulative >US$3.9 billion since 2026), yet the most extreme channel strategy (0 roles on Boss Zhipin, Maimai only) — it doesn't compete on cash; it competes on the "Kimi brand + IPO expectation + technical influence" combination.</p>
+  </div>
+
+  <!-- ============ 02 Strategy ============ -->
+  <div class="sec-tag">Strategy</div>
+  <h2 id="sec-02"><span class="no">02</span>Strategy: the "growth-story sprint" after K3's launch<span class="zh">K3 发布后的"增长故事冲刺"棋局</span></h2>
+
+  <h3 id="sec-02-1">Driver: capital sprint ahead of the organization<span class="zh">资本节奏跑在组织前面</span></h3>
+  <p class="sec-desc">A funding triple-jump since December 2025: Series C US$500M (valuation US$4.3B) → Series D ~US$2B (post-money exceeding US$20B) → late June 2026 new round at US$31.5B pre-money, targeting US$50B, cumulative financing exceeding US$3.9 billion since 2026; backers include Alibaba, Tencent, Meituan DragonBall, RED (Xiaohongshu), Sequoia China, IDG, China Mobile and others — a shareholder base that is itself a dual endorsement of "Big Tech + industrial capital". The capital pace places a very specific demand on the organization: <strong>the IPO prospectus needs a growth story</strong> — user scale, internationalization narrative, commercialization path. This is why growth/internationalization has become the single largest investment in a tech company's hiring portfolio.</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">US$500M</div>
+      <div class="lbl">Series C · valuation US$4.3B (2025-12)</div>
+    </div>
+    <div class="stat">
+      <div class="num">~US$2B</div>
+      <div class="lbl">Series D · post-money valuation exceeding US$20B (2026-05)</div>
+    </div>
+    <div class="stat">
+      <div class="num">US$31.5B</div>
+      <div class="lbl">New round pre-money valuation · targeting US$50B</div>
+    </div>
+    <div class="stat">
+      <div class="num">US$3.9B+</div>
+      <div class="lbl">Cumulative financing since 2026</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">IPO in progress: planning a Hong Kong listing, potentially within 6 months, CICC/Goldman Sachs as joint sponsors; share reform completed 2026-07-29, Yang Zhilin as Chairman, Zhang Yutong as President. Product catalyst equally critical: the Kimi K3 launch drew global attention — "the hotter K3 gets, the more urgent Moonshot AI's compute and capital needs become."</p>
+
+  <h3 id="sec-02-2">Growth story: Beijing roles, overseas markets<span class="zh">岗位在北京，市场在海外</span></h3>
+  <p class="sec-desc">Mapping strategy onto the hiring portfolio, the direction is clear at a glance (Maimai 72-role basis): growth/international/PR total 18 roles, 25% — the single largest investment direction company-wide, exceeding any technical direction; Infra/systems 15 roles, 20.8%, corresponding to inference cost pressure after K3's explosive user growth; BD/open-platform ecosystem 7 roles (Developer Relations, API Marketing, Forward Deployed Engineer) — the prospectus's second growth curve; Treasury Manager at 50–80K is the highest-paid role company-wide — a dedicated treasury/FX/compliance role is standard pre-HK-IPO configuration.</p>
+  <p class="sec-desc" style="margin-top:-6px;">The overseas approach is equally distinctive: no overseas-location roles across the three domestic channels — all international roles are based in Beijing; LinkedIn cross-check confirms no localized overseas team. Assessment: <strong>domestic-product stage, overseas business driven remotely by the Beijing team</strong>. Its overseas talent need is for "Beijing-based roles that understand overseas markets", not localized talent.</p>
+
+  <h3 id="sec-02-3">Key tension: zero core-team attrition ≠ steady state<span class="zh">核心团队零流失 ≠ 稳态</span></h3>
+  <div class="card gold">
+    <p style="margin:0;">Normally "zero core-team attrition" signals an organization entering a steady state, but the read on Moonshot AI is the opposite — valuation rocketing from US$4.3B → US$20B → US$31.5B in a year, early-employee option value up 7x or more, the IPO expectation itself is the strongest retention tool. "Stability" is more likely <strong>a pre-IPO equilibrium of waiting for options, not cultural stability</strong>. Referencing peer experience at listing milestones, talent mobility structures shift significantly around IPO events. <strong>The next organizational moves will necessarily be: Infra to fill compute gaps, growth to fill the narrative, finance to fill compliance — all before the listing milestone.</strong></p>
+  </div>
+
+  <!-- ============ 03 AI Native organization ============ -->
+  <div class="sec-tag">AI native organization</div>
+  <h2 id="sec-03"><span class="no">03</span>AI Native organization: one channel, two layers, an invisible business team<span class="zh">一个渠道、两层分工、一支不露面的业务团队</span></h2>
+
+  <h3 id="sec-03-1">a) Talent density vs. scaled execution<span class="zh">人才密度驱动 vs 规模化执行驱动</span></h3>
+  <p class="sec-desc">Big Tech HR systems assume "scaled execution" — work breaks into standard actions, people are hired and managed in bulk. AI Native companies assume talent density: every researcher is a high-value individual, and organizational output depends on the caliber of a few key people, not the headcount. The HR mission shifts from "hiring at volume" to "deep acquisition and retention of a small number of key talents". Moonshot AI pushes this paradigm to its most extreme expression at the channel level:</p>
+  <div class="card">
+    <div class="point">
+      <div class="pn">1</div>
+      <p><strong>Single-channel monopoly</strong> — Boss Zhipin 0 roles (deliberately abandoned China's largest hiring platform), LinkedIn nearly zero HR footprint, all open roles concentrated on Maimai: precisely targeting "passive candidates within the AI circle", avoiding mass resume screening, pursuing precision targeted poaching;</p>
+    </div>
+    <div class="point">
+      <div class="pn">2</div>
+      <p><strong>Hiring density 26.3%</strong> — Maimai shows 278 employees vs. 73 open roles, one open role for every four employees: this is not conservatism, it is a "few channels × high density" precision play;</p>
+    </div>
+    <div class="point">
+      <div class="pn">3</div>
+      <p><strong>Two-layer division + invisible business side</strong> — posting and decision-making are separated: posting is entirely concentrated at the execution layer, while decisions sit with the senior layer who post very few roles; business leaders are completely invisible on hiring channels, with all recruitment operated by the senior HR layer.</p>
+    </div>
+  </div>
+
+  <h3 id="sec-03-2">b) Evaluation coordinate switch<span class="zh">评估坐标的切换对照表</span></h3>
+  <table>
+    <thead>
+      <tr><th>Dimension</th><th>Big Tech coordinates (scaled execution)</th><th>AI Native coordinates (talent density)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Org completeness</td>
+        <td>Full hierarchy, three-pillar HR ratio on target</td>
+        <td>"Incomplete system" is not a demerit — ask instead whether it is coherent under a talent-density logic: Moonshot AI's HR of ~30–35 regular + 5–6 interns, a dual-layer structure of 7 senior + ~14 execution, is coherent at its expansion stage</td>
+      </tr>
+      <tr>
+        <td>HR value</td>
+        <td>Delivery volume, funnel conversion, time-to-fill</td>
+        <td>Key-talent acquisition rate, retention, influence on business decisions — the senior layer (Huang Zejun COE / Bruce Lee HRBP Lead / Lisa) posts very few roles but holds decision-making authority</td>
+      </tr>
+      <tr>
+        <td>TA role</td>
+        <td>Delivery: take orders, fill seats</td>
+        <td>Strategic advisor: an industry-wide signal — multiple leading AI companies' TA+BP teams jointly initiated a "CEO technical cognition crash-course" mechanism, Moonshot AI is a participant, not unique to it — the recruiting network also serves as CEO cognition input</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec-03-3">c) Recruitment methodology: single-channel monopoly × senior decision-making × invisible business side<span class="zh">单渠道垄断 × 骨干决策 × 业务隐身</span></h3>
+  <div class="stat-row three">
+    <div class="stat">
+      <div class="num">0</div>
+      <div class="lbl">Boss Zhipin open roles · deliberately abandoned the mass-resume platform</div>
+    </div>
+    <div class="stat">
+      <div class="num">10 people</div>
+      <div class="lbl">100% posting coverage · 63 roles concentrated in 10 people (strong verification)</div>
+    </div>
+    <div class="stat">
+      <div class="num">30–35</div>
+      <div class="lbl">HR regular headcount · ~36–40 including interns</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">Channel priorities are clear to the point of being extreme: Maimai is the sole primary channel (72 roles across all categories), Liepin only 1 role as a probe, Boss Zhipin and LinkedIn carry zero load. The Boss Zhipin company page shows 0 roles / 0 BOSS / over 1 year without updates — confirmed as deliberate abandonment, not a platform limitation; among peer AI companies, some remain active on Boss Zhipin, making Moonshot AI's "single channel" a uniquely strategic choice. The highest-volume posters are at the execution layer (Sherry 15 / Nicole 12 / Molly 10), while the senior layer (Huang Zejun, Lisa, Bruce Lee) posts very few roles yet holds decision-making authority — most postings ≈ least decision-making power. Business leaders post 0 roles directly; technical judgment is held between the business side and a small number of senior HR: HR handles outreach and process, not technical assessment.</p>
+
+  <!-- ============ 04 Talent strategy ============ -->
+  <div class="sec-tag">Talent strategy</div>
+  <h2 id="sec-04"><span class="no">04</span>Talent strategy: who, how to select, at what price<span class="zh">要什么人、怎么选、怎么定价</span></h2>
+
+  <h3 id="sec-04-1">4.1 Scale &amp; nature of expansion: HR scales first, at the senior layer, not the execution layer<span class="zh">HR 先扩，扩的是"骨干层"不是"人手"</span></h3>
+  <p class="sec-desc">H1 2026 regular HR onboardings ≥7 (Molly January, Nicole February, Hu Shaozhi March, Ziyi and Ye Xiuting April, Shaolong June, Zuo Huanda July), plus 2 interns, team still in net expansion. Source profile: Big Tech HR (Meituan/ByteDance/RED (Xiaohongshu)/Huawei) + VC investment background (Source Code Capital/Jiukun Ventures) + AI Lab (Shanghai AI Lab) + startups (VAST/RockFlow). The nature of expansion is not volume — it is senior-layer reinforcement: dedicated HR for the growth line (Growth Team HR), an independent org-building role (HR builder); HR intern (business recruitment) roles are still visible on hiring channels — <strong>HR hiring HR means the business expansion expectation has entered organizational preparation</strong>, a leading indicator that runs ahead of press releases. The VC-background HR hires are particularly noteworthy: internalizing the investment community's high-end talent connectivity as a proprietary recruitment asset — this is likely precisely what gives it the confidence to abandon Boss Zhipin's mass-volume channel.</p>
+
+  <h3 id="sec-04-2">4.2 Who they need: the five-line talent map<span class="zh">人才构成的五线画像</span></h3>
+  <p class="sec-desc">Five talent lines form a left-to-right chain: Infra provides the engineering base, Algorithm maintains the model's generational edge, Agent productizes model capability, Commercialization turns products into revenue, and Corporate Functions support pre-IPO compliance. Classification is based on the 2026-08-16 three-channel merged 91-role basis (Boss Zhipin 69 + Maimai 21 + Liepin 1; Boss Zhipin side is the lower-bound basis), with growth and sales roles assigned to the Commercial Expansion line per classification rules.</p>
+
+  <div class="card loop-card">
+    <div class="ghost">01</div>
+    <h4>Infra at Scale<span class="zh">Infra 规模线</span></h4>
+    <div class="metric">26 roles · 28.6% · median pay 25–50K · 16 months</div>
+    <p class="desc">Compute anxiety after K3's explosive user growth: training/inference frameworks, SRE, K8s/GPU, distributed storage appearing in clusters — solving the scaled-service problem of "keeping the model running stably", not exploring new research. Premium benchmark: Senior Backend Golang listed at 60–90K.</p>
+    <div class="criteria"><strong>Talent bar</strong> — scaled-service delivery is the hard threshold (training/inference frameworks, K8s/GPU, distributed storage demanded as clusters); the ask is battle-ready capacity to relieve compute anxiety, not research explorers; Senior Backend Golang at 60–90K is the line's premium benchmark.</div>
+    <div class="tags">
+      <span class="tag hot">Training framework</span><span class="tag">Inference framework</span><span class="tag">SRE</span><span class="tag">K8s·GPU</span><span class="tag">Distributed storage</span><span class="tag">Data pipeline</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">02</div>
+    <h4>Elite Algorithm<span class="zh">算法精英线</span></h4>
+    <div class="metric">12 roles · 13.2% · top-tier pricing 45–90K · 16 months</div>
+    <p class="desc">The "few people at top-tier prices" that maintain the model's generational edge. Reinforcement Learning (RL) is the core direction: RL R&amp;D role at 45–75K, Agentic RL Researcher Shanghai listed at 60–90K, Hangzhou at 50–80K; algorithm intern daily rate 500–1,000 CNY.</p>
+    <div class="criteria"><strong>Talent bar</strong> — RL-direction depth is the direction-specific core standard (RL R&amp;D / Agentic RL researchers priced across the line at the top tier 45–90K); algorithm intern daily rates of 500–1,000 CNY show the academic-potential pipeline is likewise locked at top prices.</div>
+    <div class="tags">
+      <span class="tag hot">Reinforcement Learning</span><span class="tag">Agentic RL</span><span class="tag">Post-Training</span><span class="tag">Multimodal</span><span class="tag">Pre-training</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">03</div>
+    <h4>Agent Product<span class="zh">Agent 产品线</span></h4>
+    <div class="metric">21 roles · 23.1% · median pay 35–90K · 16 months</div>
+    <p class="desc">Productization entering multi-platform rollout: Agent Engineer top-tier 60–90K, iOS/HarmonyOS/Desktop client roles expanding in clusters, dedicated AI C-end product manager role — the Kimi product side is doing full-terminal coverage.</p>
+    <div class="criteria"><strong>Talent bar</strong> — cross-terminal productization capability: Agent Engineer at top-tier 60–90K, with iOS/HarmonyOS/Desktop cluster expansion demanding multi-platform engineering experience; a dedicated AI C-end product manager role makes consumer product sense a direction-specific requirement.</div>
+    <div class="tags">
+      <span class="tag hot">Agent engineering</span><span class="tag">Coding Agent</span><span class="tag">iOS·HarmonyOS</span><span class="tag">Desktop</span><span class="tag">AI C-end PM</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">04</div>
+    <h4>Commercial Expansion<span class="zh">商业化拓展线</span></h4>
+    <div class="metric">18 roles · 19.8% · growth roles up to 40–70K</div>
+    <p class="desc">Serving the IPO growth story: user growth roles appearing as a cluster (paid acquisition/SEO/AI influencer/overseas KOL), Solution Architect and Forward Deployed Engineer for technical sales, Sales Operations Manager 15–30K laying infrastructure.</p>
+    <div class="criteria"><strong>Talent bar</strong> — a growth-operations × technical-sales compound: user growth (paid acquisition / SEO / AI influencer / overseas KOL) must produce the growth numbers the IPO needs; SA / FDE requires technical understanding plus on-site delivery; growth roles capped at 40–70K, benchmarked against the tech lines.</div>
+    <div class="tags">
+      <span class="tag hot">User growth</span><span class="tag">Solution Architect</span><span class="tag">FDE</span><span class="tag">Sales operations</span><span class="tag">Overseas KOL</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">05</div>
+    <h4>Corporate Function<span class="zh">职能线</span></h4>
+    <div class="metric">14 roles · 15.4% · 16 months mainstream</div>
+    <p class="desc">Pre-IPO compliance configuration: SSC Lead, HR intern, Legal, Content Safety, Data Procurement appearing in clusters; on the Maimai basis, Treasury Manager at 50–80K is the highest-paid role company-wide — the finance team is being built for the listing.</p>
+    <div class="criteria"><strong>Talent bar</strong> — pre-IPO compliance and treasury-management capability: legal / content safety / data procurement judged on compliance expertise; Treasury Manager at 50–80K is the highest-paid role company-wide — the finance team built for the listing locks its key role at the top price.</div>
+    <div class="tags">
+      <span class="tag">SSC</span><span class="tag">HR</span><span class="tag">Legal</span><span class="tag">Content safety</span><span class="tag">Data procurement</span>
+    </div>
+  </div>
+
+  <div class="criteria" style="max-width:none; margin:18px 0 0;"><strong>How the five lines' bars differ</strong> — the elite algorithm line takes RL-direction depth as its direction-specific core standard, priced across the line at the top tier, with even algorithm internships locked at top daily rates of 500–1,000 CNY for academic potential; the Infra line wants battle-ready scaled-service capacity to relieve compute anxiety — explicitly not research explorers; the Agent line judges cross-terminal productization and consumer product sense, with multi-platform engineering experience a hard requirement during cluster expansion; the commercial line serves the IPO growth story, a growth-operations × technical-sales compound, with growth-role pay caps benchmarked to the tech lines; the function line is built for the listing, with Treasury Manager locked at the company-wide top price as the key role. Read across, the AI-era selection standard emerges: direction-specific capabilities (RL / cross-terminal / growth operations) set each line's top price, and beyond the elite-versus-engineering polarity, the IPO milestone unusually hands the company-wide highest price to a finance key role.</div>
+
+  <h3 id="sec-04-3">4.3 AI talent selection: what channel data reveals<span class="zh">从渠道数据能读到什么</span></h3>
+  <p class="sec-desc">Moonshot AI publishes no written talent standard. What follows is a "behavioral standard" reverse-engineered from JD structure and hiring behavior — the stated standard lives in the JD text; the actually-executed standard lives in its money and its moves.</p>
+
+  <div class="card">
+    <div class="bar-row">
+      <div class="name">Unspecified</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:100%"></div></div>
+      <div class="cnt">46 roles · 50.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">3–5 years</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:50%"></div></div>
+      <div class="cnt">23 roles · 25.3%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">5–10 years</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:26%"></div></div>
+      <div class="cnt">12 roles · 13.2%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">No requirement</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:17%"></div></div>
+      <div class="cnt">8 roles · 8.8%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">1–3 years</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:4%"></div></div>
+      <div class="cnt">2 roles · 2.2%</div>
+    </div>
+    <div class="legend">Experience distribution across 91 merged roles (3 channels) · listing-page labeling rate only 49% (46 unlabeled) · among labeled roles 3–5 years holds 51.1% (23/45) · v3.0.5 basis 2026-08-17</div>
+  </div>
+
+  <div class="takeaway">
+    <span class="tk">Nearly half of roles carry no experience requirement (50.5%) — "years" itself is not Moonshot's screening language</span>
+    <span class="tk">Among labeled roles 3–5 years holds 51.1% — senior-poaching model, no talent pipeline, no nurturing of newcomers</span>
+    <span class="tk">7 supplemented JD bodies show explicit tiering: tech roles demand AI judgment (no years written), commercial roles demand industry veterans (5–10 years)</span>
+  </div>
+
+  <div class="card">
+    <div class="point">
+      <div class="pn">①</div>
+      <p><strong>Experience bar: battle-ready talent, seniority not measured in years</strong> — among the 45 labeled roles, 3–5 years is the absolute mainstay (51.1%), the time pressure of the IPO sprint leaves no room to train, mature capability must be bought directly;</p>
+    </div>
+    <div class="point">
+      <div class="pn">②</div>
+      <p><strong>Degree and research thresholds are line-differentiated</strong> — the vast majority of roles require "bachelor's or above", only 7 roles require a master's (algorithm line 4 + Infra 2 + Agent 1): research is no longer the primary selection battlefield, engineering and growth lines value experience over degrees;</p>
+    </div>
+    <div class="point">
+      <div class="pn">③</div>
+      <p><strong>Capability definition in new roles</strong> — Agent × Growth (Agentic Growth Engineer), Engineering × Content (Technical Content Engineer), Engineering × GTM (GTM Engineer) hybrid roles appearing in clusters, "AI × business" composite capability is explicitly priced. But a hidden dividing line exists in JD requirements: the tech side (Agentic Growth/Eval/GTM) requires "AI judgment — not just using it, but knowing why it works" — AI first; the commercial side (overseas growth/PR/minority languages) has core requirements that are all traditional capabilities (paid acquisition experience/media resources/language fluency), with AI usage experience consistently placed in the nice-to-have section — experience first. No truly bidirectional hybrid roles exist; each role has a clear primary axis;</p>
+    </div>
+    <div class="point">
+      <div class="pn">④</div>
+      <p><strong>The recruiter's own standard</strong> — dedicated HR for the growth line (Growth Team HR), VC-background HR brought in to internalize high-end talent networks: HR domain knowledge is procured as a component of recruitment capability.</p>
+    </div>
+  </div>
+
+  <p class="sec-desc" style="margin-top:-6px;">Note: Moonshot AI publishes no JD bodies on Boss/Maimai listing pages (Boss homepage shows 0 roles — the company has deliberately withdrawn), so keyword dimensions cannot be counted at full scale. The experience distribution above is based on listing-page metadata across 91 merged roles from three channels; only 7 hybrid-role JD bodies were captured (Agentic Growth/Eval/GTM/Tech Content/Overseas Growth/Overseas PR/Minority-language Growth), and the qualitative insights rest on these 7 originals. The four-dimension keyword analysis (competitions/open source/training experience/papers) awaits next month's build-out.</p>
+
+  <h3 id="sec-04-4">4.4 Pay &amp; incentives: priced on expectation, not cash dominance<span class="zh">不靠钱碾压，靠预期定价</span></h3>
+  <p class="sec-desc">On the Boss Zhipin side, 16 months is the mainstream configuration (a few at 14–15 months); core technical roles uniformly at 25–50K, no obvious differentiated pricing — differentiation is placed on strategic direction. The valuation trajectory rocketing from US$4.3B → US$20B → US$31.5B has multiplied early-employee option value by 7x or more: Moonshot AI doesn't compete on salary alone; it competes on the "Kimi brand + IPO expectation + technical influence" combination, with IPO expectation itself serving as the retention mechanism.</p>
+
+  <div class="pay-row">
+    <div class="pay">
+      <div class="p-line">Infra at Scale</div>
+      <div class="p-band">25–50K · 16mo</div>
+      <div class="p-note">Premium benchmark: Senior Backend Golang 60–90K</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Elite Algorithm</div>
+      <div class="p-band">45–90K · 16mo</div>
+      <div class="p-note">RL 45–75K · Agentic RL 60–90K top-tier</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Agent Product</div>
+      <div class="p-band">35–90K · 16mo</div>
+      <div class="p-note">Agent Engineer top-tier 60–90K</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tags">
+      <span class="tag hot">Growth/international 40–70K (integrated marketing/overseas PR/Discord)</span>
+      <span class="tag">Treasury Manager 50–80K (highest company-wide)</span>
+      <span class="tag">Interns 300–1,000 CNY/day (AI Infra top-tier)</span>
+      <span class="tag">Option anchor: valuation up 7x+ in one year</span>
+    </div>
+    <p class="pay-note">Pay ranges are based on Boss Zhipin 69 roles + Maimai 21 roles JD-listed figures; Maimai does not disclose months of pay (Liepin 1 role lists 16 months); JD listings are not actual offer data.</p>
+  </div>
+
+  <h3 id="sec-04-5">4.5 Inflow × outflow: the other side of zero attrition<span class="zh">零流失的另一面</span></h3>
+  <div class="card gold">
+    <p><strong>Out</strong>: no reports of any core technical personnel or management departures found; founding team intact (Yang Zhilin / Zhang Yutong / Zhou Xinyu / Zhang Yutao all in position), HR team also shows zero departure records.</p>
+    <p><strong>In</strong>: 91 open roles at high density, HR senior layer expanded by 7+ people in H1 2026.</p>
+    <p style="margin-bottom:0;"><strong>Reading the loop:</strong> the "zero attrition + high hiring" combination should not be read as "the organization has no problems", but rather as <strong>filling capability gaps, not replacing people</strong>: the large-scale hiring of growth/commercialization talent is filling the capability gaps needed for the IPO narrative. At the same time, referencing peer experience at listing milestones, an IPO significantly changes talent mobility structures — the current "stability" will be taken over at the listing event. Moonshot AI's inflow-outflow loop is essentially a <strong>time-stamped loop</strong>.</p>
+  </div>
+
+  <!-- ===== Takeaway ===== -->
+  <div class="sec-tag">Takeaway</div>
+  <h2 id="sec-05"><span class="no">05</span>One-line takeaway<span class="zh">一句话结论</span></h2>
+  <div class="card">
+    <p style="margin:0; font-size:15px;"><strong>Betting all the IPO-window money and moves on the "growth story":</strong> among 91 open roles, Infra accounts for 28.6%, Agent 23.1%, Commercialization 19.8% — read its organization through the five-line chain, evaluate its HR through the talent-density paradigm, and spot the people it wants via "senior poaching + hybrid-role pricing". <strong>Stability has an expiration date.</strong></p>
+  </div>
+
+</main>
+
+<div class="footer">
+  Moonshot AI (Kimi) Talent Insights · 2026-08-16 · data window 2026-08-01 ~ 08-06, monthly-tracking figures updated 2026-08-16<br>
+  Sources: Boss Zhipin, Maimai, Liepin, LinkedIn, public job postings and press reports, cross-verified across channels · Peer set: DeepSeek / Moonshot AI / Zhipu (Z.ai) / MiniMax
+</div>
+
+</div><!-- /content -->
+
+<script>
+  // Scrollspy TOC highlight
+  var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets = tocLinks.map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  var h2Map = {};
+  var curH2 = null;
+  targets.forEach(function (t) {
+    if (t.tagName === 'H2') { curH2 = t.id; h2Map[t.id] = null; }
+    else { h2Map[t.id] = curH2; }
+  });
+  function onScroll() {
+    var y = window.scrollY + 150;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    tocLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (!current) return;
+    var curLink = document.querySelector('.toc a[href="#' + current.id + '"]');
+    if (curLink) curLink.classList.add('active');
+    var parentId = h2Map[current.id];
+    if (parentId) {
+      var pLink = document.querySelector('.toc a[href="#' + parentId + '"]');
+      if (pLink) pLink.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile sidebar drawer
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var tocBtn = document.getElementById('tocBtn');
+  function toggleSidebar(open) {
+    sidebar.classList.toggle('open', open);
+    backdrop.classList.toggle('show', open);
+  }
+  tocBtn.addEventListener('click', function () { toggleSidebar(true); });
+  backdrop.addEventListener('click', function () { toggleSidebar(false); });
+  sidebar.addEventListener('click', function (e) {
+    if (e.target.closest('a')) toggleSidebar(false);
+  });
+</script>
+
+</body>
+</html>
