@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zhipu (Z.ai) Talent Insights | AI Native Talent Intelligence</title>
+<style>
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #9EF0DC;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+    --green: #2FBF8F;
+    --pink: #E86B8E;
+    --gold: #E8C96A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ===== Top nav ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav .logo, .sb-head .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .nav .logo .dot, .sb-head .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #2E6FE0);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav .right { display: flex; align-items: center; gap: 10px; }
+  .lang-pill { display: flex; border: 1px solid var(--card-border); border-radius: 999px; overflow: hidden; }
+  .lang-pill span, .lang-pill a { padding: 3px 12px; font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: none; }
+  .lang-pill span.on { background: var(--purple); color: #fff; }
+  .nav .cta {
+    background: var(--purple); color: #fff; border: none; border-radius: 999px;
+    padding: 6px 16px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #1E514A 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(23,184,148,0.18), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(158,240,220,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 46px; font-weight: 850; line-height: 1.28; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .teal {
+    color: var(--teal);
+    text-shadow: 0 0 32px rgba(158,240,220,0.45);
+  }
+  .hero h1 .blue {
+    color: #8FB8FF;
+    text-shadow: 0 0 32px rgba(143,184,255,0.45);
+  }
+  .hero .subline { color: var(--teal); font-size: 18px; font-weight: 600; margin: 8px 0 18px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 30px; } .hero .subline { font-size: 16px; } }
+  .hero .summary { color: #C9C6E0; font-size: 14px; max-width: 760px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px;
+    font-size: 12.5px; color: #9C98C0;
+  }
+  .hero .meta b { display: block; color: #C9C6E0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ===== Main content ===== */
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+
+  .sec-tag {
+    margin-top: 56px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; line-height: 1.4; }
+  h2 .no { color: var(--purple); margin-right: 10px; }
+  h2 .zh { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 17px; font-weight: 800; margin: 26px 0 6px; }
+  h3 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .sec-desc { color: var(--muted); max-width: 860px; margin: 10px 0 22px; }
+
+  /* ===== Cards ===== */
+  .card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; margin: 14px 0;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .card.gold { border-left: 4px solid var(--gold); }
+  .card p { margin: 6px 0; }
+
+  /* ===== Stat cards ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .stat-row.three { grid-template-columns: repeat(3, 1fr); }
+  .stat {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .stat .num { font-size: 25px; font-weight: 800; color: var(--purple); line-height: 1.2; }
+  .stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat .hl-gold { color: var(--gold); font-weight: 700; }
+
+  /* ===== Progress bars ===== */
+  .bar-row { display: flex; align-items: center; gap: 14px; margin: 13px 0; }
+  .bar-row .name { width: 150px; flex-shrink: 0; font-weight: 600; font-size: 13.5px; }
+  .bar-row .cnt { width: 64px; flex-shrink: 0; text-align: right; font-size: 12.5px; color: var(--muted); }
+  .bar-track { flex: 1; height: 14px; background: #F1EFFA; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.pink { background: var(--pink); }
+  .legend { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 5px 0 14px; }
+  .legend .dot.g { background: var(--green); }
+  .legend .dot.p { background: var(--pink); }
+
+  /* ===== Stage bar ===== */
+  .stage-bar { display: flex; align-items: stretch; gap: 0; margin: 18px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--card-border);
+    padding: 16px 14px; text-align: center; position: relative;
+  }
+  .stage:first-child { border-radius: 14px 0 0 14px; }
+  .stage:last-child { border-radius: 0 14px 14px 0; }
+  .stage .s-name { font-weight: 700; font-size: 13.5px; }
+  .stage .s-desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .stage.here {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+    box-shadow: 0 8px 24px rgba(94,62,216,0.25); z-index: 2;
+  }
+  .stage.here .s-desc { color: #D8CFFB; }
+  .stage .marker {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: #14532D; font-size: 10.5px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ===== Loop cards ===== */
+  .loop-card { position: relative; overflow: hidden; }
+  .loop-card .ghost {
+    position: absolute; right: 18px; top: 6px; font-size: 64px; font-weight: 800;
+    color: #F3F0FB; line-height: 1; pointer-events: none;
+  }
+  .loop-card h4 { margin: 0; font-size: 18px; font-weight: 800; }
+  .loop-card h4 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card .metric { color: var(--purple); font-weight: 800; font-size: 15px; margin: 6px 0 4px; }
+  .loop-card .desc { color: #4A4765; margin: 0 0 14px; max-width: 720px; }
+  .loop-card .criteria { margin: 0 0 12px; font-size: 13.5px; line-height: 1.65; color: #6b5b1e; background: #fdf8e8; border-left: 3px solid #c9a227; padding: 8px 12px; border-radius: 6px; max-width: 760px; }
+  .loop-arrow { text-align: center; color: #B9B3DC; font-size: 18px; margin: 2px 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* ===== Comparison table ===== */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 13.5px; }
+  thead th {
+    background: var(--purple-soft); color: var(--purple); text-align: left;
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+  }
+  thead th:first-child { border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody td {
+    background: #fff; padding: 13px 16px; border-bottom: 1px solid var(--card-border); vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 700; width: 110px; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== Numbered points ===== */
+  .point { display: flex; gap: 14px; margin: 12px 0; align-items: flex-start; }
+  .point .pn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple);
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .point p { margin: 0; }
+
+  /* ===== Takeaway chips ===== */
+  .takeaway { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .takeaway .tk {
+    background: var(--purple-soft); color: var(--purple); border-radius: 999px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== Pay cards ===== */
+  .pay-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .pay {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px;
+  }
+  .pay .p-line { font-weight: 800; font-size: 15px; }
+  .pay .p-band { font-size: 22px; font-weight: 800; color: var(--purple); margin: 6px 0 2px; }
+  .pay .p-note { font-size: 12.5px; color: var(--muted); }
+  .pay-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 760px) {
+    .stat-row, .stat-row.three, .pay-row { grid-template-columns: repeat(2, 1fr); }
+    .stage { min-width: 46%; border-radius: 10px !important; margin: 3px; }
+  }
+
+  /* ===== Left sidebar ===== */
+  html { scroll-behavior: smooth; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 268px;
+    background: #fff; border-right: 1px solid var(--card-border);
+    overflow-y: auto; padding: 18px 14px 32px; z-index: 80;
+  }
+  .sb-head { padding: 4px 8px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 4px; }
+  .sb-back {
+    display: inline-block; margin-top: 8px; color: var(--muted);
+    font-size: 12.5px; text-decoration: none;
+  }
+  .sb-back:hover { color: var(--purple); }
+  .sb-group {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--muted); text-transform: uppercase; margin: 18px 8px 8px;
+    padding-bottom: 8px; border-bottom: 1px solid #EFEBF9;
+  }
+  .sb-company a, .toc a {
+    position: relative; display: block; padding: 8px 12px 8px 26px;
+    border-left: 3px solid transparent; border-radius: 0 10px 10px 0;
+    color: var(--text); text-decoration: none; font-size: 13.5px; line-height: 1.45;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a::before {
+    content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 2px;
+    background: #C4B5FD; opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .sb-company a:hover, .toc a:hover { background: var(--chip-bg); border-left-color: #E9E4F6; }
+  .toc a:hover::before { opacity: 0.8; }
+  .sb-company a.cur { background: var(--purple); color: #fff; font-weight: 700; border-left-color: var(--purple); }
+  .toc a.sub { font-size: 12.5px; color: var(--muted); padding: 5px 12px 5px 34px; }
+  .toc a.sub::before { left: 21px; width: 4px; height: 4px; border-radius: 50%; }
+  .toc a.active { background: var(--purple-soft); color: var(--purple); font-weight: 700; border-left-color: var(--purple); }
+  .toc a.active::before { background: var(--purple); opacity: 1; }
+  .content { margin-left: 268px; }
+  .backdrop { display: none; }
+  .toc-btn {
+    display: none; background: var(--purple-soft); color: var(--purple);
+    border: none; border-radius: 999px; padding: 6px 14px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+    .sidebar.open { transform: none; }
+    .content { margin-left: 0; }
+    .toc-btn { display: inline-block; }
+    .backdrop.show {
+      display: block; position: fixed; inset: 0;
+      background: rgba(20,16,40,0.5); z-index: 70;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Left sidebar ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="logo"><span class="dot">Z</span>Zhipu Talent Insights</div>
+    <a class="sb-back" href="index.html" onclick="if(window.parent!==window){window.parent.exitReport();return false;}">← Report List</a>
+  </div>
+  <div class="sb-group">In This Report</div>
+  <nav class="toc" id="toc">
+    <a href="#sec-01">01 Stage Readout</a>
+    <a href="#sec-02">02 Strategy</a>
+    <a href="#sec-02-1" class="sub">Driver: public-market funding</a>
+    <a href="#sec-02-2" class="sub">Business mix: ToB delivery vs MaaS</a>
+    <a href="#sec-02-3" class="sub">Overseas: lightweight model</a>
+    <a href="#sec-02-4" class="sub">Key tension: market cap &gt; fundamentals</a>
+    <a href="#sec-03">03 AI Native Organization</a>
+    <a href="#sec-03-1" class="sub">a) Talent density over scale</a>
+    <a href="#sec-03-2" class="sub">b) Evaluation coordinate switch</a>
+    <a href="#sec-03-3" class="sub">c) Recruitment methodology</a>
+    <a href="#sec-04">04 Talent Strategy</a>
+    <a href="#sec-04-1" class="sub">4.1 HR scales first</a>
+    <a href="#sec-04-2" class="sub">4.2 The five-line talent map</a>
+    <a href="#sec-04-3" class="sub">4.3 Selection signals</a>
+    <a href="#sec-04-4" class="sub">4.4 Pay &amp; incentives</a>
+    <a href="#sec-04-5" class="sub">4.5 Outflow × expansion</a>
+    <a href="#sec-05">05 One-line Takeaway</a>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="content">
+
+<!-- ===== Top nav ===== -->
+<nav class="nav">
+  <div class="logo"><span class="dot">Z</span>Zhipu Talent Insights</div>
+  <div class="right">
+    <button class="toc-btn" id="tocBtn">TOC</button>
+    <div class="lang-pill"><a href="智谱华章_专题洞察_2026-08.html" onclick="if(window.parent!==window){window.parent.openReport('zhipu');return false;}">中</a><span class="on">EN</span></div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">ZHIPU TALENT INSIGHTS · AI NATIVE TALENT INTELLIGENCE</div>
+    <h1>Seven months after its Hong Kong IPO,<br>a <span class="blue">HK$200B</span> market cap — yet <span class="blue">200 roles</span> open wide</h1>
+    <div class="subline">Listed ≠ steady state — its next move bets on the deep water of Agent and commercialization</div>
+    <p class="summary">After listing on the Hong Kong Stock Exchange in January 2026 (02513.HK), Zhipu became the world's first listed LLM company: raising HK$4.3B, with a current market cap above HK$200B and a STAR Market ~RMB15B listing in tutoring-acceptance stage. 200 roles are open on Boss, and the Agent direction ranks first in both role count and total pay. A 46-person HR team carries the commercialization deepening. This brief unpacks it along four frameworks: what stage it is in, what game it is playing, how the organization is shifting, and what kind of people it needs.</p>
+    <div class="meta">
+      <div><b>Focus</b>Zhipu talent allocation &amp; organizational stage</div>
+      <div><b>Supply depth</b>200 open roles in full · 10 benchmark JD texts · four-channel cross-verification</div>
+      <div><b>As of</b>2026-08-17</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 01 Stage readout ============ -->
+  <div class="sec-tag">Stage readout</div>
+  <h2 id="sec-01"><span class="no">01</span>Where Zhipu stands<span class="zh">当前阶段判断</span></h2>
+  <p class="sec-desc">We break the organizational evolution of AI model companies into four stages: tech validation → productization → scaling &amp; commercialization → listed maturity. This framework is not an industry standard — it is an analytical lens derived from the HR and JD data in this study.</p>
+
+  <div class="stage-bar">
+    <div class="stage">
+      <div class="s-name">Tech Validation</div>
+      <div class="s-desc">Small core team, research-heavy</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Productization</div>
+      <div class="s-desc">Hiring engineering, product, Infra</div>
+    </div>
+    <div class="stage here">
+      <div class="marker">Zhipu is here</div>
+      <div class="s-name">Scaling &amp; Commercialization</div>
+      <div class="s-desc">Org absorbs volume, functions fill out</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Listed Maturity</div>
+      <div class="s-desc">Growth, globalization, compliance</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>Our read: scaling &amp; commercialization (deep phase), and the only top-tier AI model company whose expansion is driven by IPO capital.</strong></p>
+    <p>After listing on the Hong Kong Stock Exchange in January 2026 (raising HK$4.3B), Zhipu did not pull back on hiring — it pushed public-market proceeds straight into headcount: 200 open roles on Boss (210 on the page header), 44 in the Agent direction (22%), ranking first in both role count and total pay. The organization is running this stage's classic "executive refresh + ecosystem hedge" (COO / fundraising VP departed) while the core research layer stays stable. Three independent pieces of evidence agree: role types have completed the shift from research-led to "application + commercialization + corporate functions" (26 commercialization roles on the full Boss basis, 21 listed-company function roles emerging as a system); the application inflection has not only arrived but entered deep territory; and the organizational adjustment direction matches the expansion-stage profile exactly.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">200</div>
+      <div class="lbl">Boss open roles (page header 210 · 8/15 full capture)</div>
+    </div>
+    <div class="stat">
+      <div class="num">56</div>
+      <div class="lbl">Maimai open roles (8/17 recrawl · posted by 14 HRs)</div>
+    </div>
+    <div class="stat">
+      <div class="num">214</div>
+      <div class="lbl">De-duplicated roles across channels (three-channel union · +4 unique to Liepin)</div>
+    </div>
+    <div class="stat">
+      <div class="num">10.7%–21.4%</div>
+      <div class="lbl">Hiring density (214 roles / 1,000–2,000 headcount)</div>
+    </div>
+  </div>
+
+  <!-- ============ 02 Strategy ============ -->
+  <div class="sec-tag">Strategy</div>
+  <h2 id="sec-02"><span class="no">02</span>Strategy: the commercialization deep-water game, driven by dual capital markets<span class="zh">双资本市场驱动的"商业化纵深"棋局</span></h2>
+
+  <h3 id="sec-02-1">Driver: ammunition from public markets, not private rounds<span class="zh">弹药来自公开市场，不是一级轮次</span></h3>
+  <p class="sec-desc">Listed on the Hong Kong Stock Exchange on 2026-01-08 (02513.HK, "the world's first listed LLM company"); its market cap has climbed from roughly HK$52.8–57B on day one to above HK$200B today. A STAR Market listing plans to raise ~RMB15B, and its tutoring status has changed to "tutoring acceptance" — if it lands, it will trigger the next round of expansion; the current 200 open roles may only be mid-expansion. Seven months after listing, the hiring behavior shows a very direct use of the proceeds: keep expanding, recruit the best at top-tier prices.</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">HK$4.3B</div>
+      <div class="lbl">HK IPO proceeds (2026-01-08)</div>
+    </div>
+    <div class="stat">
+      <div class="num">HK$200B+</div>
+      <div class="lbl">Current HK market cap</div>
+    </div>
+    <div class="stat">
+      <div class="num">+131.9%</div>
+      <div class="lbl">2025 total revenue RMB724M</div>
+    </div>
+    <div class="stat">
+      <div class="num">RMB4.718B</div>
+      <div class="lbl">Net loss (widened 59.5% YoY)</div>
+    </div>
+  </div>
+
+  <h3 id="sec-02-2">Business mix: localized delivery defends the base, MaaS and Agent are the growth engines<span class="zh">本地化交付守基本盘，MaaS 与 Agent 是增长引擎</span></h3>
+  <p class="sec-desc">The 2025 annual report gives a clear directional sense: localized model revenue RMB366M (+70.5%), 50.5% of total revenue — ToB delivery is still the base; cloud/API revenue RMB190M (+292.6%) and agent revenue RMB166M (+248.8%) together take 49.2%, growing roughly 4× the localized pace — the ToB delivery model is migrating toward MaaS. Recruitment confirms this precisely: solution/delivery roles are still open but their pay band (25–50K) sits below Agent algorithm roles (50–90K); after the COO's departure the company stated "the current focus is the next-generation base model and the MaaS ecosystem", matching elite high pay on base-model roles and volume hiring for MaaS BD.</p>
+
+  <h3 id="sec-02-3">Overseas: Beijing HQ runs the globe, only business vanguards abroad<span class="zh">北京中枢管全球，海外只放业务尖兵</span></h3>
+  <p class="sec-desc">Liepin recrawl on 8/17 confirms 10 roles (page header = extracted, flat vs 8/6, 100% pay disclosure; five lines: commercialization 5 / Agent 3 / Infra 1 / algorithm 1, including 2 overseas-oriented): Malaysia/Middle East Solutions Architect, international BD, overseas sales-API (stationed in Malaysia/UAE for 3–6 months) and other internationalization roles; but LinkedIn mapping shows only ~4 people actually landed overseas (3 in Singapore + 1 in the US), with the global business center actually projecting outward from Beijing. Read: a lightweight overseas model of "Beijing HQ runs the globe, only business vanguards abroad, no overseas HR posts" — there is a time lag between internationalization roles being posted and people landing, not a contradiction.</p>
+
+  <h3 id="sec-02-4">Key tension: market-cap pricing &gt; fundamentals<span class="zh">市值定价 &gt; 基本面</span></h3>
+  <div class="card gold">
+    <p style="margin:0;">A HK$200B market cap against RMB724M revenue and RMB4.7B net loss — the recruiting expansion is supported by the market cap, and the cost-sensitivity phase has not arrived. If the STAR Market IPO cadence changes, the sustainability of expansion is in question; the fundraising VP's departure during IPO preparation is an early risk signal on capital-ops continuity. <strong>What this means for the organization: this is a company "buying time with money" — within the window, moves will be extremely dense, but the window itself depends on capital cadence. The next organizational moves will necessarily be: thickening the Agent product line + regional sales and delivery continuing to roll out + one more expansion round after the STAR Market listing lands.</strong></p>
+  </div>
+
+
+  <!-- ============ 03 AI Native organization ============ -->
+  <div class="sec-tag">AI native organization</div>
+  <h2 id="sec-03"><span class="no">03</span>AI Native organization: why "incomplete" is a different paradigm<span class="zh">为什么"看起来不完整"其实是另一套范式</span></h2>
+
+  <h3 id="sec-03-1">a) Talent density vs. scaled execution<span class="zh">人才密度驱动 vs 规模化执行驱动</span></h3>
+  <p class="sec-desc">Big Tech HR systems assume "scaled execution" — work breaks into standard actions, people are hired and managed in bulk. AI Native companies assume talent density: every researcher is a high-value individual, and organizational output depends on the caliber of a few key people, not the headcount. The HR mission shifts from "hiring at volume" to "deep acquisition and retention of a small number of key talents".</p>
+  <div class="card">
+    <div class="point">
+      <div class="pn">1</div>
+      <p><strong>60% of the 46-person HR team are fresh graduates</strong> — graduates stack execution volume, a few key veterans manage key talents, and the limited senior quota is bet on the key lines;</p>
+    </div>
+    <div class="point">
+      <div class="pn">2</div>
+      <p><strong>Management is extremely thin</strong> — only 2 senior managers, no recruiting-director / TA-Head layer in between, and the top HR role may report straight to a business VP or the CEO line;</p>
+    </div>
+    <div class="point">
+      <div class="pn">3</div>
+      <p><strong>HRBPs themselves post "HRBP [LLM — recruiting + BP direction]" roles on Boss</strong> — "recruiting + BP" written into the JD title is the most direct evidence of HR = recruiting as one;</p>
+    </div>
+    <div class="point">
+      <div class="pn">4</div>
+      <p><strong>First-hand exchange with Zhipu HRBP Sakina (2026-07)</strong> — BPs must also deliver recruiting; there is no large standalone TA center. HR's core value is "the glue", which requires "technical taste" and staying 0.5–0.7 steps ahead of the business.</p>
+    </div>
+  </div>
+
+  <h3 id="sec-03-2">b) Evaluation coordinate switch<span class="zh">评估坐标的切换对照表</span></h3>
+  <table>
+    <thead>
+      <tr><th>Dimension</th><th>Big Tech coordinates (scaled execution)</th><th>AI Native coordinates (talent density)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Org completeness</td>
+        <td>Full hierarchy, three-pillar HR ratio on target</td>
+        <td>"Incomplete system" is not a demerit — ask instead whether it is coherent under a talent-density logic: Zhipu's 60% fresh graduates + extremely thin management is coherent at its commercialization-expansion stage</td>
+      </tr>
+      <tr>
+        <td>HR value</td>
+        <td>Delivery volume, funnel conversion, time-to-fill</td>
+        <td>"The glue" + technical taste + 0.5–0.7 steps ahead of the business (Zhipu HRBP's own words); owns key-talent acquisition and retention</td>
+      </tr>
+      <tr>
+        <td>TA role</td>
+        <td>Delivery: take orders, fill seats</td>
+        <td>Strategic advisor — industry signal: TA+BP teams at StepFun, Moonshot AI and MiniMax are jointly running a "CEO technical-cognition catch-up" mechanism (a signal shared across multiple companies); Zhipu is not seen in that mechanism, but its "0.5 steps ahead of the business" wording points the same way: TA/BP functions moving up</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec-03-3">c) Recruitment methodology: three-channel division × business leaders on the field<span class="zh">三渠道分工 × 业务 leader 精准下场</span></h3>
+  <div class="stat-row three">
+    <div class="stat">
+      <div class="num">41%</div>
+      <div class="lbl">Posted directly by business leaders (17 of 41 posters) · the LLM-division VP personally posted 6 premium roles</div>
+    </div>
+    <div class="stat">
+      <div class="num">Referrals &gt; papers</div>
+      <div class="lbl">Channel priority (HRBP first-hand exchange)</div>
+    </div>
+    <div class="stat">
+      <div class="num">200 · 56 · 10</div>
+      <div class="lbl">Boss for volume · Maimai for precision · Liepin for premium supplement</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">Channel priorities are almost mechanically clean: Boss for volume (all categories + the main intern channel), Maimai for verified precision (sales regionalization + corporate functions + test bed for new directions), Liepin for premium supplement (10 roles fully price-tagged, commercialization 50%, internationalization roles fully visible only on this channel). Business leaders are deep on the field: VPs, R&amp;D heads and product managers are all key nodes in the recruiting network; outreach and landing are not separated, and landing cycles replace funnel management. That posters across the three channels barely overlap is an identity-caliber difference — the same role is often posted on multiple channels at once.</p>
+
+  <!-- ============ 04 Talent strategy ============ -->
+  <div class="sec-tag">Talent strategy</div>
+  <h2 id="sec-04"><span class="no">04</span>Talent strategy: who, how to select, at what price<span class="zh">要什么人、怎么选、怎么定价</span></h2>
+
+  <h3 id="sec-04-1">4.1 Scale &amp; nature of expansion: HR scales first — and what it builds is the system<span class="zh">HR 先扩，且补的是"体系"</span></h3>
+  <p class="sec-desc">After precise filtering from the employer side on Boss, the current HR/recruiting team is 46 people: 4 senior managers/leads + 18 HRBPs + 5 recruiters + 14 specialists/assistants + 3 interns + 2 OD/culture, of whom 60% are fresh graduates and ~18 are experienced HRs. Organizationally this is the classic "HR = recruiting as one + HRBP-led" model — no large standalone TA center; HRBPs do both BP and recruiting. HR expansion is still ongoing: on Maimai the HRBP team is hiring its own HRIS specialist, HRSSC specialist and HRBP (algorithm team / commercialization team / R&amp;D direction). The formation timeline is clear — 2021 Xiaoxiong/Edith → 2022 Sam/Shelly/Sif → 2023–2024 Hannah/Sakina (international background) → 2026 fresh graduates — growing from a "domestic execution squad" into an "internationalized + premium" structure. <strong>HR hiring HR means the expansion expectation has entered organizational preparation</strong>, a leading indicator that runs ahead of press releases.</p>
+
+  <h3 id="sec-04-2">4.2 Who they need: the five-line talent map<span class="zh">人才构成的五线画像</span></h3>
+  <p class="sec-desc">Five talent lines form a left-to-right chain: Infra provides the engineering base, Algorithm maintains the model's generational edge, Agent productizes model capability, Commercialization turns products into revenue, and Corporate Functions support post-IPO compliance. Classification is based on a deterministic classifier over the full 200 Boss roles; shares are on the Boss basis. All 18 pending-classification roles have been JD-adjudicated into the five lines; see the monthly tracking supplement report for role-by-role adjudication.</p>
+
+  <div class="card loop-card">
+    <div class="ghost">01</div>
+    <h4>Infra at Scale<span class="zh">Infra 规模线</span></h4>
+    <div class="metric">38 roles · 19.0% · inference optimization 50–80K·16mo</div>
+    <p class="desc">Engineering capacity that keeps the model running stably: training/inference frameworks, SRE ops, backend foundation, data collection, security. The appearance of domestic-compute adaptation roles is an autonomy signal.</p>
+    <div class="criteria"><strong>Talent bar</strong> — training/inference framework engineering depth is the hard threshold, with inference optimization priced at the top (50–80K·16mo); the special requirement is domestic-compute adaptation capability — a line-specific standard added under the autonomy push.</div>
+    <div class="tags">
+      <span class="tag hot">Training framework</span><span class="tag">Inference engine</span><span class="tag">SRE</span><span class="tag">Backend foundation</span><span class="tag">Data collection</span><span class="tag">Domestic-compute adaptation</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">02</div>
+    <h4>Elite Algorithm<span class="zh">算法精英线</span></h4>
+    <div class="metric">55 roles · 27.5% · top tier 60–90K·16mo</div>
+    <p class="desc">The largest line of the five: pretraining / post-training / multimodal / embodied + Tsinghua joint postdocs. Base-model roles run the "few and elite" high-pay route, while data / intern roles exist in volume for pipeline accumulation.</p>
+    <div class="criteria"><strong>Talent bar</strong> — two standards coexist within the line: base-model roles run the "few and elite" high-pay route (top tier 60–90K·16mo), judged on academic depth, with the Tsinghua joint postdoc as the academic-background anchor; data / intern roles exist in volume for pipeline accumulation, pushing the bar forward.</div>
+    <div class="tags">
+      <span class="tag hot">Pretraining</span><span class="tag">Post-training</span><span class="tag">Multimodal</span><span class="tag">Embodied AI</span><span class="tag">Tsinghua joint postdoc</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">03</div>
+    <h4>Agent Product<span class="zh">Agent 产品线</span></h4>
+    <div class="metric">44 roles · 22.0% · Agent engineer 50–80K·16mo</div>
+    <p class="desc">The strategic main line, first in both role count and total pay: Agent/Code Agent engineers, AI product managers, client / full-stack / testing. The ZCode PC client signal shows the coding product line forming its own momentum.</p>
+    <div class="criteria"><strong>Talent bar</strong> — productization delivery for the strategic main line: Agent/Code Agent engineers at 50–80K·16mo are the line's top price, with AI product managers weighted equally with engineering; coding-scenario depth (the ZCode signal) becomes a direction-specific requirement.</div>
+    <div class="tags">
+      <span class="tag hot">Agent engineering</span><span class="tag">Code Agent</span><span class="tag">AI product manager</span><span class="tag">Client</span><span class="tag">ZCode</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">04</div>
+    <h4>Commercial Expansion<span class="zh">商业化拓展线</span></h4>
+    <div class="metric">26 roles · 13.0% · API sales 15–30K · solution architect 30–60K·16mo</div>
+    <p class="desc">The largest non-technical line across channels: multi-city API sales nationwide, MaaS BD, solution architects, overseas sales-API (stationed in Malaysia/UAE), FDE field deployment. Of the 18 pending-classification roles, 6 fell into this line (3 To-B project managers + 2 FDEs + 1 platform operations lead); the commercialization line grew from 20 to 26 — the biggest increase among the five lines.</p>
+    <div class="criteria"><strong>Talent bar</strong> — a technical-understanding × To-B-delivery compound: solution architects at 30–60K·16mo are priced double the API sales roles — pricing tilts toward "can deliver"; overseas stationing (Malaysia/UAE) and FDE field deployment require on-site willingness, a threshold specific to this line.</div>
+    <div class="tags">
+      <span class="tag hot">API sales</span><span class="tag">MaaS BD</span><span class="tag">Solution architect</span><span class="tag">Overseas sales</span><span class="tag">FDE</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">05</div>
+    <h4>Corporate Function<span class="zh">职能线</span></h4>
+    <div class="metric">37 roles · 18.5% · HRBP 25–45K·16mo · HRSSC 11–16K</div>
+    <p class="desc">Post-IPO compliance configuration catching up — precisely synchronized with the IPO timing: HRBP/HRIS/HRSSC, finance BP, internal control, PMO, brand narrative, compute procurement, talent-policy specialists. Of the 18 pending-classification roles, 10 fell into this line (PMO×3 + procurement×2 + operations×3 + interns×2); the function line grew from 27 to 37 — the largest net increase among the five lines.</p>
+    <div class="criteria"><strong>Talent bar</strong> — post-IPO compliance professionalization: HRBP at 25–45K·16mo alongside HRSSC at 11–16K, building the full HR sequence in tiers; internal control / PMO / compute procurement judged on professional credentials and process capability, with hiring cadence precisely synchronized to the IPO timing.</div>
+    <div class="tags">
+      <span class="tag">HRBP</span><span class="tag">HRIS</span><span class="tag">HRSSC</span><span class="tag">Finance BP</span><span class="tag">Internal control</span><span class="tag">Brand narrative</span>
+    </div>
+  </div>
+
+  <div class="criteria" style="max-width:none; margin:18px 0 0;"><strong>How the five lines' bars differ</strong> — the elite algorithm line stratifies internally: base-model roles judge "few and elite" on academic depth (anchored by the Tsinghua joint postdoc), while data / intern roles serve pipeline accumulation; the Infra line layers domestic-compute adaptation — an autonomy-driven, line-specific requirement — on top of systems-engineering depth; the Agent line, as the strategic main line, weights engineering and AI product managers equally, with coding-scenario depth as a direction-specific demand; the commercial line tilts pricing toward "can deliver" (solution architects priced double API sales), with overseas stationing and FDE field deployment requiring on-site willingness; the corporate function line builds the full HR sequence in tiers, with cadence precisely synchronized to the IPO timing. Read across, the AI-era selection standard emerges: academic depth and engineering delivery priced at opposite poles, direction-specific capabilities (domestic compute / coding scenarios / on-site delivery) as the differentiating thresholds of each line, and the talent pipeline embedded inside the elite line in the form of intern roles.</div>
+
+  <h3 id="sec-04-3">4.3 AI talent selection: what channel data reveals<span class="zh">从渠道数据能读到什么</span></h3>
+  <p class="sec-desc">Zhipu publishes no written talent standard. What follows is a "behavioral standard" reverse-engineered from JD structure, hiring behavior and first-hand exchanges — the stated standard lives in the JD text; the actually-executed standard lives in its money and its moves.</p>
+
+  <div class="card">
+    <div class="bar-row">
+      <div class="name">Model</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:100%"></div></div>
+      <div class="cnt">29 JDs · 56%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">LLM</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:82%"></div></div>
+      <div class="cnt">24 JDs · 46%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Training</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:62%"></div></div>
+      <div class="cnt">18 JDs · 35%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Agent</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:45%"></div></div>
+      <div class="cnt">13 JDs · 25%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Papers / top conf.</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:18%"></div></div>
+      <div class="cnt">5 JDs · 10%</div>
+    </div>
+    <div class="legend">Keyword hit distribution across 52 JD bodies · Infra 10 / Algorithm 10 / Agent 7 / Commercial 7 / Functions 9 · jieba tokenization 2026-08-17</div>
+  </div>
+
+  <div class="takeaway">
+    <span class="tk">"Training" is the shared #1 keyword on both tech lines (Infra 90% / Algorithm 90%) — a pre-training-intensive-period signal</span>
+    <span class="tk">Paper hard thresholds concentrate on the algorithm line (top conference 50%, postdoc "no fewer than 3") — the heaviest academic bar among the four companies</span>
+    <span class="tk">The commercial line hits "LLM" 100% — To-B roles must understand the product, but depth stops at the API/MaaS layer</span>
+  </div>
+
+  <div class="card">
+    <div class="point">
+      <div class="pn">①</div>
+      <p><strong>Postdoc (Tsinghua joint): no fewer than 3 papers at top AI conferences</strong> — a hard threshold for pure research roles, an exception rather than the rule;</p>
+    </div>
+    <div class="point">
+      <div class="pn">②</div>
+      <p><strong>Inference-model algorithm engineer: CCF-A conference papers "preferred"</strong> — papers are a plus at the elite tier, paired with multi-node multi-GPU training experience;</p>
+    </div>
+    <div class="point">
+      <div class="pn">③</div>
+      <p><strong>Agent/Code Agent engineer: 1+ years of deep use of AI coding tools</strong> (Cursor/Copilot/Claude Code) — "used it" ranks ahead of "learned it";</p>
+    </div>
+    <div class="point">
+      <div class="pn">④</div>
+      <p><strong>Solution architect: 5+ years of experience + 4 years in AI-related fields</strong> — the commercialization line wants industry veterans; it runs a different standard from the tech lines;</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑤</div>
+      <p><strong>Experience tiers diverge by line</strong> — the algorithm line is the youngest (1–3 yrs 31% + campus 15% = 46%), the commercial line the most senior (3–5 yrs 50% + 5–10 yrs 27% = 77%, zero 1–3-yr roles); on education the algorithm line is highest (master's 53% + PhD 7%), while the commercial line is 92% bachelor's — experience over credentials;</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑥</div>
+      <p><strong>The recruiter's own standard</strong> — the HRBP JD explicitly says "recruiting + BP direction"; HR must have technical taste and stay 0.5–0.7 steps ahead of the business, and this standard is applied to recruiters first.</p>
+    </div>
+  </div>
+
+  <p class="sec-desc" style="margin-top:12px;">Keyword stats after expanding the JD sample to 52 roles: "training" is the top-frequency keyword on both the Infra and algorithm lines (90%); the Agent line shows strong full-stack requirements (TypeScript 43% + React 43% + Java 43%); the commercialization line 100% requires understanding LLM products; and "top-conference papers" coverage on the algorithm line holds steady at 50%.</p>
+
+  <h3 id="sec-04-4">4.4 Pay &amp; incentives: how the money is placed sets the standard<span class="zh">钱怎么摆，标准就怎么立</span></h3>
+  <p class="sec-desc">16-month pay is the dominant standard (105 of the full 200 roles tagged 16-month, 119 roles = 59.5% including N-month tags); the company-wide band spans from 11K on the HRSSC role to 90K on the inference-model algorithm role — an ~8× spread. By line, money is placed in three places: the research base, Agent, and commercialization.</p>
+
+  <div class="pay-row">
+    <div class="pay">
+      <div class="p-line">Research Base Elite Line</div>
+      <div class="p-band">60–90K · 16mo</div>
+      <div class="p-note">Top tier on inference-model algorithm roles; data-algorithm roles dense at 45–75K</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Agent Product Line</div>
+      <div class="p-band">50–80K · 16mo</div>
+      <div class="p-note">Priced for Agent/Code Agent engineers</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Commercial Expansion Line</div>
+      <div class="p-band">15–30K ~ 30–60K</div>
+      <div class="p-note">API sales in volume, solution architects at the ceiling</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tags">
+      <span class="tag hot">16-month pay tagged on 105 roles (52.5%) · 119 roles (59.5%) including N-month tags</span>
+      <span class="tag">Interns ~248 CNY/day on average · top interns 500–1000 CNY/day</span>
+      <span class="tag">HK-listed liquidity · equity with real market pricing</span>
+      <span class="tag">~8× band: 11K HRSSC → 90K inference-model algorithm</span>
+    </div>
+    <p class="pay-note">Pay figures are on the full 200-role Boss JD-listing basis (100% pay display rate), not actual offer data.</p>
+  </div>
+
+  <h3 id="sec-04-5">4.5 Outflow × expansion: executive refresh, stable research layer, ecosystem hedge<span class="zh">高管换血、研究层稳、生态化对冲</span></h3>
+  <div class="card gold">
+    <p><strong>Out</strong>: executive layer — COO Zhang Fan left in late June to start a venture (AI Agent direction; the new project joined the Zhipu MaaS ecosystem with Zhipu investment support), fundraising VP Zhang Kuo left in late January; HR layer — Zhang Mingxi → AgiBot, Yangyang Qian → Sand.ai.</p>
+    <p><strong>In</strong>: over the same period — 200+ open roles fully opened, HR keeps self-expanding, Tsinghua joint postdoc recruitment expanded, base-model pay stays firm.</p>
+    <p style="margin-bottom:0;"><strong>Reading the loop:</strong> departures cluster in the commercialization / capital-ops executive layer; no named losses in the core research layer — multiple stability signals (departure rumors officially denied, joint postdoc expansion, firm base-model pay). The most interesting part is the hedge: the COO's departure was converted into an ecosystem investment target — <strong>"depart without draining", using investment ties instead of employment ties</strong>, rare among expansion-stage companies. Outflow and inflow together: this is not bleeding — it is re-betting resources on the next round of Agent and commercialization expansion.</p>
+  </div>
+
+  <!-- ===== Takeaway ===== -->
+  <div class="sec-tag">Takeaway</div>
+  <h2 id="sec-05"><span class="no">05</span>One-line takeaway<span class="zh">一句话结论</span></h2>
+  <div class="card">
+    <p style="margin:0; font-size:15px;"><strong>Betting public-market money on the deep water of Agent and commercialization:</strong> among 200 open roles, Algorithm 55 + Agent 44 + Infra 38 + Commercialization 26 + Corporate Functions 37 form the full five-line picture — read its organization through the five-line chain, evaluate its HR through the talent-density paradigm, and spot the people it wants via "experience tiering + pipeline front-loading".</p>
+  </div>
+
+</main>
+
+<div class="footer">
+  Zhipu Talent Insights · 2026-08-17 · data window 2026-08-01 ~ 08-17, full-basis update<br>
+  Sources: Boss Zhipin, Maimai, Liepin, LinkedIn, public job postings and press reports, cross-verified across channels · Peer set: DeepSeek / Moonshot AI / Zhipu (Z.ai) / MiniMax
+</div>
+
+</div><!-- /content -->
+
+<script>
+  // Scrollspy TOC highlight
+  var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets = tocLinks.map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  var h2Map = {};
+  var curH2 = null;
+  targets.forEach(function (t) {
+    if (t.tagName === 'H2') { curH2 = t.id; h2Map[t.id] = null; }
+    else { h2Map[t.id] = curH2; }
+  });
+  function onScroll() {
+    var y = window.scrollY + 150;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    tocLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (!current) return;
+    var curLink = document.querySelector('.toc a[href="#' + current.id + '"]');
+    if (curLink) curLink.classList.add('active');
+    var parentId = h2Map[current.id];
+    if (parentId) {
+      var pLink = document.querySelector('.toc a[href="#' + parentId + '"]');
+      if (pLink) pLink.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile sidebar drawer
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var tocBtn = document.getElementById('tocBtn');
+  function toggleSidebar(open) {
+    sidebar.classList.toggle('open', open);
+    backdrop.classList.toggle('show', open);
+  }
+  tocBtn.addEventListener('click', function () { toggleSidebar(true); });
+  backdrop.addEventListener('click', function () { toggleSidebar(false); });
+  sidebar.addEventListener('click', function (e) {
+    if (e.target.closest('a')) toggleSidebar(false);
+  });
+</script>
+
+</body>
+</html>
