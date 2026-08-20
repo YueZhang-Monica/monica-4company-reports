@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek 专题洞察 | AI Native 人才情报</title>
+<style>
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #9EF0DC;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+    --green: #2FBF8F;
+    --pink: #E86B8E;
+    --gold: #E8C96A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ===== 顶部导航 ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav .logo, .sb-head .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .nav .logo .dot, .sb-head .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #17B894);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav .right { display: flex; align-items: center; gap: 10px; }
+  .lang-pill { display: flex; border: 1px solid var(--card-border); border-radius: 999px; overflow: hidden; }
+  .lang-pill span, .lang-pill a { padding: 3px 12px; font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: none; }
+  .lang-pill span.on { background: var(--purple); color: #fff; }
+  .nav .cta {
+    background: var(--purple); color: #fff; border: none; border-radius: 999px;
+    padding: 6px 16px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #1E514A 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(23,184,148,0.18), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(158,240,220,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 46px; font-weight: 850; line-height: 1.28; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .teal {
+    color: var(--teal);
+    text-shadow: 0 0 32px rgba(158,240,220,0.45);
+  }
+  .hero .subline { color: var(--teal); font-size: 18px; font-weight: 600; margin: 8px 0 18px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 30px; } .hero .subline { font-size: 16px; } }
+  .hero .summary { color: #C9C6E0; font-size: 14px; max-width: 760px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px;
+    font-size: 12.5px; color: #9C98C0;
+  }
+  .hero .meta b { display: block; color: #C9C6E0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ===== 主内容 ===== */
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+
+  .sec-tag {
+    margin-top: 56px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; line-height: 1.4; }
+  h2 .no { color: var(--purple); margin-right: 10px; }
+  h2 .en { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 17px; font-weight: 800; margin: 26px 0 6px; }
+  h3 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .sec-desc { color: var(--muted); max-width: 860px; margin: 10px 0 22px; }
+
+  /* ===== 卡片通用 ===== */
+  .card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; margin: 14px 0;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .card.gold { border-left: 4px solid var(--gold); }
+  .card p { margin: 6px 0; }
+
+  /* ===== 数据卡 ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .stat-row.three { grid-template-columns: repeat(3, 1fr); }
+  .stat {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .stat .num { font-size: 25px; font-weight: 800; color: var(--purple); line-height: 1.2; }
+  .stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat .hl-gold { color: var(--gold); font-weight: 700; }
+
+  /* ===== 进度条 ===== */
+  .bar-row { display: flex; align-items: center; gap: 14px; margin: 13px 0; }
+  .bar-row .name { width: 150px; flex-shrink: 0; font-weight: 600; font-size: 13.5px; }
+  .bar-row .cnt { width: 64px; flex-shrink: 0; text-align: right; font-size: 12.5px; color: var(--muted); }
+  .bar-track { flex: 1; height: 14px; background: #F1EFFA; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.pink { background: var(--pink); }
+  .legend { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 5px 0 14px; }
+  .legend .dot.g { background: var(--green); }
+  .legend .dot.p { background: var(--pink); }
+
+  /* ===== 阶段条 ===== */
+  .stage-bar { display: flex; align-items: stretch; gap: 0; margin: 18px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--card-border);
+    padding: 16px 14px; text-align: center; position: relative;
+  }
+  .stage:first-child { border-radius: 14px 0 0 14px; }
+  .stage:last-child { border-radius: 0 14px 14px 0; }
+  .stage .s-name { font-weight: 700; font-size: 13.5px; }
+  .stage .s-desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .stage.here {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+    box-shadow: 0 8px 24px rgba(94,62,216,0.25); z-index: 2;
+  }
+  .stage.here .s-desc { color: #D8CFFB; }
+  .stage .marker {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: #14532D; font-size: 10.5px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ===== 链路卡片 ===== */
+  .loop-card { position: relative; overflow: hidden; }
+  .loop-card .ghost {
+    position: absolute; right: 18px; top: 6px; font-size: 64px; font-weight: 800;
+    color: #F3F0FB; line-height: 1; pointer-events: none;
+  }
+  .loop-card h4 { margin: 0; font-size: 18px; font-weight: 800; }
+  .loop-card h4 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card .metric { color: var(--purple); font-weight: 800; font-size: 15px; margin: 6px 0 4px; }
+  .loop-card .desc { color: #4A4765; margin: 0 0 14px; max-width: 720px; }
+    .loop-card .criteria { margin: 0 0 12px; font-size: 13.5px; line-height: 1.65; color: #6b5b1e; background: #fdf8e8; border-left: 3px solid #c9a227; padding: 8px 12px; border-radius: 6px; max-width: 760px; }
+  .loop-arrow { text-align: center; color: #B9B3DC; font-size: 18px; margin: 2px 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* ===== 对照表 ===== */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 13.5px; }
+  thead th {
+    background: var(--purple-soft); color: var(--purple); text-align: left;
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+  }
+  thead th:first-child { border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody td {
+    background: #fff; padding: 13px 16px; border-bottom: 1px solid var(--card-border); vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 700; width: 110px; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== 要点列表 ===== */
+  .point { display: flex; gap: 14px; margin: 12px 0; align-items: flex-start; }
+  .point .pn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple);
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .point p { margin: 0; }
+
+  /* ===== 结论 chips ===== */
+  .takeaway { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .takeaway .tk {
+    background: var(--purple-soft); color: var(--purple); border-radius: 999px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== 薪资卡 ===== */
+  .pay-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .pay {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px;
+  }
+  .pay .p-line { font-weight: 800; font-size: 15px; }
+  .pay .p-band { font-size: 22px; font-weight: 800; color: var(--purple); margin: 6px 0 2px; }
+  .pay .p-note { font-size: 12.5px; color: var(--muted); }
+  .pay-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 760px) {
+    .stat-row, .stat-row.three, .pay-row { grid-template-columns: repeat(2, 1fr); }
+    .stage { min-width: 46%; border-radius: 10px !important; margin: 3px; }
+  }
+
+  /* ===== 左侧导航 ===== */
+  html { scroll-behavior: smooth; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 268px;
+    background: #fff; border-right: 1px solid var(--card-border);
+    overflow-y: auto; padding: 18px 14px 32px; z-index: 80;
+  }
+  .sb-head { padding: 4px 8px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 4px; }
+  .sb-back {
+    display: inline-block; margin-top: 8px; color: var(--muted);
+    font-size: 12.5px; text-decoration: none;
+  }
+  .sb-back:hover { color: var(--purple); }
+  .sb-group {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--muted); text-transform: uppercase; margin: 18px 8px 8px;
+    padding-bottom: 8px; border-bottom: 1px solid #EFEBF9;
+  }
+  .sb-company a, .toc a {
+    position: relative; display: block; padding: 8px 12px 8px 26px;
+    border-left: 3px solid transparent; border-radius: 0 10px 10px 0;
+    color: var(--text); text-decoration: none; font-size: 13.5px; line-height: 1.45;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a::before {
+    content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 2px;
+    background: #C4B5FD; opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .sb-company a:hover, .toc a:hover { background: var(--chip-bg); border-left-color: #E9E4F6; }
+  .toc a:hover::before { opacity: 0.8; }
+  .sb-company a.cur { background: var(--purple); color: #fff; font-weight: 700; border-left-color: var(--purple); }
+  .toc a.sub { font-size: 12.5px; color: var(--muted); padding: 5px 12px 5px 34px; }
+  .toc a.sub::before { left: 21px; width: 4px; height: 4px; border-radius: 50%; }
+  .toc a.active { background: var(--purple-soft); color: var(--purple); font-weight: 700; border-left-color: var(--purple); }
+  .toc a.active::before { background: var(--purple); opacity: 1; }
+  .content { margin-left: 268px; }
+  .backdrop { display: none; }
+  .toc-btn {
+    display: none; background: var(--purple-soft); color: var(--purple);
+    border: none; border-radius: 999px; padding: 6px 14px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+    .sidebar.open { transform: none; }
+    .content { margin-left: 0; }
+    .toc-btn { display: inline-block; }
+    .backdrop.show {
+      display: block; position: fixed; inset: 0;
+      background: rgba(20,16,40,0.5); z-index: 70;
+    }
+  }
+
+  /* ===== 公司主题色（仅 logo dot 与 Hero 高亮） ===== */
+  .nav .logo .dot, .sb-head .logo .dot { background: linear-gradient(135deg, #1D4ED8, #4D9FFF); }
+  .hero h1 .teal { color: #7CC7FF; text-shadow: 0 0 32px rgba(124,199,255,0.45); }
+</style>
+</head>
+<body>
+
+<!-- ===== 左侧导航 ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="logo"><span class="dot">D</span>DeepSeek 专题洞察</div>
+    <a class="sb-back" href="index.html" onclick="if(window.parent!==window){window.parent.exitReport();return false;}">← 报告列表</a>
+  </div>
+  <div class="sb-group">本报告目录</div>
+  <nav class="toc" id="toc">
+    <a href="#sec-01">01 当前阶段判断</a>
+    <a href="#sec-02">02 公司战略</a>
+    <a href="#sec-02-1" class="sub">驱动因素：首轮融资是战略转向</a>
+    <a href="#sec-02-2" class="sub">战略重心映射到招聘方向</a>
+    <a href="#sec-02-3" class="sub">出海：几乎缺席</a>
+    <a href="#sec-02-4" class="sub">关键张力：研究文化 vs 产品化</a>
+    <a href="#sec-03">03 AI Native 组织</a>
+    <a href="#sec-03-1" class="sub">a) 人才密度驱动</a>
+    <a href="#sec-03-2" class="sub">b) 评估坐标切换对照表</a>
+    <a href="#sec-03-3" class="sub">c) 招聘方法论</a>
+    <a href="#sec-04">04 人才策略</a>
+    <a href="#sec-04-1" class="sub">4.1 HR 先翻倍</a>
+    <a href="#sec-04-2" class="sub">4.2 四线画像</a>
+    <a href="#sec-04-3" class="sub">4.3 选拔标准</a>
+    <a href="#sec-04-4" class="sub">4.4 薪资与激励</a>
+    <a href="#sec-04-5" class="sub">4.5 进出闭环</a>
+    <a href="#sec-05">05 一句话结论</a>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="content">
+
+<!-- ===== 顶部导航 ===== -->
+<nav class="nav">
+  <div class="logo"><span class="dot">D</span>DeepSeek 专题洞察</div>
+  <div class="right">
+    <button class="toc-btn" id="tocBtn">目录</button>
+    <div class="lang-pill"><span class="on">中</span><a href="DeepSeek_专题洞察_2026-08_EN.html" onclick="if(window.parent!==window){window.parent.openReport('deepseek_en');return false;}">EN</a></div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">DEEPSEEK 专题洞察 · AI NATIVE 人才情报</div>
+    <h1>首轮融资 <span class="teal">510 亿元</span>到账，<br>HR 团队先把自己翻倍</h1>
+    <div class="subline">边失血边输血——它的扩张逻辑，不能用常规扩张公司的尺子量</div>
+    <p class="summary">2026 年 6 月首轮融资（约 510 亿元 / ~$70 亿，投后约 $520 亿）打破长期坚持的"不融资"立场后，HR 团队两个月内从约 17 人扩到 32 人，再由这支新团队撑起三渠道去重后约 250–280 个在招岗；一边是核心研究员具名流失约 10 人，一边是 Agent 产品化与财务体系从 0 到 1。本简报沿四个框架拆解：它在什么阶段、下什么棋、组织怎么转、要什么人。</p>
+    <div class="meta">
+      <div><b>Focus</b>DeepSeek 人才配置与组织阶段</div>
+      <div><b>Supply depth</b>Boss 97 岗 + 脉脉 232 岗 + 猎聘 30 岗 · 32 人 HR 名单 · 三渠道交叉验证</div>
+      <div><b>As of</b>2026-08-09</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 01 当前阶段判断 ============ -->
+  <div class="sec-tag">Stage readout</div>
+  <h2 id="sec-01"><span class="no">01</span>当前阶段判断<span class="en">where DeepSeek stands</span></h2>
+  <p class="sec-desc">我们把大模型公司的组织演进分为四段：技术验证期 → 产品化起步期 → 规模化/商业化扩张期 → 上市成熟运营期。这个框架不是行业标准，而是基于本次 HR 与 JD 数据做的分析观察。</p>
+
+  <div class="stage-bar">
+    <div class="stage">
+      <div class="s-name">技术验证期</div>
+      <div class="s-desc">小核心团队，研究岗为主</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">产品化起步期</div>
+      <div class="s-desc">DeepSeek 正从这里出发</div>
+    </div>
+    <div class="stage here">
+      <div class="marker">DeepSeek · S2→S3 过渡</div>
+      <div class="s-name">规模化/商业化扩张期</div>
+      <div class="s-desc">融资驱动，正在进入</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">上市成熟运营期</div>
+      <div class="s-desc">增长、国际化、合规叙事</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">~510 <small>亿元</small></div>
+      <div class="lbl">2026-06 首轮融资 · 投后估值约 $520 亿</div>
+    </div>
+    <div class="stat">
+      <div class="num">17→32 <small>人</small></div>
+      <div class="lbl">HR 团队两个月翻倍 · 5–7 月至少 15 人入职</div>
+    </div>
+    <div class="stat">
+      <div class="num">250–280</div>
+      <div class="lbl">三渠道去重独立在招岗（Boss 97 / 脉脉 232 / 猎聘 30）</div>
+    </div>
+    <div class="stat">
+      <div class="num">~10 <small>人</small></div>
+      <div class="lbl">核心研究员具名流失 · 去向均为直接竞品</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>DeepSeek 的判断：S2 → S3 过渡期，由首轮融资驱动的规模化。</strong></p>
+    <p>判定依据是三个独立证据：<strong>岗位类型从研究走向产品</strong>（Agent 成为最大招聘方向）、<strong>应用化拐点已现</strong>（Agent 岗数与薪资双占比确认）、<strong>核心研究人才具名流失约 10 人</strong>；另有四个同源证据（岗位总量 / 职级策略 / 地域 / 薪资）全部指向急速扩张。在对标公司中，DeepSeek 是唯一"HR 先翻倍、研究层却在失血"的组合，也是唯一设 TA VP、业务 leader 零发岗的公司。</p>
+  </div>
+
+  <!-- ============ 02 公司战略 ============ -->
+  <div class="sec-tag">Strategy</div>
+  <h2 id="sec-02"><span class="no">02</span>公司战略：融资到账后的"公司化补课"棋局<span class="en">the catch-up game</span></h2>
+
+  <h3 id="sec-02-1">驱动因素：首次融资是一次战略转向，不只是钱<span class="en">a strategic turn, not just money</span></h3>
+  <p class="sec-desc">梁文锋长期坚持"三不"原则（不融资 / 不上市 / 不卖技术），这次融资把它打破了——管理层等于公开承认：规模化已被置于独立研究文化之上。资金到账后的动作序列非常清楚：2026 年 5 月（融资交割前）HR 团队开始扩编，"抢跑"本身就是融资确定性的信号；6 月融资交割，扩编加速；7 月 9 名资深招聘官集中到岗、三渠道同步放量，媒体口径"计划将所有部门规模扩大至少一倍"（媒体引用，未见官方公告原文）；同期据 FT / SCMP 报道启动新一轮融资（目标估值冲 $700 亿，未见官方确认）。</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">~510 <small>亿元</small></div>
+      <div class="lbl">首轮融资（约 $70 亿）· 成立以来首次外部融资</div>
+    </div>
+    <div class="stat">
+      <div class="num">~$520 <small>亿</small></div>
+      <div class="lbl">投后估值 · 各信源金额有偏差取中位</div>
+    </div>
+    <div class="stat">
+      <div class="num">~200 <small>亿元</small></div>
+      <div class="lbl">梁文锋本人出资 · 投资方含腾讯/宁德时代/京东</div>
+    </div>
+    <div class="stat">
+      <div class="num">$700 <small>亿</small></div>
+      <div class="lbl">新一轮融资目标估值 · 据报道，未证实</div>
+    </div>
+  </div>
+
+  <h3 id="sec-02-2">战略重心映射到招聘方向：要什么人，一眼可见<span class="en">money follows strategy</span></h3>
+  <table>
+    <thead>
+      <tr><th>招聘方向</th><th>量与钱的分布（脉脉 217 岗全量口径）</th><th>解读出的战略意图</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Agent 全线</td>
+        <td>岗数占比 15%、薪资总量占比 17%（Boss 18 岗为最大单一方向）</td>
+        <td>战略优先级最高：双占比一致且薪占比略高，不是低薪实习堆量；Agent Harness 研发 JD 写明"Model + Harness = Agent"——公司级 Agent 战略的首次公开表述</td>
+      </tr>
+      <tr>
+        <td>核心系统 / Infra</td>
+        <td>岗数占比 27%（体量最大），薪资占比约 28%</td>
+        <td>维持型投入：从算子、编译器到推理部署全栈覆盖，承接模型服务规模化</td>
+      </tr>
+      <tr>
+        <td>预训练 / 前沿研究</td>
+        <td>岗数占比 12%，薪资总量占比 18%</td>
+        <td>精英化维持：岗位少、顶格价，探索"持续学习 / 自进化 / 新范式"的下一代架构</td>
+      </tr>
+      <tr>
+        <td>财务 / 法务 / HR 职能</td>
+        <td>约 31 岗（脉脉独占），薪资占比仅 8%</td>
+        <td>首轮融资后财务体系从 0 到 1——融资到位后第一件事就是建财务团队，"公司化补课"最直白的证据</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sec-desc" style="margin-top:-6px;">注：JD 是预算表——岗位数说明组织要动哪里，薪资占比说明公司愿意把钱押在哪里。</p>
+
+  <h3 id="sec-02-3">出海：几乎缺席，且是双渠道确认的<span class="en">overseas: nearly absent</span></h3>
+  <p class="sec-desc">国内三渠道仅见纽约 1 个 HR 关联岗（NYU 在读，6 月入职）；LinkedIn 美 / 英 / 新检索亦无任何可核实的海外业务岗，真实海外关联者仅 3 人且均为 HR 或技术岗。判定：DeepSeek 当前是纯国内研究主体、无海外业务团队——这是"双渠道交叉确认"，不是"单渠道未观察到"。纽约 HR 岗属国际化试水而非成建制布局。</p>
+
+  <h3 id="sec-02-4">关键张力：研究文化的护城河，恰是产品化的阻力<span class="en">culture vs delivery</span></h3>
+  <div class="card gold">
+    <p style="margin:0;">DeepSeek 的研究文化在大模型公司中罕见：无 KPI、无考勤、创始人公开说"加班加点是浪费算力"、高管与基层并列写代码（公开信息）。这种文化有利于吸引顶尖研究人才，但不利于产品化所需的工程纪律——而本轮扩张的主战场恰是 Agent 产品化与消费级产品建设（前端/客户端 11 岗、情感智能数据 PM 单独设岗、AGI 管培生为新业务线储备）。<strong>组织能否在保留研究文化的同时长出交付纪律，是这轮 S2 → S3 转换的真正考题。</strong></p>
+  </div>
+
+  <!-- ============ 03 AI Native 组织 ============ -->
+  <div class="sec-tag">AI native organization</div>
+  <h2 id="sec-03"><span class="no">03</span>AI Native 组织：一家"HR 即第一生产力"的研究型公司<span class="en">HR as the first engine</span></h2>
+
+  <h3 id="sec-03-1">a) 人才密度驱动 vs 规模化执行驱动<span class="en">talent density over scale</span></h3>
+  <p class="sec-desc">大厂 HR 体系的前提是"规模化执行"——业务可拆解为标准动作，人可批量招聘、批量管理。AI Native 公司的前提是人才密度驱动：每位研究员都是高价值个体，组织产出取决于少数关键人才的水平而非人数。HR 的任务从"批量招聘"变成"对少数关键人才的深度获取与保留"。DeepSeek 是这套范式里最极端的样本——研究层小而精（100–499 人公司体量），招聘密度却进入行业第一梯队。</p>
+  <div class="card">
+    <div class="point">
+      <div class="pn">1</div>
+      <p><strong>HR 先于业务翻倍</strong>：2026 年 5–7 月至少 15 名 HR 入职（含 5 名 10 年+ 资深），团队从约 17 人扩至 32 人——走掉研究员的缺口，用"能帮招更多人的专业 HR"来补；</p>
+    </div>
+    <div class="point">
+      <div class="pn">2</div>
+      <p><strong>招聘组织按技术链路切块</strong>：17 位招聘官每人锁定一条技术线（Agent Infra / 核心系统推理 / 前沿研究 / 数据+IDC / Code Agent 数据各专人）——挖角与触达必须按方向找对口人；</p>
+    </div>
+    <div class="point">
+      <div class="pn">3</div>
+      <p><strong>双实体 HR 一体</strong>：幻方量化与 DeepSeek 共享 HR 团队（多位成员为幻方 → DeepSeek 路径）——人才密度范式下，HR 资源跟着"关键人才所在的实体"走，不跟着法人主体走。</p>
+    </div>
+  </div>
+
+  <h3 id="sec-03-2">b) 评估坐标的切换对照表<span class="en">coordinate switch</span></h3>
+  <table>
+    <thead>
+      <tr><th>维度</th><th>大厂坐标系（规模化执行）</th><th>AI Native 坐标系（人才密度）</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>组织完整性</td>
+        <td>层级齐全、三支柱配比达标</td>
+        <td>"体系不完整"不是减分项，改问"在人才密度逻辑下是否自洽"——DeepSeek 的 HR 纯招聘导向（HR = 招聘一体，无庞大 BP/SSC），在其扩张阶段自洽</td>
+      </tr>
+      <tr>
+        <td>HR 价值</td>
+        <td>交付量、漏斗转化率、到岗周期</td>
+        <td>关键人才获取率、保留率、对业务决策的影响力</td>
+      </tr>
+      <tr>
+        <td>TA 角色</td>
+        <td>交付型：接需求、填岗位</td>
+        <td>战略参谋型：行业信号——阶跃 / 月之暗面 / MiniMax 三家的 TA+BP 在联合发起"CEO 技术认知补课"，每周 1–2 位外部专家见 CEO，该机制为三家共享、并非 DeepSeek 独有；本轮摸盘未见 DeepSeek 参与的直接证据，但其 TA VP 亲自下场发岗，TA 职能同样在向战略侧移动</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec-03-3">c) 招聘方法论：渠道三层分工 × VP 不脱一线<span class="en">three-layer channels × VP on the line</span></h3>
+  <div class="stat-row three">
+    <div class="stat">
+      <div class="num">97/232/30</div>
+      <div class="lbl">Boss 走量 · 脉脉走全走精 · 猎聘精准补充</div>
+    </div>
+    <div class="stat">
+      <div class="num">21 <small>岗</small></div>
+      <div class="lbl">TA VP 亲自发岗 · 与新入职者并列第一</div>
+    </div>
+    <div class="stat">
+      <div class="num">0</div>
+      <div class="lbl">业务 leader 直发岗 · 全量发岗人均为 HR</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">渠道分工是对标公司里最清晰的三层：高端研究岗发脉脉+猎聘、职能岗发脉脉+猎聘、实习岗只发 Boss——这是有意识的渠道策略，不是遗漏。业务 leader 零发岗意味着：触达 DeepSeek 必须经过 HR 守门人，没有业务线捷径。</p>
+
+  <!-- ============ 04 人才策略 ============ -->
+  <div class="sec-tag">Talent strategy</div>
+  <h2 id="sec-04"><span class="no">04</span>人才策略：要什么人、怎么选、怎么定价<span class="en">who, how to select, at what price</span></h2>
+
+  <h3 id="sec-04-1">4.1 扩编规模与性质：两个月"速成"的资深班底<span class="en">HR doubles first</span></h3>
+  <p class="sec-desc">2026 年 5–7 月至少 15 名 HR 入职：5–6 月以骨干+新人为主，7 月 9 人最密集且资深集中到岗（3 名 10 年+ 全在 7 月）——Katrina Chen（前字节高端招聘 → B 站主站技术招聘负责人）、尹婷婷（前 AWS / 腾讯云）、彭肖（前腾讯高招经理+华南校招校企合作经理）等到岗数周内即大量发岗，脉脉 232 岗的盘子主要是这批人 7 月撑起来的。供给侧背景：大厂组织调整正在批量释放成熟 HR 中层（腾讯 HR 缩编、百度 HR 从约 500 人降至 300 以内、字节广告业务拆分后 BP/招聘体系重组）——DeepSeek 的速成是大厂释放的 HR 中层与 AI 公司资本化扩张的供需共振，而这个挖角窗口不会永远敞开。第二重证据：DeepSeek 在 Boss / 脉脉上公开招自己的 HR（招聘经理 20–40K·16薪）——<strong>HR 在招 HR，说明扩张预期已进入组织准备阶段</strong>。</p>
+
+  <h3 id="sec-04-2">4.2 要什么人：人才构成的四线画像<span class="en">the four-line talent map</span></h3>
+  <p class="sec-desc">四条人才线形成链路：Infra 承接模型服务规模化，Agent 把模型能力封装为可交付产品，研究精英维持模型代际优势，职能线完成首轮融资后的公司治理补课、并把人才管道前置到在校生阶段。占比为脉脉 217 岗全量口径。</p>
+
+  <div class="card loop-card">
+    <div class="ghost">01</div>
+    <h4>Agent 产品线<span class="en">Agent Product</span></h4>
+    <div class="metric">脉脉 ~32 岗 · 15% · 薪资占比 17% · Boss 18 岗为最大单一方向</div>
+    <p class="desc">把模型能力封装为可交付产品；"Code Agent 数据工程师"是介于研发与标注之间的新物种——用工程师经验与品味定义质量标准、建设评测体系、生产训练数据。</p>
+    <div class="criteria"><strong>人才标准</strong>——工程 × 数据品味复合是硬门槛：Code Agent 数据工程师等新物种岗要的不是标注人力，而是"用工程师经验与品味定义质量标准、建评测体系"的能力。</div>
+    <div class="tags">
+      <span class="tag hot">Agent Harness 研发</span><span class="tag">Agent Infra</span><span class="tag">Code Agent 数据（6 细分）</span><span class="tag">Agent 数据策略</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">02</div>
+    <h4>Infra 规模线<span class="en">Infra at Scale</span></h4>
+    <div class="metric">脉脉 ~58 岗 · 27% · 薪资占比约 28%</div>
+    <p class="desc">体量最大的方向：用户量已到必须解决算力与推理效率的阶段，从算子、编译器到推理部署全栈覆盖，一线与 IDC 现场岗并行。</p>
+    <div class="criteria"><strong>人才标准</strong>——系统级工程深度是硬门槛（算子/通信/编译器/推理引擎），超大集群实战经验优先；走量招即战力，部分岗接受乌兰察布 IDC 现场。</div>
+    <div class="tags">
+      <span class="tag hot">高性能算子/通信/编译器</span><span class="tag">推理部署/引擎/调度</span><span class="tag">超算集群</span><span class="tag">乌兰察布 IDC</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">03</div>
+    <h4>研究精英线<span class="en">Elite Research</span></h4>
+    <div class="metric">~27 岗 · 12% · 薪资占比 18% · Frontier 80–100K·14薪</div>
+    <p class="desc">少而精，不走量——模型代际优势的维持方式。Frontier 研究员年薪 112–140 万为全公司最高全职薪，方向标注"持续学习 / 自进化 / 新范式"。</p>
+    <div class="criteria"><strong>人才标准</strong>——学术高度与下一代范式探索力（持续学习/自进化/新范式）；少而精不走量，用全公司最高薪锁定顶尖学术背景。</div>
+    <div class="tags">
+      <span class="tag hot">Frontier（下一代架构）</span><span class="tag">预训练/后训练</span><span class="tag">多模态研究员</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">04</div>
+    <h4>职能线<span class="en">Corporate Function</span></h4>
+    <div class="metric">~31 岗 · 脉脉独占 · 单人独占 20 岗搭建财务全线 · 研究实习 800–1000 元/天 · AGI 管培生 20–30K·16薪</div>
+    <p class="desc">首轮融资后的公司治理补课：CFO → 出纳完整财务序列、法务、投资、内审内控、税务、采购；同时承载人才管道——研究实习（尤其 Frontier 这类需学术背景的方向）、模型策略 PM 实习、AGI 管培生，用行业顶尖实习薪资锁定顶尖在校生，管培生为新业务线储备管理人才。</p>
+    <div class="criteria"><strong>人才标准</strong>——治理序列完整性与专业资质（财务全链条、法务/内审/税务/采购）；学术潜力优先（研究实习明确要学术背景），顶薪实习前置锁定在校生，管培生看综合素质；薪资带宽低，不靠价格靠平台确定性吸引人。</div>
+    <div class="tags">
+      <span class="tag hot">CFO 100K+·20薪</span><span class="tag">法务/投资</span><span class="tag">内审内控/税务</span><span class="tag">采购</span><span class="tag">深度学习研究员实习</span><span class="tag">AGI 管培生</span>
+    </div>
+  </div>
+
+  <div class="criteria" style="max-width:none; margin:18px 0 0;"><strong>四线标准如何不同</strong>——研究精英线为"学术高度与范式探索"定价，少而精、顶格价；Infra 线为"系统级即战力"定价，走量；Agent 线产生新物种标准——用工程品味定义质量而非做标注；职能线不比薪资，靠治理资质与平台确定性补偿，并把人才管道前置到在校生阶段（顶薪实习即全职管道）。横过来看，AI 时代的选拔标准是：精英层与工程层两极定价，工程 × 数据品味成为新硬门槛，人才管道在校招阶段前置锁定。</div>
+
+  <h3 id="sec-04-3">4.3 AI 人才选拔标准：从渠道数据能读到什么<span class="en">selection signals</span></h3>
+  <p class="sec-desc">DeepSeek 未公开成文的人才标准，以下是从 JD 结构与招聘行为反推的"行为版标准"——公司嘴上说的标准在 JD 文本里，真实执行的标准在它的钱和动作里。</p>
+  
+  <div class="card">
+    <div class="bar-row">
+      <div class="name">开源</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:100%"></div></div>
+      <div class="cnt">15 条 · 48%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">AI 工具实践</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:80%"></div></div>
+      <div class="cnt">12 条 · 39%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">竞赛</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:40%"></div></div>
+      <div class="cnt">6 条 · 19%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">论文</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:33%"></div></div>
+      <div class="cnt">5 条 · 16%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">训练经验</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:7%"></div></div>
+      <div class="cnt">1 条 · 3%</div>
+    </div>
+    <div class="legend">31 条 Agent 线 JD 关键词命中分布 · 2026-08-17 全量抓取</div>
+  </div>
+  
+  <div class="takeaway">
+    <span class="tk">开源是 Agent 线最强信号（48%），普遍要求"进过核心代码库"的开源贡献</span>
+    <span class="tk">竞赛/论文仅作加分项——JD 明确"加分项：没有也没关系"，无硬性门槛</span>
+    <span class="tk">训练经验命中极低（3%）——Agent 线不要求训模型，AI 工具实践（39%）才是硬通货</span>
+  </div>
+  
+  <div class="card">
+    <div class="point">
+      <div class="pn">①</div>
+      <p><strong>经验门槛：不以年限论</strong>——多数技术岗标"经验不限 + 本科"，连高性能算子、测试开发这类需工程积累的岗也如此；当实习日薪能给到 1000 元时，不需要用经验门槛筛人，候选人会自己来；</p>
+    </div>
+    <div class="point">
+      <div class="pn">②</div>
+      <p><strong>"工程品味"被显式写进选拔标准</strong>——Code Agent 数据工程师 JD 明确"不必精通模型训练，但要真正做过该领域开发"（游戏/3D 渲染等方向）：AI 人才不只指"会训模型的人"，也包括"用领域经验塑造模型能力的人"；</p>
+    </div>
+    <div class="point">
+      <div class="pn">③</div>
+      <p><strong>管道前置</strong>——顶薪锁定顶尖在校生，实习生是全职管道；AGI 管培生为新业务线储备管理人才；</p>
+    </div>
+    <div class="point">
+      <div class="pn">④</div>
+      <p><strong>招聘者被要求"懂方向"</strong>——招聘经理 JD 要求"AI/云计算/互联网行业优先"，新挖 HR 清一色技术招聘背景；按技术链路切块的招聘组织，等于把"招聘者必须懂该方向"写进了组织结构；</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑤</div>
+      <p><strong>技术判断权归属</strong>——业务 leader 零发岗，全量由 HR 发布；技术裁量权集中在研究/业务负责人内部（渠道不可见），HR 承担专业守门与方向匹配。</p>
+    </div>
+  </div>
+  
+  <p class="sec-desc" style="margin-top:-6px;">注：以上关键词进度条依据 Agent 线 31 岗任职要求全文扫描（2026-08-17 全量抓取）。对照 MiniMax Agent 线论文/竞赛零命中——"把学术味加分项写进 Agent 岗"是 DeepSeek 研究文化的文本级体现。AI 工具实践（Claude Code/Cursor 等）为 DeepSeek 五档中唯一比 MiniMax 多出的额外维度。</p>
+
+  <h3 id="sec-04-4">4.4 薪资与激励：现金 top 10%，但留人机制刚补上第一课<span class="en">how the money is placed</span></h3>
+  <p class="sec-desc">14 薪是统一标准，部分岗位 16 薪；按战略价值分层定价，研究精英层执行顶格定价。长期不融资导致员工股权无市场定价，是核心研究员流失的结构性原因——首轮融资首次给股权提供了定价锚。</p>
+
+  <div class="pay-row">
+    <div class="pay">
+      <div class="p-line">研究精英线</div>
+      <div class="p-band">80–100K · 14薪</div>
+      <div class="p-note">Frontier 研究员 · 年薪 112–140 万全公司最高</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">资深技术</div>
+      <div class="p-band">60–90K · 16薪</div>
+      <div class="p-note">高性能分布式存储同档 · 16 薪而非 14 薪</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">主流技术</div>
+      <div class="p-band">40–80K · 14薪</div>
+      <div class="p-note">六险一金顶格 · 免费餐饮 · 晚间补贴</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tags">
+      <span class="tag hot">职能 10–50K · 14–20薪（CFO 100K+·20薪）</span>
+      <span class="tag">IDC 乌兰察布 15–40K 为谷底（学历放宽至大专）</span>
+      <span class="tag">研究实习 800–1000 元/天</span>
+      <span class="tag">首轮融资给股权提供定价锚 · 是否推出激励计划是第一观察点</span>
+    </div>
+    <p class="pay-note">以上为公开招聘信息标价口径，非实际 offer 数据；部分岗位薪资区间较宽，实际定薪取决于候选人背景。</p>
+  </div>
+
+  <h3 id="sec-04-5">4.5 进出闭环：失血与输血放在一起读<span class="en">outflow × transfusion</span></h3>
+  <div class="card gold">
+    <p><strong>出</strong>：核心研究人员具名流失约 10 人（官方致谢名单口径"近 300 人 → 10 人已离职"）：王炳宣 → 腾讯、罗福莉 → 小米、郭达雅 → 字节 Seed、阮翀 → 元戎启行、魏浩然去向未披露——挖角方全是同赛道直接竞品，人才战争是零和博弈；据市场消息竞品出价 2–3 倍（未证实）。整体离职率约 5%，且百度相关团队已定向吸纳其核心人才。</p>
+    <p><strong>进</strong>：同期 HR 净流入 15 人、三渠道约 300 个在招岗全面开放、研究实习顶薪铺管道；流入侧，字节 Seed 近一年约 70 名技术人才离职，部分流向 DeepSeek、月之暗面等公司（多家公司共有的人才流动信号）。</p>
+    <p style="margin-bottom:0;"><strong>闭环解读：</strong>DeepSeek 执行的是"边失血边输血"的非典型模式——走掉 10 个不可替代的研究员，用 30 个工程师 + 15 个 HR 补位，即"以组织化对冲个人流失"。是否有效取决于研究产出的可替代性，目前尚无定论。但它有一条其他公司没有的流失缓冲：<strong>模型已成为竞对的标准件</strong>（腾讯的 AI 战略包含接入 DeepSeek 模型再建应用）——人才流失被部分对冲为行业影响力溢价。</p>
+  </div>
+
+  <!-- ===== 结论 ===== -->
+  <div class="sec-tag">Takeaway</div>
+  <h2 id="sec-05"><span class="no">05</span>一句话结论<span class="en">one-line takeaway</span></h2>
+  <div class="card">
+    <p style="margin:0; font-size:15px;"><strong>用首轮融资补上公司化补课：</strong>核心研究员边失血约 10 人，先把招聘机器翻倍（HR 17→32），再用三渠道约 300 岗撑起 Agent 产品化 + 财务从 0 到 1 + 研究精英顶格价——用四线链路理解它的组织，用人才密度范式评估它的 HR，用"工程品味 + 顶薪管道"识别它要的人。</p>
+  </div>
+
+</main>
+
+<div class="footer">
+  DeepSeek 专题洞察 · 2026-08-17 · 数据窗口 2026-08-01 ~ 08-06<br>
+  数据来源：Boss直聘、脉脉、猎聘、LinkedIn 及公开报道，多渠道交叉验证 · 对标范围：DeepSeek / 月之暗面 / 智谱华章 / MiniMax 四家头部大模型公司
+</div>
+
+</div><!-- /content -->
+
+<script>
+  // 目录滚动高亮
+  var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets = tocLinks.map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  var h2Map = {};
+  var curH2 = null;
+  targets.forEach(function (t) {
+    if (t.tagName === 'H2') { curH2 = t.id; h2Map[t.id] = null; }
+    else { h2Map[t.id] = curH2; }
+  });
+  function onScroll() {
+    var y = window.scrollY + 150;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    tocLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (!current) return;
+    var curLink = document.querySelector('.toc a[href="#' + current.id + '"]');
+    if (curLink) curLink.classList.add('active');
+    var parentId = h2Map[current.id];
+    if (parentId) {
+      var pLink = document.querySelector('.toc a[href="#' + parentId + '"]');
+      if (pLink) pLink.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 移动端侧边栏抽屉
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var tocBtn = document.getElementById('tocBtn');
+  function toggleSidebar(open) {
+    sidebar.classList.toggle('open', open);
+    backdrop.classList.toggle('show', open);
+  }
+  tocBtn.addEventListener('click', function () { toggleSidebar(true); });
+  backdrop.addEventListener('click', function () { toggleSidebar(false); });
+  sidebar.addEventListener('click', function (e) {
+    if (e.target.closest('a')) toggleSidebar(false);
+  });
+</script>
+
+</body>
+</html>
