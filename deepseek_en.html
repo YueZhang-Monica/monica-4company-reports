@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek Talent Insights | AI Native Talent Intelligence</title>
+<style>
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #9EF0DC;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+    --green: #2FBF8F;
+    --pink: #E86B8E;
+    --gold: #E8C96A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ===== Top nav ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav .logo, .sb-head .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .nav .logo .dot, .sb-head .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #17B894);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav .right { display: flex; align-items: center; gap: 10px; }
+  .lang-pill { display: flex; border: 1px solid var(--card-border); border-radius: 999px; overflow: hidden; }
+  .lang-pill span, .lang-pill a { padding: 3px 12px; font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: none; }
+  .lang-pill span.on { background: var(--purple); color: #fff; }
+  .nav .cta {
+    background: var(--purple); color: #fff; border: none; border-radius: 999px;
+    padding: 6px 16px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #1E514A 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(23,184,148,0.18), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(158,240,220,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 46px; font-weight: 850; line-height: 1.28; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .teal {
+    color: var(--teal);
+    text-shadow: 0 0 32px rgba(158,240,220,0.45);
+  }
+  .hero .subline { color: var(--teal); font-size: 18px; font-weight: 600; margin: 8px 0 18px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 30px; } .hero .subline { font-size: 16px; } }
+  .hero .summary { color: #C9C6E0; font-size: 14px; max-width: 760px; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px;
+    font-size: 12.5px; color: #9C98C0;
+  }
+  .hero .meta b { display: block; color: #C9C6E0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ===== Main content ===== */
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+
+  .sec-tag {
+    margin-top: 56px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; line-height: 1.4; }
+  h2 .no { color: var(--purple); margin-right: 10px; }
+  h2 .en { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h2 .zh { color: var(--muted); font-size: 15px; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 17px; font-weight: 800; margin: 26px 0 6px; }
+  h3 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  h3 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .sec-desc { color: var(--muted); max-width: 860px; margin: 10px 0 22px; }
+
+  /* ===== Cards ===== */
+  .card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; margin: 14px 0;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .card.gold { border-left: 4px solid var(--gold); }
+  .card p { margin: 6px 0; }
+
+  /* ===== Stat cards ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .stat-row.three { grid-template-columns: repeat(3, 1fr); }
+  .stat {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .stat .num { font-size: 25px; font-weight: 800; color: var(--purple); line-height: 1.2; }
+  .stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat .hl-gold { color: var(--gold); font-weight: 700; }
+
+  /* ===== Progress bars ===== */
+  .bar-row { display: flex; align-items: center; gap: 14px; margin: 13px 0; }
+  .bar-row .name { width: 150px; flex-shrink: 0; font-weight: 600; font-size: 13.5px; }
+  .bar-row .cnt { width: 64px; flex-shrink: 0; text-align: right; font-size: 12.5px; color: var(--muted); }
+  .bar-track { flex: 1; height: 14px; background: #F1EFFA; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.pink { background: var(--pink); }
+  .legend { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 5px 0 14px; }
+  .legend .dot.g { background: var(--green); }
+  .legend .dot.p { background: var(--pink); }
+
+  /* ===== Stage bar ===== */
+  .stage-bar { display: flex; align-items: stretch; gap: 0; margin: 18px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1; min-width: 130px; background: #fff; border: 1px solid var(--card-border);
+    padding: 16px 14px; text-align: center; position: relative;
+  }
+  .stage:first-child { border-radius: 14px 0 0 14px; }
+  .stage:last-child { border-radius: 0 14px 14px 0; }
+  .stage .s-name { font-weight: 700; font-size: 13.5px; }
+  .stage .s-desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .stage.here {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+    box-shadow: 0 8px 24px rgba(94,62,216,0.25); z-index: 2;
+  }
+  .stage.here .s-desc { color: #D8CFFB; }
+  .stage .marker {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: #14532D; font-size: 10.5px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ===== Loop cards ===== */
+  .loop-card { position: relative; overflow: hidden; }
+  .loop-card .ghost {
+    position: absolute; right: 18px; top: 6px; font-size: 64px; font-weight: 800;
+    color: #F3F0FB; line-height: 1; pointer-events: none;
+  }
+  .loop-card h4 { margin: 0; font-size: 18px; font-weight: 800; }
+  .loop-card h4 .en { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card h4 .zh { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 6px; }
+  .loop-card .metric { color: var(--purple); font-weight: 800; font-size: 15px; margin: 6px 0 4px; }
+  .loop-card .desc { color: #4A4765; margin: 0 0 14px; max-width: 720px; }
+  .loop-card .criteria { margin: 0 0 12px; font-size: 13.5px; line-height: 1.65; color: #6b5b1e; background: #fdf8e8; border-left: 3px solid #c9a227; padding: 8px 12px; border-radius: 6px; max-width: 760px; }
+  .loop-arrow { text-align: center; color: #B9B3DC; font-size: 18px; margin: 2px 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* ===== Comparison table ===== */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 13.5px; }
+  thead th {
+    background: var(--purple-soft); color: var(--purple); text-align: left;
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+  }
+  thead th:first-child { border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody td {
+    background: #fff; padding: 13px 16px; border-bottom: 1px solid var(--card-border); vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 700; width: 110px; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== Numbered points ===== */
+  .point { display: flex; gap: 14px; margin: 12px 0; align-items: flex-start; }
+  .point .pn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple);
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .point p { margin: 0; }
+
+  /* ===== Takeaway chips ===== */
+  .takeaway { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .takeaway .tk {
+    background: var(--purple-soft); color: var(--purple); border-radius: 999px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== Pay cards ===== */
+  .pay-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+  .pay {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px;
+  }
+  .pay .p-line { font-weight: 800; font-size: 15px; }
+  .pay .p-band { font-size: 22px; font-weight: 800; color: var(--purple); margin: 6px 0 2px; }
+  .pay .p-note { font-size: 12.5px; color: var(--muted); }
+  .pay-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 760px) {
+    .stat-row, .stat-row.three, .pay-row { grid-template-columns: repeat(2, 1fr); }
+    .stage { min-width: 46%; border-radius: 10px !important; margin: 3px; }
+  }
+
+  /* ===== Left sidebar ===== */
+  html { scroll-behavior: smooth; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 268px;
+    background: #fff; border-right: 1px solid var(--card-border);
+    overflow-y: auto; padding: 18px 14px 32px; z-index: 80;
+  }
+  .sb-head { padding: 4px 8px 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 4px; }
+  .sb-back {
+    display: inline-block; margin-top: 8px; color: var(--muted);
+    font-size: 12.5px; text-decoration: none;
+  }
+  .sb-back:hover { color: var(--purple); }
+  .sb-group {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--muted); text-transform: uppercase; margin: 18px 8px 8px;
+    padding-bottom: 8px; border-bottom: 1px solid #EFEBF9;
+  }
+  .sb-company a, .toc a {
+    position: relative; display: block; padding: 8px 12px 8px 26px;
+    border-left: 3px solid transparent; border-radius: 0 10px 10px 0;
+    color: var(--text); text-decoration: none; font-size: 13.5px; line-height: 1.45;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a::before {
+    content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 2px;
+    background: #C4B5FD; opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .sb-company a:hover, .toc a:hover { background: var(--chip-bg); border-left-color: #E9E4F6; }
+  .toc a:hover::before { opacity: 0.8; }
+  .sb-company a.cur { background: var(--purple); color: #fff; font-weight: 700; border-left-color: var(--purple); }
+  .toc a.sub { font-size: 12.5px; color: var(--muted); padding: 5px 12px 5px 34px; }
+  .toc a.sub::before { left: 21px; width: 4px; height: 4px; border-radius: 50%; }
+  .toc a.active { background: var(--purple-soft); color: var(--purple); font-weight: 700; border-left-color: var(--purple); }
+  .toc a.active::before { background: var(--purple); opacity: 1; }
+  .content { margin-left: 268px; }
+  .backdrop { display: none; }
+  .toc-btn {
+    display: none; background: var(--purple-soft); color: var(--purple);
+    border: none; border-radius: 999px; padding: 6px 14px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+    .sidebar.open { transform: none; }
+    .content { margin-left: 0; }
+    .toc-btn { display: inline-block; }
+    .backdrop.show {
+      display: block; position: fixed; inset: 0;
+      background: rgba(20,16,40,0.5); z-index: 70;
+    }
+  }
+
+  /* ===== Company theme colors (logo dot & hero highlight only) ===== */
+  .nav .logo .dot, .sb-head .logo .dot { background: linear-gradient(135deg, #1D4ED8, #4D9FFF); }
+  .hero h1 .teal { color: #7CC7FF; text-shadow: 0 0 32px rgba(124,199,255,0.45); }
+</style>
+</head>
+<body>
+
+<!-- ===== Left sidebar ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="logo"><span class="dot">D</span>DeepSeek Talent Insights</div>
+    <a class="sb-back" href="index.html" onclick="if(window.parent!==window){window.parent.exitReport();return false;}">← Report List</a>
+  </div>
+  <div class="sb-group">In This Report</div>
+  <nav class="toc" id="toc">
+    <a href="#sec-01">01 Stage Readout</a>
+    <a href="#sec-02">02 Strategy</a>
+    <a href="#sec-02-1" class="sub">Driver: first round as strategic turn</a>
+    <a href="#sec-02-2" class="sub">Strategy maps to hiring direction</a>
+    <a href="#sec-02-3" class="sub">Overseas: nearly absent</a>
+    <a href="#sec-02-4" class="sub">Key tension: research culture vs productization</a>
+    <a href="#sec-03">03 AI Native Organization</a>
+    <a href="#sec-03-1" class="sub">a) Talent density over scale</a>
+    <a href="#sec-03-2" class="sub">b) Evaluation coordinate switch</a>
+    <a href="#sec-03-3" class="sub">c) Recruitment methodology</a>
+    <a href="#sec-04">04 Talent Strategy</a>
+    <a href="#sec-04-1" class="sub">4.1 HR doubles first</a>
+    <a href="#sec-04-2" class="sub">4.2 Four-line map</a>
+    <a href="#sec-04-3" class="sub">4.3 Selection signals</a>
+    <a href="#sec-04-4" class="sub">4.4 Pay &amp; incentives</a>
+    <a href="#sec-04-5" class="sub">4.5 Outflow × inflow</a>
+    <a href="#sec-05">05 One-line Takeaway</a>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="content">
+
+<!-- ===== Top nav ===== -->
+<nav class="nav">
+  <div class="logo"><span class="dot">D</span>DeepSeek Talent Insights</div>
+  <div class="right">
+    <button class="toc-btn" id="tocBtn">TOC</button>
+    <div class="lang-pill"><a href="DeepSeek_专题洞察_2026-08.html" onclick="if(window.parent!==window){window.parent.openReport('deepseek');return false;}">中</a><span class="on">EN</span></div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">DEEPSEEK TALENT INSIGHTS · AI NATIVE TALENT INTELLIGENCE</div>
+    <h1>Its first <span class="teal">¥51 billion</span> funding round lands,<br>and the first thing DeepSeek doubles is its own HR team</h1>
+    <div class="subline">Bleeding and transfusing at once — its expansion logic can't be measured with a conventional growth-company yardstick</div>
+    <p class="summary">After the June 2026 first funding round (~¥51B / ~$7B, ~$52B post-money) broke the long-held "no fundraising" stance, the HR team grew from ~17 to 32 people within two months, and this new team now carries ~250–280 open roles deduplicated across three channels; on one side, ~10 core researchers departed by name, on the other, Agent productization and the finance function were built from 0 to 1. This brief unpacks it along four frameworks: what stage it is in, what game it is playing, how the organization is shifting, and what kind of people it needs.</p>
+    <div class="meta">
+      <div><b>Focus</b>DeepSeek talent allocation &amp; organizational stage</div>
+      <div><b>Supply depth</b>97 Boss Zhipin roles + 232 Maimai + 30 Liepin · 32-person HR roster · triple-channel cross-verification</div>
+      <div><b>As of</b>2026-08-09</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 01 Stage readout ============ -->
+  <div class="sec-tag">Stage readout</div>
+  <h2 id="sec-01"><span class="no">01</span>Where DeepSeek stands<span class="zh">当前阶段判断</span></h2>
+  <p class="sec-desc">We break the organizational evolution of AI model companies into four stages: tech validation → productization → scaling &amp; commercialization → listed maturity. This framework is not an industry standard — it is an analytical lens derived from the HR and JD data in this study.</p>
+
+  <div class="stage-bar">
+    <div class="stage">
+      <div class="s-name">Tech Validation</div>
+      <div class="s-desc">Small core team, research-heavy</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Productization</div>
+      <div class="s-desc">DeepSeek departs from here</div>
+    </div>
+    <div class="stage here">
+      <div class="marker">DeepSeek · S2→S3 transition</div>
+      <div class="s-name">Scaling &amp; Commercialization</div>
+      <div class="s-desc">Funding-driven, now entering</div>
+    </div>
+    <div class="stage">
+      <div class="s-name">Listed Maturity</div>
+      <div class="s-desc">Growth, globalization, compliance narrative</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">~¥51 <small>B</small></div>
+      <div class="lbl">First round, Jun 2026 · ~$52B post-money valuation</div>
+    </div>
+    <div class="stat">
+      <div class="num">17→32 <small>people</small></div>
+      <div class="lbl">HR team doubled in two months · at least 15 joined May–Jul</div>
+    </div>
+    <div class="stat">
+      <div class="num">250–280</div>
+      <div class="lbl">Deduplicated open roles across three channels (Boss 97 / Maimai 232 / Liepin 30)</div>
+    </div>
+    <div class="stat">
+      <div class="num">~10 <small>people</small></div>
+      <div class="lbl">Core researchers departed by name · all to direct competitors</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>Our read: S2 → S3 transition, scaling driven by the first funding round.</strong></p>
+    <p>The read rests on three independent pieces of evidence: <strong>role mix shifting from research to product</strong> (Agent is the largest hiring direction), <strong>an application inflection point has appeared</strong> (Agent's share of both role count and pay confirms it), <strong>~10 named departures of core research talent</strong>; plus four same-source signals (total role volume / level strategy / geography / pay), all pointing to rapid expansion. Among the peer set, DeepSeek is the only "HR doubles first while the research layer bleeds" combination, and the only company with a TA VP while business leaders post zero roles.</p>
+  </div>
+
+  <!-- ============ 02 Strategy ============ -->
+  <div class="sec-tag">Strategy</div>
+  <h2 id="sec-02"><span class="no">02</span>Strategy: the corporate catch-up game after the funding lands<span class="zh">融资到账后的"公司化补课"棋局</span></h2>
+
+  <h3 id="sec-02-1">Driver: the first round is a strategic turn, not just money<span class="zh">首次融资是一次战略转向，不只是钱</span></h3>
+  <p class="sec-desc">Liang Wenfeng long held to a "three no's" stance (no fundraising / no IPO / no selling technology) — this round broke it. Management has effectively admitted publicly: scaling has been placed above the independent research culture. The action sequence after the money landed is very clear: in May 2026 (before the round closed) the HR team began expanding — the front-running itself is a signal of funding certainty; the round closed in June and expansion accelerated; in July, 9 senior recruiters landed together and all three channels scaled up in sync, with the media phrasing "plans to at least double the size of every department" (media citation; no official announcement text seen); around the same time, FT / SCMP reported a new funding round kicking off (target valuation toward $70B, unconfirmed officially).</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num">~¥51 <small>B</small></div>
+      <div class="lbl">First round (~$7B) · first external funding since founding</div>
+    </div>
+    <div class="stat">
+      <div class="num">~$52 <small>B</small></div>
+      <div class="lbl">Post-money valuation · sources differ, median taken</div>
+    </div>
+    <div class="stat">
+      <div class="num">~¥20 <small>B</small></div>
+      <div class="lbl">Liang Wenfeng personally invested · incl. Tencent / CATL / JD.com</div>
+    </div>
+    <div class="stat">
+      <div class="num">$70 <small>B</small></div>
+      <div class="lbl">New round target valuation · reported, unconfirmed</div>
+    </div>
+  </div>
+
+  <h3 id="sec-02-2">Strategy maps onto hiring direction: who they want, at a glance<span class="zh">战略重心映射到招聘方向：要什么人，一眼可见</span></h3>
+  <table>
+    <thead>
+      <tr><th>Hiring direction</th><th>Volume &amp; money distribution (all 217 Maimai roles)</th><th>Strategic intent decoded</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Agent across the board</td>
+        <td>15% of roles, 17% of total pay (Boss's 18 roles are the largest single direction)</td>
+        <td>Highest strategic priority: the two shares agree and the pay share is slightly higher — this is not low-paid intern volume-stacking; the Agent Harness R&amp;D JD states "Model + Harness = Agent" — the first public articulation of a company-level Agent strategy</td>
+      </tr>
+      <tr>
+        <td>Core systems / Infra</td>
+        <td>27% of roles (the largest volume), ~28% of pay</td>
+        <td>Maintenance-grade investment: full-stack coverage from kernels and compilers to inference deployment, carrying model-service scaling</td>
+      </tr>
+      <tr>
+        <td>Pretraining / frontier research</td>
+        <td>12% of roles, 18% of total pay</td>
+        <td>Elite maintenance: few roles, top-tier prices, exploring next-generation architectures of "continuous learning / self-evolution / new paradigm"</td>
+      </tr>
+      <tr>
+        <td>Finance / Legal / HR functions</td>
+        <td>~31 roles (Maimai only), just 8% of pay</td>
+        <td>The finance function went from 0 to 1 after the first round — the first thing after the money landed was building a finance team: the most literal evidence of the corporate catch-up</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sec-desc" style="margin-top:-6px;">Note: JDs are the budget sheet — role count shows where the organization will move, pay share shows where the company is willing to bet its money.</p>
+
+  <h3 id="sec-02-3">Overseas: nearly absent, and dual-channel confirmed<span class="zh">出海：几乎缺席，且是双渠道确认的</span></h3>
+  <p class="sec-desc">Across the three domestic channels we see only one HR-adjacent role in New York (an NYU student, joined in June); LinkedIn searches for US / UK / Singapore surface no verifiable overseas business roles either, and the only three people with genuine overseas links are all HR or technical roles. Verdict: DeepSeek is currently a purely domestic research entity with no overseas business team — this is "dual-channel cross-confirmation", not "unobserved in a single channel". The New York HR role is internationalization testing the water, not a systematic deployment.</p>
+
+  <h3 id="sec-02-4">Key tension: the research-culture moat is exactly the productization drag<span class="zh">研究文化的护城河，恰是产品化的阻力</span></h3>
+  <div class="card gold">
+    <p style="margin:0;">DeepSeek's research culture is rare among AI model companies: no KPIs, no attendance tracking, a founder who says publicly that "overtime is a waste of compute", and executives writing code alongside the rank and file (public information). This culture attracts top research talent, but it works against the engineering discipline productization requires — and the main battlefield of this expansion round is exactly Agent productization and consumer-grade product building (11 frontend/client roles, a dedicated emotional-intelligence data PM role, AGI management trainees reserved for new business lines). <strong>Whether the organization can grow delivery discipline while keeping its research culture is the real exam of this S2 → S3 switch.</strong></p>
+  </div>
+
+  <!-- ============ 03 AI Native organization ============ -->
+  <div class="sec-tag">AI native organization</div>
+  <h2 id="sec-03"><span class="no">03</span>AI Native organization: a research company where HR is the first engine<span class="zh">一家"HR 即第一生产力"的研究型公司</span></h2>
+
+  <h3 id="sec-03-1">a) Talent density vs. scaled execution<span class="zh">人才密度驱动 vs 规模化执行驱动</span></h3>
+  <p class="sec-desc">Big Tech HR systems assume "scaled execution" — work breaks into standard actions, people are hired and managed in bulk. AI Native companies assume talent density: every researcher is a high-value individual, and organizational output depends on the caliber of a few key talents, not the headcount. The HR mission shifts from "hiring at volume" to "deep acquisition and retention of a small number of key talents". DeepSeek is the most extreme sample of this paradigm — a small, elite research layer (100–499-employee company size), yet recruitment density already in the industry's first tier.</p>
+  <div class="card">
+    <div class="point">
+      <div class="pn">1</div>
+      <p><strong>HR doubles before the business</strong>: at least 15 HR joined between May and July 2026 (including 5 with 10+ years), growing the team from ~17 to 32 — the gap left by departing researchers is filled with "professional HR who can help hire even more people";</p>
+    </div>
+    <div class="point">
+      <div class="pn">2</div>
+      <p><strong>The recruiting org is sliced along technical chains</strong>: each of the 17 recruiters owns one technical line (dedicated owners for Agent Infra / core-system inference / frontier research / data + IDC / Code Agent data) — poaching and outreach must be matched to the right person per direction;</p>
+    </div>
+    <div class="point">
+      <div class="pn">3</div>
+      <p><strong>One HR team across two entities</strong>: High-Flyer Quant and DeepSeek share an HR team (several members took the High-Flyer → DeepSeek path) — under the talent-density paradigm, HR resources follow "the entity where the key talent sits", not the legal entity.</p>
+    </div>
+  </div>
+
+  <h3 id="sec-03-2">b) The evaluation coordinate switch<span class="zh">评估坐标的切换对照表</span></h3>
+  <table>
+    <thead>
+      <tr><th>Dimension</th><th>Big Tech coordinates (scaled execution)</th><th>AI Native coordinates (talent density)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Org completeness</td>
+        <td>Full hierarchy, three-pillar ratio on target</td>
+        <td>"Incomplete system" is not a demerit — ask instead whether it is coherent under a talent-density logic — DeepSeek's HR is purely recruitment-oriented (HR = recruiting, no large BP/SSC), coherent in its expansion stage</td>
+      </tr>
+      <tr>
+        <td>HR value</td>
+        <td>Delivery volume, funnel conversion, time-to-fill</td>
+        <td>Key-talent acquisition rate, retention, influence on business decisions</td>
+      </tr>
+      <tr>
+        <td>TA role</td>
+        <td>Delivery: take orders, fill seats</td>
+        <td>Strategic advisor: an industry signal — the TA+BP teams at Stepfun / Moonshot AI / MiniMax are jointly running a "CEO technology-cognition catch-up" program, with 1–2 external experts meeting the CEO each week; the mechanism is shared by those three, not unique to DeepSeek. This sweep found no direct evidence of DeepSeek's participation, but its TA VP posting roles personally shows the TA function moving toward the strategic side as well</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec-03-3">c) Recruitment methodology: three-layer channels × a VP who stays on the line<span class="zh">渠道三层分工 × VP 不脱一线</span></h3>
+  <div class="stat-row three">
+    <div class="stat">
+      <div class="num">97/232/30</div>
+      <div class="lbl">Boss for volume · Maimai full &amp; precise · Liepin precision top-up</div>
+    </div>
+    <div class="stat">
+      <div class="num">21 <small>roles</small></div>
+      <div class="lbl">TA VP posts personally · tied for first with new joiners</div>
+    </div>
+    <div class="stat">
+      <div class="num">0</div>
+      <div class="lbl">Business leaders post directly · every posting is by HR</div>
+    </div>
+  </div>
+  <p class="sec-desc" style="margin-top:-6px;">The channel division is the cleanest three-layer structure among the peer set: senior research roles go to Maimai + Liepin, functional roles to Maimai + Liepin, intern roles only to Boss — a deliberate channel strategy, not an omission. Zero postings by business leaders means: reaching DeepSeek must go through the HR gatekeeper, with no business-line shortcut.</p>
+
+  <!-- ============ 04 Talent strategy ============ -->
+  <div class="sec-tag">Talent strategy</div>
+  <h2 id="sec-04"><span class="no">04</span>Talent strategy: who, how to select, at what price<span class="zh">要什么人、怎么选、怎么定价</span></h2>
+
+  <h3 id="sec-04-1">4.1 Scale &amp; nature of expansion: a veteran bench built in two months<span class="zh">两个月"速成"的资深班底</span></h3>
+  <p class="sec-desc">At least 15 HR joined between May and July 2026: May–June were mostly backbones plus newcomers; July was the densest with 9 people, and the veterans concentrated there (all three 10+ year hires landed in July) — Katrina Chen (ex-ByteDance executive recruiting → head of technical recruitment at Bilibili's main site), Yin Tingting (ex-AWS / Tencent Cloud), Peng Xiao (ex-Tencent senior hiring manager + South China campus recruitment and university-enterprise cooperation manager) started posting roles in bulk within weeks of joining; the 232-role Maimai board was mainly carried by this cohort in July. Supply-side context: Big Tech reorganizations are releasing mature HR mid-level talent in batches (Tencent HR downsizing, Baidu HR cut from ~500 to under 300, ByteDance's BP/recruiting system restructured after the ads business split) — DeepSeek's fast build-out is a supply-demand resonance between Big Tech-released HR mid-levels and AI companies' capitalized expansion, and this poaching window will not stay open forever. A second piece of evidence: DeepSeek openly recruits for its own HR on Boss / Maimai (recruiting manager 20–40K · 16-month pay) — <strong>HR hiring HR means the expansion expectation has entered organizational preparation</strong>.</p>
+
+  <h3 id="sec-04-2">4.2 Who they need: the four-line talent map<span class="zh">人才构成的四线画像</span></h3>
+  <p class="sec-desc">Four talent lines form a chain: Infra carries model-service scaling, Agent packages model capability into deliverable products, the research elite maintains the model's generational edge, and the corporate function line completes the governance catch-up after the first round while front-loading the talent pipeline to the student stage. Shares are on the all-217-Maimai-roles basis.</p>
+
+  <div class="card loop-card">
+    <div class="ghost">01</div>
+    <h4>Agent Product<span class="zh">Agent 产品线</span></h4>
+    <div class="metric">~32 Maimai roles · 15% · 17% of pay · Boss's 18 roles are the largest single direction</div>
+    <p class="desc">Packaging model capability into deliverable products; the "Code Agent data engineer" is a new species between R&amp;D and annotation — using engineer experience and taste to define quality standards, build evaluation systems, and produce training data.</p>
+    <div class="criteria"><strong>Talent bar</strong> — the engineering × data-taste compound is the hard threshold: new-species roles like Code Agent data engineer ask for the ability to "define quality standards and build evaluation systems with engineer experience and taste," not annotation headcount.</div>
+    <div class="tags">
+      <span class="tag hot">Agent Harness R&amp;D</span><span class="tag">Agent Infra</span><span class="tag">Code Agent data (6 sub-tracks)</span><span class="tag">Agent data strategy</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">02</div>
+    <h4>Infra at Scale<span class="zh">Infra 规模线</span></h4>
+    <div class="metric">~58 Maimai roles · 27% · ~28% of pay</div>
+    <p class="desc">The largest direction by volume: user scale has reached the point where compute and inference efficiency must be solved — full-stack coverage from kernels and compilers to inference deployment, with first-line and IDC on-site roles in parallel.</p>
+    <div class="criteria"><strong>Talent bar</strong> — system-level engineering depth is the hard threshold (kernels / comm / compilers / inference engines), with large-cluster production experience preferred; volume hiring for ready-to-fight capability, some roles accept Ulanqab IDC on-site.</div>
+    <div class="tags">
+      <span class="tag hot">High-performance kernels / comm / compilers</span><span class="tag">Inference deployment / engine / scheduling</span><span class="tag">Supercomputing clusters</span><span class="tag">Ulanqab IDC</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">03</div>
+    <h4>Elite Research<span class="zh">研究精英线</span></h4>
+    <div class="metric">~27 roles · 12% · 18% of pay · Frontier 80–100K · 14-month pay</div>
+    <p class="desc">Few and elite, not volume-driven — how the model's generational edge is maintained. Frontier researchers at ¥1.12–1.4M annual pay are the company's highest full-time salaries, with the direction labeled "continuous learning / self-evolution / new paradigm".</p>
+    <div class="criteria"><strong>Talent bar</strong> — academic height and next-gen paradigm exploration (continuous learning / self-evolution / new paradigm); few and elite, not volume-driven, locking top academic backgrounds with the company's highest pay.</div>
+    <div class="tags">
+      <span class="tag hot">Frontier (next-gen architecture)</span><span class="tag">Pretraining / post-training</span><span class="tag">Multimodal researcher</span>
+    </div>
+  </div>
+  <div class="loop-arrow">↓</div>
+
+  <div class="card loop-card">
+    <div class="ghost">04</div>
+    <h4>Corporate Function<span class="zh">职能线</span></h4>
+    <div class="metric">~31 roles · Maimai only · one person alone carries 20 roles to build the full finance line · research interns ¥800–1,000/day · AGI trainee 20–30K·16 months</div>
+    <p class="desc">Corporate-governance catch-up after the first round: a complete finance sequence from CFO to cashier, legal, investment, internal audit &amp; control, tax, procurement; it also carries the talent pipeline — research interns (especially academic-background directions like Frontier), model strategy PM interns, AGI management trainees — locking top students with industry-top intern pay, and trainees stockpile management talent for new business lines.</p>
+    <div class="criteria"><strong>Talent bar</strong> — governance-sequence completeness and professional credentials (full finance chain, legal / audit / tax / procurement); academic potential first (research internships explicitly require academic backgrounds), top-pay internships lock top students, trainees judged on overall quality; narrow pay bands — attracts via platform certainty, not price.</div>
+    <div class="tags">
+      <span class="tag hot">CFO 100K+ · 20-month pay</span><span class="tag">Legal / investment</span><span class="tag">Internal audit &amp; control / tax</span><span class="tag">Procurement</span><span class="tag">Deep learning researcher intern</span><span class="tag">AGI management trainee</span>
+    </div>
+  </div>
+
+  <div class="criteria" style="max-width:none; margin:18px 0 0;"><strong>How the four lines' bars differ</strong> — the elite research line prices "academic height and paradigm exploration," few and elite at top pay; the Infra line prices "system-level ready-to-fight capability," volume-driven; the Agent line creates a new-species bar — defining quality with engineering taste instead of doing annotation; the corporate function line does not compete on pay, compensating with governance credentials and platform certainty, and front-loads the talent pipeline to the campus stage (top-pay internships as the full-time pipeline). Read across, the AI-era selection standard emerges: elite and engineering layers priced at opposite poles, engineering × data-taste as the new hard threshold, and the pipeline locked in at the campus stage.</div>
+
+  <h3 id="sec-04-3">4.3 AI talent selection: what channel data reveals<span class="zh">从渠道数据能读到什么</span></h3>
+  <p class="sec-desc">DeepSeek publishes no written talent standard. What follows is a "behavioral standard" reverse-engineered from JD structure and hiring behavior — the stated standard lives in the JD text; the actually-executed standard lives in its money and its moves.</p>
+
+  <div class="card">
+    <div class="bar-row">
+      <div class="name">Open Source</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:100%"></div></div>
+      <div class="cnt">15 roles · 48%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">AI Tool Practice</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:80%"></div></div>
+      <div class="cnt">12 roles · 39%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Competitions</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:40%"></div></div>
+      <div class="cnt">6 roles · 19%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Papers</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:33%"></div></div>
+      <div class="cnt">5 roles · 16%</div>
+    </div>
+    <div class="bar-row">
+      <div class="name">Training Exp.</div>
+      <div class="bar-track"><div class="bar-fill pink" style="width:7%"></div></div>
+      <div class="cnt">1 role · 3%</div>
+    </div>
+    <div class="legend">31 Agent line JDs · keyword hit distribution · full crawl 2026-08-17</div>
+  </div>
+
+  <div class="takeaway">
+    <span class="tk">Open source is the strongest Agent line signal (48%), commonly requiring "contributed to core repos"</span>
+    <span class="tk">Competitions/papers are plus points only — JDs say "plus: fine if you don't have it," no hard threshold</span>
+    <span class="tk">Training experience hits near zero (3%) — Agent line doesn't require model training; AI tool practice (39%) is the real currency</span>
+  </div>
+
+  <div class="card">
+    <div class="point">
+      <div class="pn">①</div>
+      <p><strong>Experience bar is not about years</strong> — most technical roles say "experience open + bachelor's degree", even roles that need engineering accumulation like high-performance kernels and test development; when intern pay reaches ¥1,000/day, there is no need to filter with an experience bar — candidates come on their own;</p>
+    </div>
+    <div class="point">
+      <div class="pn">②</div>
+      <p><strong>"Engineering taste" is explicitly written into the selection standard</strong> — the Code Agent data engineer JD states clearly "no need to master model training, but must have really done development in this domain" (games / 3D rendering and similar): AI talent means not only "people who can train models", but also "people who shape model capability with domain experience";</p>
+    </div>
+    <div class="point">
+      <div class="pn">③</div>
+      <p><strong>Pipeline front-loading</strong> — top pay locks in top students; interns are the full-time pipeline; AGI management trainees stockpile management talent for new business lines;</p>
+    </div>
+    <div class="point">
+      <div class="pn">④</div>
+      <p><strong>Recruiters are required to "know the direction"</strong> — the recruiting manager JD requires "AI / cloud / internet industry preferred", and the newly poached HR are uniformly from technical recruiting backgrounds; a recruiting org sliced along technical chains is the same as writing "recruiters must understand the direction" into the organizational structure;</p>
+    </div>
+    <div class="point">
+      <div class="pn">⑤</div>
+      <p><strong>Where technical judgment sits</strong> — business leaders post zero roles; everything is published by HR; technical discretion is concentrated inside the research / business heads (invisible to channels), and HR serves as the professional gatekeeper and direction matcher.</p>
+    </div>
+  </div>
+
+  <p class="sec-desc" style="margin-top:-6px;">Note: the keyword bar chart above is based on a full-text scan of the Agent line's 31 JD requirements (full crawl 2026-08-17). Versus MiniMax's Agent line hitting zero on papers/competitions — "writing academic-flavored plus points into Agent JDs" is the textual fingerprint of DeepSeek's research culture. AI tool practice (Claude Code/Cursor, etc.) is the extra dimension unique to DeepSeek among the five — absent from MiniMax's four-bar framework.</p>
+
+  <h3 id="sec-04-4">4.4 Pay &amp; incentives: cash at top 10%, but retention has just learned its first lesson<span class="zh">现金 top 10%，但留人机制刚补上第一课</span></h3>
+  <p class="sec-desc">14-month pay is the unified standard, 16 months for some roles; pricing is tiered by strategic value, and the research elite tier executes top-tier pricing. Long-term non-fundraising left employee equity without a market price — a structural cause of core researcher attrition; the first round has now given equity a pricing anchor for the first time.</p>
+
+  <div class="pay-row">
+    <div class="pay">
+      <div class="p-line">Elite Research</div>
+      <div class="p-band">80–100K · 14-month</div>
+      <div class="p-note">Frontier researchers · ¥1.12–1.4M annual, the company's highest</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Senior Tech</div>
+      <div class="p-band">60–90K · 16-month</div>
+      <div class="p-note">Same tier as high-performance distributed storage · 16 months, not 14</div>
+    </div>
+    <div class="pay">
+      <div class="p-line">Mainstream Tech</div>
+      <div class="p-band">40–80K · 14-month</div>
+      <div class="p-note">Top-tier six insurances + housing fund · free meals · evening allowance</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tags">
+      <span class="tag hot">Functions 10–50K · 14–20 months (CFO 100K+ · 20 months)</span>
+      <span class="tag">Ulanqab IDC 15–40K is the floor (degree relaxed to associate level)</span>
+      <span class="tag">Research interns ¥800–1,000/day</span>
+      <span class="tag">The first round gives equity a pricing anchor · whether an incentive plan launches is the #1 thing to watch</span>
+    </div>
+    <p class="pay-note">The above is public job-posting pricing, not actual offer data; some ranges are wide, and actual offers depend on candidate background.</p>
+  </div>
+
+  <h3 id="sec-04-5">4.5 Outflow × inflow: read the bleeding and the transfusion together<span class="zh">失血与输血放在一起读</span></h3>
+  <div class="card gold">
+    <p><strong>Out</strong>: ~10 core researchers departed by name (official acknowledgement-list basis: "nearly 300 people → 10 have left"): Wang Bingxuan → Tencent, Luo Fuli → Xiaomi, Guo Daya → ByteDance Seed, Ruan Chong → DeepRoute.ai, Wei Haoran — destination undisclosed. Every poacher is a direct competitor on the same track; the talent war is a zero-sum game. Market sources say competitor offers were 2–3× (unconfirmed). Overall attrition is ~5%, and Baidu-related teams have been directionally absorbing its core talent.</p>
+    <p><strong>In</strong>: over the same period — net HR inflow of 15, ~300 open roles across three channels fully opened, top-paying research internships laying the pipeline; on the inflow side, ByteDance Seed lost ~70 technical people over the past year, some flowing to DeepSeek, Moonshot AI and others (a talent-flow signal shared across multiple companies).</p>
+    <p style="margin-bottom:0;"><strong>Reading the loop:</strong> DeepSeek runs an atypical "bleeding while transfusing" model — 10 irreplaceable researchers leave, backfilled with 30 engineers + 15 HR, i.e. "offsetting individual attrition with organization-building". Whether it works depends on the substitutability of research output — no verdict yet. But it has one attrition buffer no other company has: <strong>its models have become the standard component of competitors</strong> (Tencent's AI strategy includes plugging DeepSeek models into applications built on top) — talent loss is partially offset into an industry-influence premium.</p>
+  </div>
+
+  <!-- ===== Takeaway ===== -->
+  <div class="sec-tag">Takeaway</div>
+  <h2 id="sec-05"><span class="no">05</span>One-line takeaway<span class="zh">一句话结论</span></h2>
+  <div class="card">
+    <p style="margin:0; font-size:15px;"><strong>Using the first round to make up the corporate catch-up:</strong> ~10 core researchers bleed out, the recruiting machine doubles first (HR 17→32), then ~300 roles across three channels carry Agent productization + finance from 0 to 1 + top-tier pricing for the research elite — read its organization through the four-line chain, evaluate its HR through the talent-density paradigm, and spot the people it wants via "engineering taste + top-pay pipeline".</p>
+  </div>
+
+</main>
+
+<div class="footer">
+  DeepSeek Talent Insights · 2026-08-17 · data window 2026-08-01 ~ 08-06<br>
+  Sources: Boss Zhipin, Maimai, Liepin, LinkedIn and public reports, cross-verified across channels · Peer set: DeepSeek / Moonshot AI / Zhipu (Z.ai) / MiniMax — the four leading AI model companies
+</div>
+
+</div><!-- /content -->
+
+<script>
+  // Scrollspy TOC highlight
+  var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets = tocLinks.map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  var h2Map = {};
+  var curH2 = null;
+  targets.forEach(function (t) {
+    if (t.tagName === 'H2') { curH2 = t.id; h2Map[t.id] = null; }
+    else { h2Map[t.id] = curH2; }
+  });
+  function onScroll() {
+    var y = window.scrollY + 150;
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    tocLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (!current) return;
+    var curLink = document.querySelector('.toc a[href="#' + current.id + '"]');
+    if (curLink) curLink.classList.add('active');
+    var parentId = h2Map[current.id];
+    if (parentId) {
+      var pLink = document.querySelector('.toc a[href="#' + parentId + '"]');
+      if (pLink) pLink.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile sidebar drawer
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var tocBtn = document.getElementById('tocBtn');
+  function toggleSidebar(open) {
+    sidebar.classList.toggle('open', open);
+    backdrop.classList.toggle('show', open);
+  }
+  tocBtn.addEventListener('click', function () { toggleSidebar(true); });
+  backdrop.addEventListener('click', function () { toggleSidebar(false); });
+  sidebar.addEventListener('click', function (e) {
+    if (e.target.closest('a')) toggleSidebar(false);
+  });
+</script>
+
+</body>
+</html>
