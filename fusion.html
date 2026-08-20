@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>头部大模型公司招聘模式洞察 · 部门分享</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f8fa;
+    --text: #1f2329;
+    --text-muted: #6b7280;
+    --accent: #2563eb;
+    --accent-soft: #eff4ff;
+    --gold: #a17a08;
+    --gold-soft: #fdf6e3;
+    --red: #c0392b;
+    --red-soft: #fdf0ee;
+    --green: #2f855a;
+    --green-soft: #ecf7f1;
+    --border: #e5e7eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --surface: #1a1d24;
+      --text: #e6e8eb;
+      --text-muted: #9aa1ad;
+      --accent: #60a5fa;
+      --accent-soft: #1a2436;
+      --gold: #d4a72c;
+      --gold-soft: #262214;
+      --red: #e57368;
+      --red-soft: #2a1a18;
+      --green: #5cbf8f;
+      --green-soft: #16241e;
+      --border: #2a2f38;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text);
+    margin: 0; padding: 0; line-height: 1.7; font-size: 14px;
+  }
+  .root { max-width: 920px; margin: 0 auto; padding: 32px 24px 60px; }
+  .hero {
+    background: linear-gradient(150deg, #101828 0%, #1e3a5f 75%, #274b7a 100%);
+    color: #fff; border-radius: 14px; padding: 44px 40px; margin-bottom: 30px;
+  }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #93b4e0; margin-bottom: 10px; }
+  .hero h1 { font-size: 30px; font-weight: 700; margin: 0 0 12px; line-height: 1.35; }
+  .hero .sub { color: #a9bdd6; font-size: 14px; line-height: 1.8; }
+  .hero .meta { color: #7f96b5; font-size: 12.5px; margin-top: 18px; }
+  h2 {
+    font-size: 20px; font-weight: 600; margin: 40px 0 6px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  h2 .no { color: var(--accent); margin-right: 8px; }
+  h3 { font-size: 16px; font-weight: 600; margin: 26px 0 8px; }
+  p { margin: 8px 0; }
+  .sub { color: var(--text-muted); font-size: 13.5px; margin: 4px 0 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
+  @media (max-width: 760px) { .grid2, .grid4 { grid-template-columns: 1fr; } }
+  .card {
+    border: 1px solid var(--border); border-radius: 10px; padding: 15px 17px;
+    background: var(--bg); font-size: 13.5px; line-height: 1.7;
+  }
+  .card h4 { font-size: 14.5px; font-weight: 600; margin: 0 0 8px; }
+  .card .big { font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+  .card .cap { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
+  .card.blue { background: var(--accent-soft); border-color: transparent; }
+  .card.gold { background: var(--gold-soft); border-color: transparent; }
+  .card.red  { background: var(--red-soft);  border-color: transparent; }
+  .card.green{ background: var(--green-soft);border-color: transparent; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: 13px; }
+  thead th {
+    background: var(--surface); text-align: left; padding: 10px 12px;
+    font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+  ul, ol { padding-left: 22px; margin: 10px 0; }
+  li { margin: 6px 0; }
+  strong { font-weight: 600; }
+  .hl { color: var(--accent); font-weight: 600; }
+  .hl-red { color: var(--red); font-weight: 600; }
+  .hl-gold { color: var(--gold); font-weight: 600; }
+  .muted { color: var(--text-muted); }
+  .callout {
+    margin: 16px 0; padding: 14px 18px; border-radius: 10px;
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    font-size: 14px; line-height: 1.7;
+  }
+  .callout.gold { background: var(--gold-soft); border-left-color: var(--gold); }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin: 12px 0; font-size: 13.5px; }
+  .bar-label { width: 110px; text-align: right; font-weight: 500; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--surface); border-radius: 6px; height: 30px; }
+  .bar-fill {
+    height: 100%; border-radius: 6px; background: linear-gradient(90deg, #3b82f6, #2563eb);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 10px; color: #fff; font-size: 12.5px; font-weight: 600; min-width: 70px;
+  }
+  .bar-note { width: 250px; font-size: 12px; color: var(--text-muted); flex-shrink: 0; line-height: 1.5; }
+  @media (max-width: 760px) { .bar-note { display: none; } }
+  .part-banner {
+    margin: 48px 0 8px; padding: 26px 30px; border-radius: 12px;
+    background: linear-gradient(150deg, #101828 0%, #1e3a5f 75%, #274b7a 100%); color: #fff;
+  }
+  .part-banner .kicker { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #93b4e0; }
+  .part-banner h2 { border: none; color: #fff; margin: 6px 0 4px; padding: 0; font-size: 22px; }
+  .part-banner .sub { color: #a9bdd6; margin: 0; }
+  .footer {
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 12px; text-align: center;
+  }
+  @media print {
+    .hero, .part-banner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    h2 { page-break-after: avoid; }
+    .card, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+
+  <div class="hero" style="background: linear-gradient(135deg, #1a2942 0%, #243456 100%); border: 2px solid var(--blue); border-radius: 16px; padding: 60px 50px; margin: 40px 0; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+    <div class="kicker">部门分享 · 2026-08</div>
+    <h1>从招聘视角，看国内头部大模型公司</h1>
+    <div class="sub">大模型公司的HR —— 他们从哪来、往哪去、谁在下场招聘</div>
+    <div class="meta">数据基础：Boss直聘 × 脉脉 × LinkedIn × JD 七维度分析 · 覆盖 Kimi / 智谱 / DeepSeek / MiniMax · 2026-08-01 ~ 08-06 时点快照</div>
+  </div>
+
+  <div class="part-banner">
+    <div class="kicker">第一部分</div>
+    <h2>他们的 HR 团队长什么样</h2>
+    <div class="sub">规模 · 扩编 · 来源 · 去向 · 业务参与度</div>
+  </div>
+
+  <h2><span class="no">Q1</span>这些公司的 HR 团队有多大？</h2>
+  <p class="sub">四家量级相近（30–50 人），但结构差异极大</p>
+  <div class="bar-row"><div class="bar-label">智谱华章</div><div class="bar-track"><div class="bar-fill" style="width:92%">约40人，一线15人</div></div><div class="bar-note">60% 应届，有经验 HR 仅约 18 人；管理层极薄（仅 2 名高级经理，无 TA Head）</div></div>
+  <div class="bar-row"><div class="bar-label">MiniMax</div><div class="bar-track"><div class="bar-fill" style="width:88%">约38人，一线20人</div></div><div class="bar-note">脉脉 HR 发岗口径；HRBP层+执行层+Temu Global TA Leader，LinkedIn 确认海外业务团队已成体系</div></div>
+  <div class="bar-row"><div class="bar-label">DeepSeek</div><div class="bar-track"><div class="bar-fill" style="width:80%">约32人，一线20人</div></div><div class="bar-note">唯一 TA VP（B）；资深 7 人中 5 人是 2026 年 5-7 月刚拉来的</div></div>
+  <div class="bar-row"><div class="bar-label">Kimi</div><div class="bar-track"><div class="bar-fill" style="width:70%">28-30人+实习5-6人，一线9人</div></div><div class="bar-note">骨干 7 + 执行～14 双层清晰；几乎只在脉脉活动</div></div>
+  <div class="callout">一个反直觉的事实：<strong>规模相近 ≠ 成熟度相近</strong>。智谱靠应届生堆量、管理层最薄；DeepSeek 的资深班底是今年两个月内外部挖角"速成"的；MiniMax 虽然 HR 编制不是最大，但 36 位脉脉 HR / 405 独立岗显示招聘机器更活跃。</div>
+
+  <h2><span class="no">Q2</span>2026 上半年，他们的 HR 各招了多少人？</h2>
+  <p class="sub">四家全部处于净扩编——"HR 在招 HR"是行业级信号</p>
+  <table class="mini">
+    <tr><th>公司</th><th>扩编人数</th><th>动作细节</th><th>启示</th></tr>
+    <tr><td><strong>DeepSeek</strong></td><td><span class="hl-red">15 人</span><br><span class="muted">5–7 月</span></td><td>7 月 9 人最密集；3 名 10 年+ 资深集中到岗；到岗数周内即大量发岗</td><td>两月批量搭起资深班底</td></tr>
+    <tr><td><strong>MiniMax</strong></td><td><span class="hl-gold">11 人</span><br><span class="muted">上半年</span></td><td>Temu Global TA Leader + 海外 4 城招聘官铺设</td><td>国内挖角 + 海外铺点</td></tr>
+    <tr><td><strong>Kimi</strong></td><td><span class="hl-gold">≥7 人</span><br><span class="muted">上半年</span></td><td>正式 7+ 与实习 2 入职，骨干层明显扩编</td><td>骨干层强化</td></tr>
+    <tr><td><strong>智谱</strong></td><td>持续补编</td><td>在 Boss/脉脉持续招自己的 HRBP 与招聘经理</td><td>组织自我完善</td></tr>
+  </table>
+  <div class="callout gold"><strong>怎么读这个信号：</strong>HR 团队先于业务自我扩张。四家同时净扩编，说明整个行业处在扩张周期——模型迭代、国际化、Agent 产品线都在同步推进。对我们而言，<span class="hl">HR 岗位本身的需求也在放大</span>。</div>
+
+  <h2><span class="no">Q3</span>这些新 HR 是从哪来的？</h2>
+  <p class="sub">共同来源指向大厂成熟招聘团队；但每家口味不同</p>
+  <table>
+    <thead><tr><th>公司</th><th>主要挖角来源</th><th>工作经验与技术/AI 背景</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DeepSeek</strong></td><td>字节系 5、腾讯系 4，另含 AWS / 快手 / 百度 / 美团 / B 站 / 华为 / Pony.ai / MiniMax / 宁德时代 / 京东</td><td><span class="hl-red">两个月批量挖角</span>，新进资深多在 8–12 年，少量 5–8 年；来源多为互联网、云、自动驾驶/AI 相关技术招聘，不是纯 AI，但技术候选人经验重</td></tr>
+      <tr><td><strong>MiniMax</strong></td><td>Temu Global TA Leader、小米 MiMo 大模型 HR、阿里云 HRG、京东招聘、快手海外、文远知行、前字节系多人</td><td><span class="hl-gold">"国内挖大厂 + 海外铺招聘点"双线并行</span>；5–10 年与 10 年+ 混合，过往集中在电商出海、云、自动驾驶、大模型/技术招聘，AI/技术浓度较高</td></tr>
+      <tr><td><strong>Kimi</strong></td><td>美团 / 字节 / 小红书 / 华为 / 上海 AI Lab / 源码资本 / 九坤</td><td>多为 5–10 年骨干，互联网大厂 HR + <span class="hl">VC 背景</span>（源码/九坤）是特色；不全是 AI 出身，但普遍接触过技术、增长或 AI Lab 候选人</td></tr>
+      <tr><td><strong>智谱</strong></td><td>阿里国际、腾讯国际、光年之外等</td><td>3–8 年执行/骨干与应届补量并存；过往更偏国际化、高端招聘和科技公司，不是全员 AI 背景，但服务商业化与出海更匹配</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>对我们的启示：</strong>字节系 / 腾讯系 HR 是全行业公认的"硬通货"来源；但真正溢价的是既懂技术招聘、又经历过 AI/云/自动驾驶/出海等复杂业务的人——<span class="hl">不是所有新 HR 都来自 AI，但技术与 AI 候选人经验正在被重新定价</span>。</div>
+
+  <h2><span class="no">Q4</span>走了多少人？去了哪里？</h2>
+  <p class="sub">HR 的流出去向，本身就是竞争情报</p>
+  <table class="mini">
+    <tr><th>公司</th><th>离职去向 / 流动信号</th><th>启示</th></tr>
+    <tr><td><strong>MiniMax</strong></td><td>· Tristan Zhao → <strong>小红书</strong><br>· 程洪平 → 记学张量（升任 HRD）<br>· Ariel Yang → 乐元素<br>· Ross Gu / Slaven：LinkedIn 意向信号"进入就业市场"</td><td>窗口主要在 <span class="hl-red">HR / 产品 / 战略投资层</span>；JD 暂未显示核心研究层失血</td></tr>
+    <tr><td><strong>智谱</strong></td><td>· 张明曦 → AgiBot 智元机器人<br>· Yangyang Qian → Sand.ai</td><td>离职 HR 流向具身智能 + AI 创业生态</td></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>Boss 候选池 3 名在职者全标"月内到岗"，已脱离发岗序列</td><td>候选活跃度与核心职责脱节，离职前兆</td></tr>
+    <tr><td><strong>Kimi</strong></td><td>团队最稳，未见明显流出</td><td>组织稳定性最高</td></tr>
+  </table>
+  <div class="callout gold"><strong>竞争窗口：</strong>MiniMax 的核心研究层暂未见明显失血，窗口更集中在 HR、产品和战略投资等非核心研究层。</div>
+
+  <h2><span class="no">Q5</span>业务 leader 会自己下场招聘吗？</h2>
+  <p class="sub">会——但只有两家。这是组织文化差异，也是触达路径差异</p>
+  <table class="mini">
+    <tr><th>公司</th><th>业务参与度</th><th>具体动作</th><th>触达路径含义</th></tr>
+    <tr><td><strong>智谱</strong></td><td><span class="hl-gold">41%</span></td><td>44 位发岗人中 18 位业务 leader；大模型事业部 VP 赵女士亲自发 6 个高端岗</td><td><span class="hl-gold">可直接触达业务决策者</span></td></tr>
+    <tr><td><strong>MiniMax</strong></td><td><span class="hl-gold">42%</span></td><td>59 位 BOSS 中 25 位业务直发；研发负责人丛先生一人发 19 岗</td><td><span class="hl-gold">可直接触达业务决策者</span></td></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>0%</td><td>所有岗位由 HR 按技术链路切块分工（Agent Infra / 核心系统推理 / 前沿研究 / 数据+IDC 各专人锁定）</td><td>HR 是必经守门人</td></tr>
+    <tr><td><strong>Kimi</strong></td><td>0%</td><td>业务 leader 从不露面，招聘全由 HR 骨干层操盘</td><td>HR 是必经守门人</td></tr>
+  </table>
+  <div class="callout">补充：DeepSeek 唯一有 <strong>TA VP</strong>（步逗逗，前幻方副总裁）亲自发 21 岗，管理层不脱一线；而智谱管理层极薄，缺招聘总监 / TA Head 层级。</div>
+
+  <h2><span class="no">Q6</span>发岗最多的人 ≈ 决策权最小</h2>
+  <p class="sub">四家无一例外——发岗量榜首全是执行层 / 新人</p>
+  <table>
+    <thead><tr><th>公司</th><th>发岗最多的人（执行层）</th><th>真正该触达的人（高影响力）</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Kimi</strong></td><td>Sherry(15)、Nicole(12)、Molly(10)</td><td>骨干层 Huang / Lisa / Bruce 发岗极少，但掌握决策</td></tr>
+      <tr><td><strong>智谱</strong></td><td>"吴先生 19 岗"——title 仅"招聘者"，只负责实习/初级岗</td><td>Shelly（脉脉影响力 2770）、VP 赵女士（只发 6 个高端岗）</td></tr>
+      <tr><td><strong>DeepSeek</strong></td><td>匿名徐女士(29 岗)；VP 步逗逗(21)与新人子晴(21)并列</td><td>VP 步逗逗 + 2026 年新挖的资深班底（Claudia Hou / 彭肖等）</td></tr>
+      <tr><td><strong>MiniMax</strong></td><td>Danny(46) / Lois(31) / 恒宇(21) 三人占 60%</td><td>Temu Global TA Leader、HRBP 万茜（三平台实证）</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>我的工作法则：</strong>触达高价值对象，要找<span class="hl">脉脉高影响力骨干或业务 leader</span>，而不是发岗最多的执行层。渠道上：脉脉是四家公共基本盘，Boss 走量，LinkedIn 只用于海外与高端。</div>
+
+  <h3>第一部分小结</h3>
+  <ol>
+    <li><strong>渠道</strong>：Kimi 几乎只用脉脉，MiniMax 是 Boss 走量 + 脉脉走精，DeepSeek 是 Boss / 脉脉 / 猎聘三层分工，智谱则全渠道承接商业化。</li>
+    <li><strong>对象</strong>：发岗量与决策权倒挂是行业通式——触达骨干层与业务 leader，而不是最忙的执行层；智谱 / MiniMax 可直接触达业务 VP，DeepSeek / Kimi 必须经过 HR 守门人。</li>
+    <li><strong>时机</strong>：MiniMax 的窗口更集中在 HR / 产品 / 战略投资层；Kimi 在补增长国际化，DeepSeek 在边失血边输血，智谱在商业化深水区补体系——不同阶段对应不同候选人叙事。</li>
+  </ol>
+
+  <div class="part-banner">
+    <div class="kicker">第二部分</div>
+    <h2>从招聘数据看公司</h2>
+    <div class="sub">不摆单点数据，而看数据之间的张力：HR 规模 × JD 总量，渠道选择 × 公司阶段，岗位结构 × 战略重心</div>
+  </div>
+
+  <h2><span class="no">总览</span>一个观察框架：四家公司处在不同组织演进阶段</h2>
+  <div id="stageTable" style="margin: 14px 0;">
+    <div style="cursor:pointer; padding: 12px; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;" onclick="var t = document.getElementById('stageTableContent'); t.style.display = t.style.display === 'none' ? 'block' : 'none'; this.querySelector('.toggle-arrow').textContent = t.style.display === 'none' ? '▶' : '▼';">
+      <span style="font-weight: 500;">阶段定义</span>
+      <span class="toggle-arrow" style="color: #666;">▼</span>
+    </div>
+    <div id="stageTableContent" style="display: block;">
+      <table class="mini">
+        <tr><th>阶段</th><th>读者能听懂的含义</th><th>组织与招聘特征</th></tr>
+        <tr><td><strong>技术验证期</strong></td><td>证明模型/技术路线可行</td><td>小核心团队，研究岗为主，靠创始人圈层招人</td></tr>
+        <tr><td><strong>产品化起步期</strong></td><td>把模型能力做成可用产品</td><td>开始招工程、产品、数据、Infra，但仍以技术为中心</td></tr>
+        <tr><td><strong>规模化/商业化扩张期</strong></td><td>产品和业务放量，需要组织承接</td><td>HR、财务、法务、销售、解决方案、区域团队补齐</td></tr>
+        <tr><td><strong>上市/成熏运营期</strong></td><td>资本化、收入、治理和全球化叙事并行</td><td>增长、国际化、合规、财务、市值叙事成为核心议题</td></tr>
+      </table>
+    </div>
+  </div>
+  <table class="mini">
+    <tr><th>公司</th><th>阶段判断</th><th>最关键张力</th><th>一句话画像</th></tr>
+    <tr><td><strong>DeepSeek</strong></td><td><span class="hl-red">产品化起步 → 规模化扩张</span></td><td>核心研究流失 vs HR 先翻倍、Agent/财务体系补齐</td><td>首次融资后，从研究驱动转向组织化和产品化，边失血边输血</td></tr>
+    <tr><td><strong>MiniMax</strong></td><td>规模化/商业化扩张期</td><td>已上市本应稳态 vs 405岗/428人≈ 95%</td><td>技术底色仍强，IPO 后继续用公开市场资金换规模</td></tr>
+    <tr><td><strong>智谱</strong></td><td>规模化/商业化扩张期（深段）</td><td>研究层稳定 vs Agent + 销售 + 职能同步扩张</td><td>Agent、商业化、区域 GTM 与上市职能同步成熟</td></tr>
+    <tr><td><strong>Kimi</strong></td><td><span class="hl-gold">规模化扩张 → IPO 冲刺期</span></td><td>主力JD未披露N薪 vs 核心团队稳定、增长/国际化占比异常高</td><td>不是全面扩编，而是 IPO 前精准补增长故事</td></tr>
+  </table>
+  <div class="callout"><strong>说明：</strong>这个框架不是行业标准，而是基于本次 HR 与 JD 数据做的分析观察。核心思想是：第一部分看到的是 HR 团队本身，第二部分看到的是公司处在哪个组织演进阶段。招聘动作不是公司的结果，而是公司下一步战略的前置影子。</div>
+
+  <h2><span class="no">洞察一</span>真正的扩张，往往先从 HR 自我扩张开始</h2>
+  <table class="mini">
+    <tr><th>公司</th><th>HR 自我扩张</th><th>JD 扩张</th><th>洞察</th></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>5–7 月 HR 入职 15 人</td><td>脉脉 232 + 猎聘 30 + Boss 97</td><td>融资后不是先招业务，而是先搭招聘机器</td></tr>
+    <tr><td><strong>MiniMax</strong></td><td>36 位脉脉 HR，16 位有岗</td><td>独立岗约 405；按 2025 年底 428 人测算密度约 95%</td><td>IPO 后继续用资本扩编，招聘密度接近一比一</td></tr>
+    <tr><td><strong>Kimi</strong></td><td>2026 年至少新增 7 位 HR</td><td>73 岗；约 300 人口径密度约 24%</td><td>不是全面铺开，而是 IPO 前精准补短板</td></tr>
+    <tr><td><strong>智谱</strong></td><td>46 人 HR 团队仍在自招</td><td>独立岗约 200–220</td><td>已进入多线业务组织化运转</td></tr>
+  </table>
+  <div class="callout gold"><strong>主洞察：</strong>看公司是否真的扩张，不是先看新闻，而是看 HR 是否在招 HR。HR 先扩，说明业务扩张预期已经进入组织准备阶段。</div>
+
+  <h2><span class="no">洞察二</span>出海的进度</h2>
+  <p class="sub">团队多大只是表面,拼上收入结构才看得出真正的生意模式</p>
+
+  <table class="mini">
+    <tr><th>公司</th><th>海外收入占比</th><th>海外团队规模</th><th>人效比</th><th>业务模式</th></tr>
+    <tr><td><strong>MiniMax</strong></td><td><span class="hl-gold">&gt;70%</span></td><td>~30人<br><span class="muted">2021年起步,早于自己IPO</span></td><td><span class="hl-gold">极高</span></td><td>产品驱动出海,不靠人头堆销售</td></tr>
+    <tr><td><strong>智谱</strong></td><td>ToB本地化收入占50.5%<br><span class="muted">(需现场交付)</span></td><td>~4人<br><span class="muted">2024年起步</span></td><td><span class="hl-red">明显不足</span></td><td>北京定战略,海外仍是试水</td></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>无海外收入披露</td><td>0</td><td>—</td><td>尚未提上议程</td></tr>
+    <tr><td><strong>Kimi</strong></td><td>海外用户存在<br><span class="muted">团队base北京远程运营</span></td><td>0</td><td>—</td><td>产品出海,组织没跟着出海</td></tr>
+  </table>
+
+  <div class="callout gold">
+    <strong>主洞察：</strong>MiniMax 大概不是"做出产品再出海"的中国公司,而是<strong>生意主场从第一天就在海外</strong>的公司——2021年硅谷就有了第一个海外市场岗位,早期挖的也是商汤、字节里<span class="hl">懂中国打法、又懂海外市场</span>的人。现在它<span class="hl">30人海外团队撑起了70%以上的收入</span>,靠的是产品自传播和开发者生态,不是销售铺人头。
+  </div>
+
+
+  <h2><span class="no">洞察三</span>从 JD 和招聘数据看公司的战略重心</h2>
+  <table class="mini">
+    <tr><th>公司</th><th>招聘规模最大方向</th><th>不该同时存在的张力</th><th>解释出的战略重心</th></tr>
+    <tr><td><strong>Kimi</strong></td><td>增长岗占比42%</td><td>技术公司，但增长/国际化成为最大单一投入</td><td>IPO 前要讲用户增长和海外故事</td></tr>
+    <tr><td><strong>智谱</strong></td><td>Agent、销售、区域 GTM 与上市职能同步扩张</td><td>研究层稳定，但 Agent + 销售 + 职能同步扩张</td><td>已从模型能力进入商业化深水区</td></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>Agent Infra / 核心系统推理 / 前沿研究按技术链路切块分工</td><td>研究文化强，但财务法务 HR 从 0 到 1 搭建</td><td>首次融资后开始公司化补课</td></tr>
+    <tr><td><strong>MiniMax</strong></td><td>技术岗（工程+Infra+算法）合计82.2%</td><td>已上市，但技术岗仍约 82%</td><td>产品化在推进，但技术 / Infra 仍是底盘</td></tr>
+  </table>
+  <div class="callout gold"><strong>主洞察：</strong>JD 不仅仅是需求清单，还是预算表。岗位数说明组织要动哪里，薪资占比说明公司愿意把钱押在哪里。</div>
+
+  <h2><span class="no">洞察四</span>同样是流失，风险完全不同</h2>
+  <table class="mini">
+    <tr><th>公司</th><th>流失 / 稳定信号</th><th>组织含义</th></tr>
+    <tr><td><strong>DeepSeek</strong></td><td>核心研究流失约 10 人，但 HR 和业务岗位快速扩张</td><td><span class="hl-red">边失血边输血</span>，用组织化对冲个人流失</td></tr>
+    <tr><td><strong>智谱</strong></td><td>COO / 融资 VP 离开，研究层稳定</td><td>高管层换血，生态投资对冲</td></tr>
+    <tr><td><strong>Kimi</strong></td><td>核心团队稳定，增长岗位激增</td><td>不是填坑，而是补 IPO 前增长短板</td></tr>
+    <tr><td><strong>MiniMax</strong></td><td>产品 / 战略投资层有流动，核心研究暂稳</td><td>IPO 后角色调整与非核心层流动</td></tr>
+  </table>
+  <div class="callout"><strong>主洞察：</strong>流失不是简单的负面信号。关键是流失发生在哪一层，以及公司用什么组织动作对冲。</div>
+
+  <h2>结语</h2>
+  <p><strong>HR 数据告诉我们谁在招，招聘数据告诉我们公司要变成什么样。</strong></p>
+
+  <div class="footer">头部大模型公司招聘模式洞察 · 部门分享 · 数据窗口 2026-08-01 ~ 08-06 · HR 数据 × JD 七维度分析 · 招聘团 Monica</div>
+</div>
+</body>
+</html>
