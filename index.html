@@ -4,161 +4,321 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>大模型四强 · 组织与人才洞察</title>
+<meta name="description" content="DeepSeek / MiniMax / 智谱华章 / 月之暗面 四家大模型公司组织与人才洞察报告 · 数据窗口 2026-08">
 <meta property="og:title" content="大模型四强 · 组织与人才洞察">
-<meta property="og:description" content="DeepSeek · MiniMax · 智谱华章 · 月之暗面 组织与人才洞察">
+<meta property="og:description" content="DeepSeek / MiniMax / 智谱华章 / 月之暗面 四家大模型公司组织与人才洞察报告 · 数据窗口 2026-08">
 <meta property="og:type" content="website">
 <style>
-:root { --bg:#f7f6f3; --text:#1d1d1f; --muted:#86868b; --blue:#0071e3; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","PingFang SC",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-.page { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100vh; padding:40px 24px; }
-.list-page { padding-top:36px; max-width:1000px; width:100%; margin:0 auto; }
-h1 { font-size:28px; font-weight:700; letter-spacing:-0.02em; margin-bottom:10px; text-align:center; }
-.subtitle { font-size:13px; color:var(--muted); margin-bottom:30px; text-align:center; }
-.loop-section { margin-bottom: 32px; }
-.loop-title { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 14px; padding-left: 4px; }
-.loop-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-.loop-card { background: #fff; border: 1px solid #e8e8ed; border-radius: 12px; padding: 18px 22px; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; text-align: left; }
-.loop-card:hover { border-color: #d2d2d7; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.loop-card.fusion { border-left: 4px solid #a855f7; }
-.loop-card.minimax { border-left: 4px solid #2563eb; }
-.loop-card.deepseek { border-left: 4px solid #16a34a; }
-.loop-card.zhipu { border-left: 4px solid #f59e0b; }
-.loop-card.moonshot { border-left: 4px solid #111827; }
-.loop-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
-.loop-card .desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
-.loop-card .meta { font-size: 11px; color: #a1a1a6; }
-.loop-card .meta span { margin-right: 12px; }
-.lang-row { display: flex; gap: 6px; margin-top: 8px; }
-.lang-btn { font-size: 11px; padding: 3px 10px; border-radius: 10px; border: 1px solid #d2d2d7; background: transparent; color: #555; cursor: pointer; transition: background 0.15s; }
-.lang-btn:hover { background: #f0f0f5; }
-#viewerPage { display: none; position: fixed; inset: 0; z-index: 1000; background: var(--bg); flex-direction: column; }
-#viewerPage.active { display: flex; }
-.exit-bar { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border-bottom: 1px solid #e8e8ed; }
-.exit-bar button { background: none; border: none; color: var(--blue); font-size: 14px; cursor: pointer; font-family: inherit; }
-.exit-bar .viewer-title { font-size: 14px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.viewer-frame { flex: 1; border: none; background: #fff; }
-@media (max-width: 768px) {
-  .page { padding: 20px 14px; }
-  .list-page { padding-top: 24px; }
-  h1 { font-size: 21px; }
-  .subtitle { font-size: 11px; margin-bottom: 22px; }
-  .loop-grid { gap: 8px; }
-  .loop-card { padding: 14px 16px; border-radius: 10px; }
-  .loop-card h3 { font-size: 15px; }
-  .loop-card .desc { font-size: 11px; line-height: 1.4; margin-bottom: 7px; }
-  .loop-card .meta { font-size: 10px; }
-  .loop-card .meta span { margin-right: 8px; }
-  .loop-title { font-size: 12px; margin-bottom: 10px; }
-  .exit-bar { padding: 8px 12px; }
-  .exit-bar button { font-size: 13px; }
-  .exit-bar .viewer-title { font-size: 13px; }
-}
+  :root {
+    --bg: #FAF9FE;
+    --text: #211E32;
+    --muted: #6E6A85;
+    --teal: #C4B5FD;
+    --purple: #5E3ED8;
+    --purple-soft: #F7F3FF;
+    --card-border: #E9E4F6;
+    --chip-bg: #EEF1F6;
+    --chip-text: #41506B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.7; font-size: 14.5px;
+  }
+
+  /* ─── 列表页 ─── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EFEBF9;
+    padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .logo { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .logo .dot {
+    width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5E3ED8, #8B5CF6);
+    color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-right { color: var(--muted); font-size: 12.5px; }
+
+  .hero {
+    position: relative; color: #fff; padding: 68px 32px 56px; overflow: hidden;
+    background: linear-gradient(120deg, #242039 0%, #2D2856 58%, #3E2B7D 132%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 72% 18%, rgba(94,62,216,0.25), transparent 70%);
+  }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; }
+  .pill {
+    display: inline-block; border: 1px solid rgba(196,181,253,0.35); color: var(--teal);
+    border-radius: 999px; padding: 3px 14px; font-size: 12px; letter-spacing: 1.5px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 40px; font-weight: 850; line-height: 1.3; letter-spacing: -0.5px;
+    margin: 20px 0 12px;
+  }
+  .hero h1 .accent { color: var(--teal); text-shadow: 0 0 32px rgba(196,181,253,0.45); }
+  .hero .data-note { color: #8F8BA8; font-size: 12px; margin-top: 12px; }
+  .hero .framework {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    margin: 28px 0 16px;
+  }
+  .fw-step {
+    display: inline-flex; align-items: baseline; gap: 7px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px; padding: 9px 16px;
+    color: #F4F2FF; font-size: 14px; font-weight: 600;
+  }
+  .fw-step .fw-num { color: var(--teal); font-weight: 800; font-size: 11.5px; letter-spacing: 0.5px; }
+  .fw-arrow { color: rgba(196,181,253,0.55); font-size: 13px; font-weight: 700; }
+  .hero .logic-line { color: #EDEBFA; font-size: 15px; font-weight: 600; max-width: 760px; }
+  .hero .logic-line em { color: var(--teal); font-style: normal; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 20px 32px 80px; }
+  .sec-tag {
+    margin-top: 40px; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--purple); text-transform: uppercase;
+  }
+  h2 { font-size: 25px; font-weight: 800; margin: 8px 0 6px; }
+  .sec-desc { color: var(--muted); margin: 10px 0 22px; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin: 20px 0; }
+  .co-card {
+    display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 26px 28px; transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+    cursor: pointer;
+  }
+  .co-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(94,62,216,0.14);
+    border-color: #C9BDF3;
+  }
+  .co-card .co-name { font-size: 21px; font-weight: 850; display: flex; align-items: center; gap: 10px; }
+  .co-card .co-status { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+  .co-card .co-status.new { background: #EDE7FF; color: #5B21B6; }
+  .co-card .co-one { font-size: 13.5px; color: #4A4765; margin: 8px 0 14px; min-height: 44px; }
+  .co-card .go { color: var(--purple); font-weight: 700; font-size: 13.5px; margin-top: auto; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .tag {
+    background: var(--chip-bg); color: var(--chip-text);
+    border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 500;
+  }
+  .tag.hot { background: var(--purple-soft); color: var(--purple); font-weight: 600; }
+
+  /* 中英文版本切换 */
+  .lang-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .lang-btn {
+    font-size: 12px; font-weight: 600; padding: 4px 14px;
+    border-radius: 999px; border: 1px solid var(--card-border);
+    background: #fff; color: var(--muted); cursor: pointer; transition: all 0.15s;
+  }
+  .lang-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-soft); }
+
+  .fusion-card {
+    display: block; text-decoration: none; color: inherit;
+    background: #fff; border: 1px solid #C9BDF3; border-radius: 18px;
+    padding: 24px 28px; margin-bottom: 24px; cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: rgba(33,30,50,0.04) 0 1px 2px;
+  }
+  .fusion-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(94,62,216,0.18);
+    border-color: var(--purple);
+  }
+  .fusion-card .f-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .fusion-card .f-desc { font-size: 13.5px; color: #4A4765; margin: 6px 0 10px; }
+  .fusion-card .f-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .fusion-card .go { color: var(--purple); font-weight: 700; font-size: 13.5px; }
+  .fusion-badge { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--purple-soft); color: var(--purple); }
+
+  .note { font-size: 12px; color: var(--muted); margin-top: 30px; }
+  .footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 32px 60px;
+    color: var(--muted); font-size: 12px; border-top: 1px solid var(--card-border);
+  }
+
+  /* ─── iframe 查看器 ─── */
+  #viewer { display: none; position: fixed; inset: 0; width: 100%; height: 100%; border: none; background: white; z-index: 10; }
+  #exitBar { display: none; position: fixed; top: 14px; right: 14px; z-index: 9999; }
+  #exitBar button {
+    padding: 8px 18px; font-size: 13px; font-weight: 600;
+    background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 20px;
+    cursor: pointer; backdrop-filter: blur(8px); margin-left: 8px;
+  }
+
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+    .hero { padding: 48px 24px 40px; }
+    main { padding: 16px 24px 60px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="page list-page" id="listPage">
-  <h1>组织与人才洞察报告集</h1>
-  <p class="subtitle">DeepSeek · MiniMax · 智谱华章 · 月之暗面 | 数据窗口 2026-08</p>
+<!-- ═══════ 报告列表 ═══════ -->
+<div id="listPage">
 
-  <div class="loop-section">
-    <div class="loop-title">横向对比</div>
-    <div class="loop-grid">
-      <div class="loop-card fusion" onclick="openReport('fusion')">
-        <h3>AI 大模型公司 HR 组织对比报告</h3>
-        <div class="desc">DeepSeek · MiniMax · 智谱 · 月之暗面 四家公司 HR 组织横向对比分析</div>
-        <div class="meta"><span>四公司对比</span></div>
+<nav class="nav">
+  <div class="nav-left">
+    <div class="logo"><span class="dot">M</span>大模型四强 · 组织与人才洞察</div>
+  </div>
+  <div class="nav-right">公开招聘数据 · 2026-08</div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="pill">AI NATIVE 人才情报</div>
+    <h1>国内四家大模型公司<br><span class="accent">人才与组织情报报告</span></h1>
+    <div class="framework">
+      <div class="fw-step"><span class="fw-num">01</span>组织阶段</div>
+      <span class="fw-arrow">→</span>
+      <div class="fw-step"><span class="fw-num">02</span>战略棋局</div>
+      <span class="fw-arrow">→</span>
+      <div class="fw-step"><span class="fw-num">03</span>AI Native 组织</div>
+      <span class="fw-arrow">→</span>
+      <div class="fw-step"><span class="fw-num">04</span>人才策略</div>
+    </div>
+    <p class="logic-line">它在<em>什么阶段</em>、下<em>什么棋</em>、组织<em>怎么转</em>、要<em>什么人</em>——统一框架，逐层拆解。</p>
+    <p class="data-note">基于 Boss直聘、脉脉、LinkedIn、企业公开招聘信息与公开报道，多渠道交叉验证</p>
+  </div>
+</header>
+
+<main>
+  <div class="sec-tag">Company reports</div>
+  <h2>单公司专题洞察</h2>
+  <p class="sec-desc">四家公司均已按专题洞察模板发布，各含中文版与英文版。</p>
+
+  <div class="grid">
+    <div class="co-card" onclick="openReport('minimax')">
+      <div class="co-name">MiniMax <span class="co-status new">专题洞察</span></div>
+      <div class="co-one">上市七个月，在招岗位却开满 461 个——把 IPO 的钱继续换成人头。</div>
+      <div class="tags">
+        <span class="tag hot">461 在招岗 · 四家最高</span>
+        <span class="tag">五线画像 138/62/65/5/12</span>
+        <span class="tag">48 人 HR · 扩编 30%</span>
       </div>
+      <div class="lang-row">
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('minimax')">中文版</button>
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('minimax_en')">English</button>
+      </div>
+      <span class="go">查看报告 →</span>
+    </div>
+
+    <div class="co-card" onclick="openReport('deepseek')">
+      <div class="co-name">DeepSeek <span class="co-status new">专题洞察</span></div>
+      <div class="co-one">首轮融资 510 亿元到账，HR 团队先把自己翻倍——边失血边输血的非典型 S2→S3 过渡。</div>
+      <div class="tags">
+        <span class="tag hot">三渠道约 300 岗全面开放</span>
+        <span class="tag">HR 17→32 · 7 月 9 名资深到岗</span>
+        <span class="tag">Agent 双占比确认战略最高优先级</span>
+      </div>
+      <div class="lang-row">
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('deepseek')">中文版</button>
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('deepseek_en')">English</button>
+      </div>
+      <span class="go">查看报告 →</span>
+    </div>
+
+    <div class="co-card" onclick="openReport('moonshot')">
+      <div class="co-name">月之暗面（Kimi） <span class="co-status new">专题洞察</span></div>
+      <div class="co-one">冲刺港交所 IPO，Boss 在架岗位却是 0 个——把 IPO 窗口期的钱全部押在增长故事上。</div>
+      <div class="tags">
+        <span class="tag hot">91 在招岗 · 单渠道垄断</span>
+        <span class="tag">五线画像 26/12/21/18/14</span>
+        <span class="tag">30–35 人 HR · 骨干层扩编</span>
+      </div>
+      <div class="lang-row">
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('moonshot')">中文版</button>
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('moonshot_en')">English</button>
+      </div>
+      <span class="go">查看报告 →</span>
+    </div>
+
+    <div class="co-card" onclick="openReport('zhipu')">
+      <div class="co-name">智谱华章 <span class="co-status new">专题洞察</span></div>
+      <div class="co-one">上市七个月，市值 2000 亿，在招岗位开满 200 个——Agent 双占比第一，押注商业化深水区。</div>
+      <div class="tags">
+        <span class="tag hot">200 在招岗 · Boss 全量</span>
+        <span class="tag">五线画像 37/55/43/20/27</span>
+        <span class="tag">46 人 HR · 60% 应届</span>
+      </div>
+      <div class="lang-row">
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('zhipu')">中文版</button>
+        <button class="lang-btn" onclick="event.stopPropagation(); openReport('zhipu_en')">English</button>
+      </div>
+      <span class="go">查看报告 →</span>
     </div>
   </div>
 
-  <div class="loop-section">
-    <div class="loop-title">单公司深度报告</div>
-    <div class="loop-grid">
-      <div class="loop-card minimax" onclick="openReport('minimax')">
-        <h3>MiniMax 组织与人才洞察</h3>
-        <div class="desc">AI 大模型公司 HR 组织拆解 —— 组织形态、HR 职能、人才线分析</div>
-        <div class="meta"><span>数据窗口：2026-08</span></div>
-        <div class="lang-row">
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('minimax')">中文版</button>
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('minimax_en')">English</button>
-        </div>
-      </div>
-      <div class="loop-card deepseek" onclick="openReport('deepseek')">
-        <h3>DeepSeek 组织与人才洞察</h3>
-        <div class="desc">AI 大模型公司 HR 组织拆解 —— 组织形态、HR 职能、人才线分析</div>
-        <div class="meta"><span>数据窗口：2026-08</span></div>
-        <div class="lang-row">
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('deepseek')">中文版</button>
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('deepseek_en')">English</button>
-        </div>
-      </div>
-      <div class="loop-card zhipu" onclick="openReport('zhipu')">
-        <h3>智谱华章 组织与人才洞察</h3>
-        <div class="desc">AI 大模型公司 HR 组织拆解 —— 组织形态、HR 职能、人才线分析</div>
-        <div class="meta"><span>数据窗口：2026-08</span></div>
-        <div class="lang-row">
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('zhipu')">中文版</button>
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('zhipu_en')">English</button>
-        </div>
-      </div>
-      <div class="loop-card moonshot" onclick="openReport('moonshot')">
-        <h3>月之暗面 组织与人才洞察</h3>
-        <div class="desc">AI 大模型公司 HR 组织拆解 —— 组织形态、HR 职能、人才线分析</div>
-        <div class="meta"><span>数据窗口：2026-08</span></div>
-        <div class="lang-row">
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('moonshot')">中文版</button>
-          <button class="lang-btn" onclick="event.stopPropagation(); openReport('moonshot_en')">English</button>
-        </div>
-      </div>
-    </div>
+  <div class="sec-tag">Cross-company</div>
+  <h2>横向对比</h2>
+  <p class="sec-desc">四家公司融合对比，从招聘视角看国内头部大模型公司。</p>
+
+  <div class="fusion-card" onclick="openReport('fusion')">
+    <div class="f-title">融合报告 · 四家公司横向对比 <span class="fusion-badge">合集</span></div>
+    <div class="f-desc">从招聘视角，看国内头部大模型公司</div>
+    <div class="f-meta">HR 数据 × JD 七维度分析</div>
+    <span class="go">查看报告 →</span>
   </div>
+
+  <p class="note">数据窗口 2026-08-01 ~ 08-06 时点快照。各公司数据以单公司报告页为准。</p>
+</main>
+
+<div class="footer">
+  外部招聘数据洞察 · 数据来源：Boss直聘、脉脉、LinkedIn、企业公开招聘信息及公开报道
 </div>
 
-<div id="viewerPage">
-  <div class="exit-bar">
-    <button onclick="exitViewer()">&#8592; 返回报告列表</button>
-    <span class="viewer-title" id="viewerTitle"></span>
-  </div>
-  <iframe class="viewer-frame" id="viewer" sandbox="allow-same-origin"></iframe>
 </div>
+
+<!-- ═══════ iframe 查看器 ═══════ -->
+<div id="exitBar"><button onclick="exitReport()">退出报告</button></div>
+<iframe id="viewer"></iframe>
 
 <script>
 const REPORTS = {
-  fusion:     {file:'fusion.html'},
-  minimax:    {file:'minimax.html'},
-  minimax_en: {file:'minimax_en.html'},
-  deepseek:   {file:'deepseek.html'},
-  deepseek_en:{file:'deepseek_en.html'},
-  zhipu:      {file:'zhipu.html'},
-  zhipu_en:   {file:'zhipu_en.html'},
-  moonshot:   {file:'moonshot.html'},
-  moonshot_en:{file:'moonshot_en.html'},
+  fusion:      { file: 'fusion.html' },
+  minimax:     { file: 'minimax.html' },
+  minimax_en:  { file: 'minimax_en.html' },
+  deepseek:    { file: 'deepseek.html' },
+  deepseek_en: { file: 'deepseek_en.html' },
+  zhipu:       { file: 'zhipu.html' },
+  zhipu_en:    { file: 'zhipu_en.html' },
+  moonshot:    { file: 'moonshot.html' },
+  moonshot_en: { file: 'moonshot_en.html' },
 };
 const cache = {};
 
 async function openReport(key) {
-  const meta = REPORTS[key];
-  if (!meta) return;
-  try {
-    if (!cache[key]) {
-      const resp = await fetch(meta.file);
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      cache[key] = await resp.text();
-    }
-    document.getElementById('viewer').srcdoc = cache[key];
-    document.getElementById('viewerTitle').textContent = key === 'fusion' ? 'AI 大模型公司 HR 组织对比报告' : '';
-    document.getElementById('viewerPage').classList.add('active');
-    document.getElementById('listPage').style.display = 'none';
-  } catch (e) {
-    alert('加载失败，请刷新页面重试。');
+  const rep = REPORTS[key];
+  if (!rep) return;
+  if (!cache[key]) {
+    const res = await fetch(rep.file);
+    if (!res.ok) { alert('加载失败，请刷新页面重试。'); return; }
+    cache[key] = await res.text();
   }
+  document.getElementById('listPage').style.display = 'none';
+  const viewer = document.getElementById('viewer');
+  viewer.style.display = 'block';
+  viewer.srcdoc = cache[key];
+  document.getElementById('exitBar').style.display = 'block';
 }
-function exitViewer() {
-  document.getElementById('viewerPage').classList.remove('active');
-  document.getElementById('listPage').style.display = '';
-  document.getElementById('viewer').srcdoc = '';
+
+function exitReport() {
+  const viewer = document.getElementById('viewer');
+  viewer.style.display = 'none';
+  viewer.srcdoc = '';
+  document.getElementById('exitBar').style.display = 'none';
+  document.getElementById('listPage').style.display = 'block';
 }
 </script>
 </body>
